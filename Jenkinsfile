@@ -62,15 +62,18 @@ pipeline {
                         submitter: "thanhloc"
                     )
                     def CONTAINERID = sh(script: "docker ps -q --filter name=${params.nameImageBuild}", returnStdout: true).trim()
+                    def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
                     echo "Xác nhận triển khai ${userInput}"
-                    sh """
-                        if [ -n "${CONTAINERID}" ]; then
-                            docker stop \${CONTAINERID}
-                            docker rm \${CONTAINERID}
-                        fi
-                        docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
-                        docker run -d --name ${params.nameImageBuild} -p 9090:80 ${params.nameImageBuild}:${params.Tag}
-                    """
+                    docker.withRegistry("https://${params.urlDomainHarbor}", 'harbor') {
+                        sh """
+                            if [ -n "${CONTAINERID}" ]; then
+                                docker stop ${CONTAINERID}
+                                docker rm ${CONTAINERID}
+                            fi
+                            docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
+                            docker run -d --name ${params.nameImageBuild} -p 9090:80 ${nameImagePush}
+                        """
+                    }
                 }
             }
         }
