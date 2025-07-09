@@ -61,11 +61,14 @@ pipeline {
                         ok: "Approve",
                         submitter: "thanhloc"
                     )
+                    def CONTAINERID = sh(script: "docker ps -q --filter name=${params.nameImageBuild}", returnStdout: true).trim()
                     echo "Xác nhận triển khai ${userInput}"
                     sh """
-                        docker stop \$(docker ps -q --filter "name=${params.nameImageBuild}") || true
-                        docker rm \$(docker ps -aq --filter "name=${params.nameImageBuild}") || true
-                        docker rmi \$(docker ps -aq --filter "name=${params.nameImageBuild}") -f || true
+                        if [ -n "${CONTAINERID}" ]; then
+                            docker stop \${CONTAINERID}
+                            docker rm \${CONTAINERID}
+                        fi
+                        docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
                         docker run -d --name ${params.nameImageBuild} -p 9090:80 ${params.nameImageBuild}:${params.Tag}
                     """
                 }
@@ -83,7 +86,7 @@ pipeline {
             }
         }
     }
-    post {
+    post {  
         always {
             script {
                 echo 'Cleaning up workspace...'
