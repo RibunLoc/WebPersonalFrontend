@@ -1,29 +1,21 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from './components/Navbar';
+import Home from './Home';
 
 function App() {
   return (
-    <div className="container">
-      <h1>Xin chào, mình là Ri Bún 👋</h1>
-      <p>Chào mừng đến với trang cá nhân của mình.</p>
-
-      <section>
-        <h2>💼 Kỹ năng</h2>
-        <ul>
-          <li>DevOps: Jenkins, Terraform, ArgoCD, AWS</li>
-          <li>Frontend: React, TailwindCSS, Vite</li>
-          <li>Networking, bảo mật, monitoring</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>📫 Liên hệ</h2>
-        <p>Email: hothanhloc@gmail.com</p>
-        <p>GitHub: <a href="https://github.com/ribunloc" target="_blank">ribunloc</a></p>
-      </section>
-    </div>
+    <>
+      <Navbar />
+      <main className="pt-24"> {/* để tránh bị navbar che mất */}
+        {/* Các section nội dung */}
+        <Home />
+        {/* <section id="home" className="h-screen bg-gray-100">
+        </section>
+        <section id="about" className="h-screen bg-white">About Section</section>
+        <section id="experience" className="h-screen bg-gray-100">Experience Section</section>
+        <section id="education" className="h-screen bg-white">Education Section</section>
+        <section id="hobbies" className="h-screen bg-gray-100">Hobbies & Interests Section</section> */}
+      </main>
+    </>
   );
 }
 

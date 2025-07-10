@@ -23,3 +23,23 @@ a {
   color: #007acc;
   text-decoration: none;
 }
+
+.hero {
+  text-align: center;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+section {
+  margin-top: 2rem;
+}
+
+section h2 {
+  margin-bottom: 0.5rem;
+}
