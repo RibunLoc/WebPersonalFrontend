@@ -2,6 +2,7 @@ import Navbar from './components/Navbar';
 import Home from './Home';
 import AboutMe from './AboutMe';
 
+
 function App() {
   return (
     <>
@@ -14,7 +15,9 @@ function App() {
         <section id="about" className="h-screen bg-white">
           <AboutMe />
         </section>
-        <section id="experience" className="h-screen bg-gray-100">Experience Section</section>
+        <section id="experience" className="h-screen bg-gray-100">
+          
+        </section>
         <section id="education" className="h-screen bg-white">Education Section</section>
         <section id="hobbies" className="h-screen bg-gray-100">Hobbies & Interests Section</section>
       </main>

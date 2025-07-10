@@ -1,16 +1,23 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --navbar-bg: #ffffff;
+  --text-color: #1a1a1a;
+  --nav-hover: #e74c3c;
+  --icon-bg: #000;
+  --icon-color: #fff;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-color);
+  background-color: #ffffff;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root.dark {
+  --navbar-bg: #121212;
+  --text-color: #f4f4f4;
+  --nav-hover: #ff6b6b;
+  --icon-bg: #fff;
+  --icon-color: #000;
+
+  color: var(--text-color);
+  background-color: #1a1a1a;
 }
 
 a {

@@ -1,20 +1,26 @@
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 50;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
+  z-index: 999;
+  background-color: var(--navbar-bg);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .profile {
@@ -31,29 +37,55 @@
 }
 
 .name {
+  font-size: 1.2rem;
   font-weight: 600;
-  font-size: 1.125rem;
-  color: #111827;
+  color: var(--text-color);
 }
 
 .subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-size: 0.85rem;
+  color: gray;
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .navLinks {
   display: flex;
   gap: 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+  align-items: center;
 }
 
 .navLinks a {
   text-decoration: none;
-  color: inherit;
+  color: #333;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 .navLinks a:hover {
-  color: #3b82f6;
+  color: #e74c3c;
 }
+
+.toggleButton {
+  border: none;
+  background-color: var(--icon-bg);
+  color: var(--icon-color);
+  padding: 0.6rem;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggleButton:hover {
+  background-color: var(--text-color);
+  color: var(--navbar-bg);
+}
+
+
+
