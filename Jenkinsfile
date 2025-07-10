@@ -56,11 +56,11 @@ pipeline {
         stage('Approve Delivery') {
             steps {
                 script {
-                    def userInput = input(
-                        message: "Approve deploy container ${env.JOB_NAME} to server",
-                        ok: "Approve",
-                        submitter: "thanhloc"
-                    )
+                    // def userInput = input(
+                    //     message: "Approve deploy container ${env.JOB_NAME} to server",
+                    //     ok: "Approve",
+                    //     submitter: "thanhloc"
+                    // )
                     def CONTAINERID = sh(script: "docker ps -q --filter name=${params.nameImageBuild}", returnStdout: true).trim()
                     def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
                     echo "Xác nhận triển khai ${userInput}"

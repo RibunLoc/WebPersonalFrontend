@@ -1,0 +1,92 @@
+.aboutSection {
+  background-color: #f4f4f4;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.header {
+  position: relative;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.underline {
+  width: 60px;
+  height: 4px;
+  background-color: #e74c3c;
+  margin: 12px auto 30px auto;
+}
+
+.socialLinks {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 1.25rem;
+
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 20px;
+  color: #333;
+  transition: 0.2s;
+}
+
+.arrow:hover {
+  transform: scale(1.2);
+}
+
+button:focus {
+  outline: none;
+}
+
+.textWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 900px;
+  text-align: left;
+}
+
+.textWrapper p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.dots {
+  margin-top: 30px;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.active {
+    background-color: #333;
+}
+
+
+

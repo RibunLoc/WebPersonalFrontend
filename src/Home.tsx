@@ -12,7 +12,7 @@ export default function Home() {
         <img src="/avatar.jpg" alt="Avatar" className={styles.avatar} />
       </section>
 
-      <section className={styles.aboutSection}>
+      {/* <section className={styles.aboutSection}>
         <h2 className={styles.aboutTitle}>ABOUT ME</h2>
         <p className={styles.aboutText}>
           I'm a student passionate about networks and system automation. This is a great place to share a bit more about yourself — your background, goals, and what makes you unique.
@@ -22,7 +22,7 @@ export default function Home() {
           <a href="#" style={{ margin: '0 10px' }}>🐦</a>
           <a href="#" style={{ margin: '0 10px' }}>📘</a>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

@@ -14,7 +14,7 @@
 }
 
 .name {
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -22,6 +22,7 @@
 .subtitle {
   font-size: 1.2rem;
   opacity: 0.85;
+  color: #444;
 }
 
 .avatar {
