@@ -6,7 +6,7 @@
 }
 
 .aboutSection {
-  background-color: #f4f4f4;
+  background-color: #F1EFEC;
   padding: 80px 20px;
   text-align: center;
   display: -ms-inline-grid;
@@ -81,11 +81,30 @@ button:focus {
   flex: 1;
 }
 
-
 .textWrapper p {
   font-size: 1rem;
   color: #444;
   line-height: 1.6;
+}
+
+.cardWrapper {
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  background-color: var(--card-bg);
+  transition: background-color 0.3s ease;
+}
+
+.altCard {
+  background-color: var(--alt-card-bg);
+}
+
+body.dark .cardWrapper {
+  background-color: var(--card-bg-dark);
+}
+
+body.dark .altCard {
+  background-color: var(--alt-card-bg-dark);
 }
 
 .dots {
@@ -104,16 +123,6 @@ button:focus {
 .active {
     background-color: #333;
 }
-
-
-/* Moblie web */
-@media screen and (max-width: 768px) {
-  .textWrapper {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
 
 .slide {
   max-width: 800px;
@@ -156,6 +165,15 @@ button:focus {
   left: 0;
   font-size: 1.2rem;
 }
+
+/* Moblie web */
+@media screen and (max-width: 768px) {
+  .textWrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 
 @keyframes fadeIn {
   from {

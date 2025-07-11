@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
 import styles from './Navbar.module.css';
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+  
 
 export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
   }, [darkMode]);
 
+  const toggleMobileMenu  = () => {
+    setIsMobileMenuOpen (!isMobileMenuOpen);
+  };
 
   return (
     <header className={styles.navbar}>
@@ -26,8 +32,12 @@ export default function Navbar() {
           </div>
         </div>
 
+        <button className={styles.hamburger} onClick={toggleMobileMenu}>
+            <GiHamburgerMenu />
+        </button>
+
         {/* Menu + DarkMode */}
-        <div className={styles.rightMenu}>
+        <div className={`${styles.rightMenu} ${isMobileMenuOpen ? styles.open : ''}`}>
           <nav className={styles.navLinks}>
             <a href="#home">Home</a>
             <a href="#about">About</a>

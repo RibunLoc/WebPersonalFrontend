@@ -4,6 +4,8 @@
   --nav-hover: #e74c3c;
   --icon-bg: #000;
   --icon-color: #fff;
+  --card-bg: #EEEEEE;
+  --alt-card-bg: #f7f7f7;
 
   color: var(--text-color);
   background-color: #ffffff;
@@ -15,6 +17,8 @@
   --nav-hover: #ff6b6b;
   --icon-bg: #fff;
   --icon-color: #000;
+  --card-bg: #000000;
+  --alt-card-bg: #2c2c2c
 
   color: var(--text-color);
   background-color: #1a1a1a;

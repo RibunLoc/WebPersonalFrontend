@@ -1,6 +1,8 @@
+import styles from './SlideBox.module.css'
+
 export default function AboutMeSlide2() {
   return (
-    <div>
+    <div className={styles.box} >
       <h3>My Journey</h3>
       <p>
         Started exploring Docker, Git, and CI/CD early on.  
