@@ -76,8 +76,8 @@
   background-color: var(--icon-bg);
   color: var(--icon-color);
   padding: 0.6rem;
-  border-radius: 50%;
-  font-size: 1.3rem;
+  border-radius: 20%;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -105,7 +105,7 @@
 }
 
 /* Mobile: reponsive */
-@media (max-width: 768px) {
+@media (max-width: 880px) {
   .hamburger {
     display: block;
   } 

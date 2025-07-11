@@ -167,10 +167,13 @@ body.dark .altCard {
 }
 
 /* Moblie web */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 880px) {
   .textWrapper {
     flex-direction: column;
     text-align: center;
+  }
+  .arrow {
+    display: none;
   }
 }
 
@@ -185,6 +188,7 @@ body.dark .altCard {
     transform: translateY(0);
   }
 }
+
 
 
 /* Dark Mode */

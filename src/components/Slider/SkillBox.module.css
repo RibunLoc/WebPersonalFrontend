@@ -1,0 +1,94 @@
+.sectionTitle {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.6rem;
+    letter-spacing: -0.5px;
+}
+
+.boxGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;    
+    padding: 2rem 0;
+    align-items: stretch;
+}
+
+.skillBox {
+    min-width: 220px;
+    max-width: 260px;
+    background-color: var(--card-bg);
+    border-radius: 1.5rem;
+    padding: 2rem 1.2rem 1.3rem 1.2rem;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.18s cubic-bezier(.4,2.3,.3,1), box-shadow 0.2s;
+}
+
+.skillBox:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.33);
+}
+
+.icon {
+    font-size: 2.8rem;
+    margin-bottom: 0.7rem;
+    color: var(--text-color) ;;
+}
+
+.skillName {
+    font-weight: bold;
+    font-size: 1.16rem;
+    color: var(--text-color) ;;
+    margin-bottom: 0.3rem;
+}
+
+.years {
+    color: var(--text-color) ;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* Ẩn thanh scrollbar nếu muốn siêu tối giản */
+.boxGrid::-webkit-scrollbar {
+    height: 8px;
+    background: transparent;
+}
+
+.boxGrid::-webkit-scrollbar-thumb {
+    background: var(--card-bg);
+    border-radius: 4px;
+}
+
+/* Reponsive mobile */
+@media (max-width: 1000px) {
+    .boxGrid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+        padding: 0.5rem 0.1rem 1.5rem 0.1rem;
+    }
+    .sectionTitle {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    .skillBox {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+    }
+    .icon {
+        font-size: 2.1rem;
+        margin-bottom: 0.4rem;
+    }
+    .skillName {
+        font-size: 1rem;
+    }
+    .years {
+        font-size: 0.9rem;
+    }
+}

@@ -20,3 +20,24 @@
 .box:hover {
     transform: translateY(-16px); 
 }
+
+@media scree and (max-width: 1000px) {
+    .box {
+        padding: 1.2rem 1rem;
+    }
+
+    .box h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .box ul li {
+        font-size: 0.875rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    };
+
+    .box ul {
+        padding-left: 1.1rem;
+    }
+}

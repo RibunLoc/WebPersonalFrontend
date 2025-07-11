@@ -6,8 +6,9 @@ import { useSwipeable } from "react-swipeable";
 import AboutMeSlide1 from "./components/Slider/AboutMeSlide1";
 import AboutMeSlide2 from "./components/Slider/AboutMeSlide2";
 import AboutMeSlide3 from "./components/Slider/AboutMeSlide3";
+import AboutMeSlide4 from "./components/Slider/AboutMeSlide4";
 
-const slides = [AboutMeSlide1, AboutMeSlide2, AboutMeSlide3];
+const slides = [AboutMeSlide1, AboutMeSlide2, AboutMeSlide3, AboutMeSlide4];
 
 export default function AboutMe() {
   const [index, setIndex] = useState(0);

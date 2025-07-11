@@ -17,19 +17,19 @@ export default function AboutMeSlide3() {
 
 
       <div className={styles.box}>
-        <h3>System 🔧</h3>
+        <h3>🔧 System</h3>
         <ul>
-          <li><strong>Scripting:</strong> Bash, PowerShell — viết script tự động hóa CI/CD, tạo cronjob, cleanup Docker</li>
-          <li><strong>OS:</strong> Ubuntu — cấu hình môi trường Jenkins, Docker host, NGINX reverse proxy</li>
-          <li><strong>Web Server:</strong> NGINX — triển khai HTTPS với Let's Encrypt, reverse proxy cho Jenkins, ArgoCD</li>
-          <li><strong>Serverless Platform:</strong> Cloudflare Workers — routing request theo geolocation</li>
-          <li><strong>Secrets Management:</strong> HashiCorp Vault — tích hợp vào Jenkins & ArgoCD plugin</li>
-          <li><strong>Automation:</strong> Systemd service, shell init script — tự động khởi động service app khi reboot VPS</li>
+          <li><strong>Scripting:</strong> Bash, PowerShell — writting scripts to automate CI/CD, create cronjobs, clean up Docker.</li>
+          <li><strong>OS:</strong> Ubuntu — configuring environments for Jenkins, Docker host, NGINX reverse proxy.</li>
+          <li><strong>Web Server:</strong> NGINX - deploying HTTPS withc Let's Encrypt, reverse proxy for Jenkins, ArgoCD</li>
+          <li><strong>Serverless Platform:</strong> Cloudflare Workers — request routing by geolocation</li>
+          <li><strong>Secrets Management:</strong> HashiCorp Vault — intergrated into Jenkins and ArgoCD via plugin</li>
+          <li><strong>Automation:</strong> Systemd service, shell init script — auto start service apps on VPS reboot</li>
         </ul>
       </div>
 
      <div className={styles.box}>
-        <h3>My Toolbox 🧰</h3>
+        <h3>🧰 My Toolbox </h3>
         <ul>
           <li><strong>DevOps: </strong> Jenkins, GitHub Actions, ArgoCD</li>
           <li><strong>Cloud:</strong> AWS (EC2, EKS, S3)</li>
@@ -37,7 +37,6 @@ export default function AboutMeSlide3() {
           <li><strong>Monitoring:</strong> Prometheus, Grafana, Loki, Opentelemetry</li>
         </ul>
       </div>
-
 
     </div>
   );
