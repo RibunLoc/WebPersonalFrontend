@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState('#home');
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
@@ -15,6 +16,21 @@ export default function Navbar() {
   const toggleMobileMenu  = () => {
     setIsMobileMenuOpen (!isMobileMenuOpen);
   };
+
+  const handleScroll = () => {
+    const sections = [ 'home', 'about', 'experience', 'education', 'hobbies' ]
+    for (const id of sections) {
+      const section = document.getElementById(id);
+      if(section && window.scrollY >= section.offsetTop - 80) {
+        setActiveLink('$#{id}')
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <header className={styles.navbar}>
@@ -39,11 +55,15 @@ export default function Navbar() {
         {/* Menu + DarkMode */}
         <div className={`${styles.rightMenu} ${isMobileMenuOpen ? styles.open : ''}`}>
           <nav className={styles.navLinks}>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#education">Education</a>
-            <a href="#hobbies">Hobbies & Interests</a>
+            {['home', 'about', 'experience', 'education', 'hobbies'].map((section) => (
+             <a 
+              key={section}
+              href={`#${section}`}
+              className={activeLink === `#${section}` ? 'active' : ''}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </a>
+            ))}
           </nav>
 
           <button

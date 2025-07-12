@@ -61,14 +61,35 @@
 }
 
 .navLinks a {
+  position: relative;
   text-decoration: none;
   font-weight: 500;
   color: var(--text-color);
-  transition: color 0.3s ease;
+  padding-bottom: 4px;
+  transition: color 0.3s;
 }
 
 .navLinks a:hover {
   color: #e74c3c;
+}
+
+.navLinks a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2.5px;
+  width: 0%;
+  box-shadow: none;
+  border-radius: 2px;
+  background-color: var(--navbar-hover, #e74c3c);
+  transition: width 0.3s, box-shadow 0.3s;
+}
+
+.navLinks a:hover::after, 
+.navLinks a:active::after {
+  width: 100%;
+  box-shadow: 0 4px 18px 2px #e74c3c40;
 }
 
 .toggleButton {
