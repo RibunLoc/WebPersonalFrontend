@@ -4,7 +4,7 @@ const projects = [
     title: 'Monitoring và Networking - ProJect Calico',
     author: {
       name: 'Thanh Lộc',
-      avatar: '/public/avatar.jpg'
+      avatar: '/avatar.jpg'
     },
     date: 'Đã đăng vào th 7 21, 2025 15:37',
     views: 1,

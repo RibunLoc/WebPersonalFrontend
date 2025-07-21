@@ -74,7 +74,7 @@ pipeline {
                     //     ok: "Approve",
                     //     submitter: "thanhloc"
                     // )
-                    def CONTAINERID = sh(script: "docker ps -q --filter name=${params.nameImageBuild}", returnStdout: true).trim()
+                    def CONTAINERID = sh(script: "docker ps -aq --filter name=${params.nameImageBuild}", returnStdout: true).trim()
                     def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
                     // echo "Xác nhận triển khai ${userInput}"
                     docker.withRegistry("https://${params.urlDomainHarbor}", 'harbor') {

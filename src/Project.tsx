@@ -25,7 +25,7 @@ const projects: Project[] = [
     title: 'Monitoring và Networking - ProJect_Calico',
     description: 'Cấu hình mạng ảo trên Kubernetes sử dụng Calico, gồm triển khai Calico CNI, thiết lập NetworkPolicy, BGP peer và IPAM.',
     techStack: ['Kubernetes', 'Calico', 'NetworkPolicy', 'BGP', 'loki', 'Opentelemetry', 'prometheus', ' Grafana'],
-    imageUrl: '/public/Calico.png',
+    imageUrl: '/Calico.png',
     repoUrl: 'https://github.com/RibunLoc/ProJect_Calico',
   },
   {
@@ -33,7 +33,7 @@ const projects: Project[] = [
     title: 'DevOps - Ứng dụng web nghe nhạc',
     description: 'Triển khai web nghe nhạc với AWS (vpc, ecs, ec2, iam, s3) và jenkins.',
     techStack: ['Terraform', 'AWS', 'Jenkins', 'ECS'],
-    imageUrl: '/public/background.jpg',
+    imageUrl: '/background.jpg',
     repoUrl: 'https://github.com/yourusername/terraform-aws',
     liveDemoUrl: 'https://infra.example.com',
   },
@@ -42,7 +42,7 @@ const projects: Project[] = [
     title: 'System - Triển khai điện toán đám mây OpenNebula',
     description: '',
     techStack: ['ubuntu', 'nginx', 'Ansible', 'jmeter', 'vmware'],
-    imageUrl: '/public/background.jpg',
+    imageUrl: '/background.jpg',
     repoUrl: '',
   },
 ];
