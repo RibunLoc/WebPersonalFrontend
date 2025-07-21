@@ -18,7 +18,7 @@ export default function Navbar() {
   };
 
   const handleScroll = () => {
-    const sections = [ 'home', 'about', 'experience', 'education', 'hobbies' ]
+    const sections = [ 'home', 'about', 'experience', 'project', 'hobbies' ]
     for (const id of sections) {
       const section = document.getElementById(id);
       if(section && window.scrollY >= section.offsetTop - 80) {
@@ -55,7 +55,7 @@ export default function Navbar() {
         {/* Menu + DarkMode */}
         <div className={`${styles.rightMenu} ${isMobileMenuOpen ? styles.open : ''}`}>
           <nav className={styles.navLinks}>
-            {['home', 'about', 'experience', 'education', 'hobbies'].map((section) => (
+            {['home', 'about', 'experience', 'project', 'hobbies'].map((section) => (
              <a 
               key={section}
               href={`#${section}`}

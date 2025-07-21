@@ -1,0 +1,228 @@
+/* ProjectDetailPage.module.css */
+
+/* Layout tổng */
+.container {
+  background-color: var(--backgroud-color-reverse);
+  margin-top: 145px;
+}
+
+.wrapper {
+  display: flex;
+  max-width: 1100px;
+  margin: 2.5rem auto 0rem;
+  padding: 5rem 1rem;
+  gap: 2rem;
+  position: relative;
+  background-color: var(--backgroud-color-reverse);
+}
+
+/* button back */
+.backBtn {
+  display: inline-block;
+  background: var(--tag);
+  color: var(--tag-text);
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 1.3rem 0.45rem 1.1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  margin-left: -0.3rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(30, 41, 59, 0.09);
+  outline: none;
+  letter-spacing: 0.01em;
+}
+
+.backBtn:hover {
+  background: #1e40af;
+  color: #fff;
+}
+
+/* Meta box */
+.metaBox {
+  display: flex;
+  align-items: center;
+  background: var(--backgroud-e0e7ef-reverse);
+  border-radius: 1rem;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+  padding: 1.3rem 1.7rem;
+  margin-bottom: 1.2rem;
+  gap: 1.8rem;
+  min-height: 72px;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #508bcf;
+  background: var(--backgroud-e0e7ef-reverse);
+}
+
+.metaText {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.metaTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.metaName {
+  font-weight: 700;
+  font-size: 1.13rem;
+  color: var(--text-color);
+  margin-bottom: 0.28rem;
+}
+
+.metaDate, .metaViews {
+  color: #64748b;
+  font-size: 0.99rem;
+  font-weight: 400;
+  margin-right: 0.7em;
+  white-space: nowrap;
+}
+
+.metaTags {
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  margin-top: 0.4em;
+}
+
+.tag {
+  background: var(--tag);
+  color: var(--tag-text);
+  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 0.12em 0.85em;
+  margin-top: 0.25em;
+}
+
+/* Nội dung chính */
+.content {
+  background: var(--card-bg);
+  border-radius: 1.3rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 2.5rem 2rem;
+  font-size: 1.12rem;
+}
+
+/* Style cho heading */
+.content h1 {
+  font-size: 2.3rem;
+  font-weight: bold;
+  margin-bottom: 0.6em;
+}
+.content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2.2em;
+  margin-bottom: 0.7em;
+  color: #2563eb;
+  scroll-margin-top: 120px;
+}
+.content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  color: var(--text-color);
+  scroll-margin-top: 120px;
+}
+
+/* Markdown text */
+.content p {
+  line-height: 1.85;
+  margin-bottom: 1.3em;
+}
+.content ul, .content ol {
+  margin-bottom: 1.1em;
+  padding-left: 2em;
+}
+.content code {
+  background: #f1f5f9;
+  color: #e11d48;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 0.99em;
+}
+.content pre {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-radius: 7px;
+  padding: 1.1em;
+  margin-bottom: 1.5em;
+  overflow-x: auto;
+}
+.content blockquote {
+  border-left: 4px solid #2563eb;
+  background: var(--toc-mark);
+  color: var(--text-color);
+  padding-left: 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+}
+
+/* Sidebar mục lục */
+.tocSidebar {
+  width: 270px;
+  min-width: 200px;
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+  background: var(--toc-mark);
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.05);
+  border: 1px solid #98D8EF;
+  padding: 1.2rem 1.2rem 1.2rem 1.3rem;
+  font-size: 0.98rem;
+}
+
+.tocTitle {
+  font-weight: bold;
+  font-size: 1.11rem;
+  margin-bottom: 0.8em;
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tocItem {
+  margin-bottom: 0.3em;
+  padding-left: 0;
+}
+
+.tocLink {
+  color: var(--toc-link);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 0.98rem;
+  padding-left: 0.2em;
+}
+.tocLink:hover {
+  color: #FFFCFB;
+  text-decoration: underline;
+}
+
+.tocIndent2 { padding-left: 1.2em; }
+.tocIndent3 { padding-left: 2.3em; }
+
+@media (max-width: 1024px) {
+  .wrapper { flex-direction: column; gap: 0; }
+  .tocSidebar { display: none; }
+  .content { border-radius: 1.2rem; }
+}

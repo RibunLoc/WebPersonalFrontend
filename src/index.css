@@ -6,7 +6,13 @@
   --icon-color: #fff;
   --card-bg: #EEEEEE;
   --alt-card-bg: #f7f7f7;
-
+  --border-dot-color:#393E46 ;
+  --background-color: #fff;
+  --backgroud-color-reverse: #F1EFEC;
+  --tag: #A4CCD9;
+  --tag-text: #1F509A;
+  --toc-mark: #C9E6F0; /* color Mục lục */
+  --toc-link: #2563eb;
   color: var(--text-color);
   background-color: #ffffff;
 }
@@ -18,7 +24,14 @@
   --icon-bg: #fff;
   --icon-color: #000;
   --card-bg: #000000;
-  --alt-card-bg: #2c2c2c
+  --alt-card-bg: #2c2c2c;
+  --border-dot-color: #F2F2F2 ;
+  --background-color: #363333;
+  --backgroud-color-reverse: #181818;
+  --tag: #024CAA;
+  --tag-text: #C4E1F6;
+  --toc-mark: #254D70;
+  --toc-link: #ffffff;
 
   color: var(--text-color);
   background-color: #1a1a1a;
@@ -39,7 +52,7 @@ body {
   min-height: 100vh;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: #ffffff; /* nền trắng mặc định */
-  color: #213547; /* màu chữ mặc định */
+
 }
 
 
