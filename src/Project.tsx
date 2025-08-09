@@ -17,7 +17,7 @@ const projects: Project[] = [
     title: 'Mobile - Ứng dụng quản lý tài chính cá nhân và doanh nghiệp',
     description: 'Ứng dụng mobile quản lý tài chính cá nhân và doanh nghiệp với android studio và firebase.',
     techStack: ['Java', 'Google firebase', 'chart'],
-    imageUrl: '/public/background.jpg',
+    imageUrl: '/mobile-app.png',
     repoUrl: 'https://github.com/RibunLoc/MobileApp',
   },
   {

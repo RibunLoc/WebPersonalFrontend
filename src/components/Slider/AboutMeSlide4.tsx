@@ -14,7 +14,6 @@ export default function AboutMeSlide4() {
 
     return (
         <>
-        <h2 className={styles.sectionTitle}>My Skills</h2>
         <div className={styles.boxGrid}>
             {skills.map((skill, index) => (
                 <div className={styles.skillBox} key={index}>

@@ -5,12 +5,14 @@ import AboutMe from './AboutMe';
 import Footer from './Footer';
 import Experience from './Experience';
 import Project from './Project'
-
 import ProjectDetail from './ProjectDetailPage'
+import ScrollToTop from './components/ScrollToTop'
+
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <main className="pt-24">
         <Routes>

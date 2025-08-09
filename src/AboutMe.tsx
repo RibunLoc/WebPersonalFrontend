@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import styles from "./AboutMe.module.css";
 import { AnimatePresence, motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-// Import từng slide
 import AboutMeSlide1 from "./components/Slider/AboutMeSlide1";
 import AboutMeSlide2 from "./components/Slider/AboutMeSlide2";
 import AboutMeSlide3 from "./components/Slider/AboutMeSlide3";
@@ -10,56 +10,102 @@ import AboutMeSlide4 from "./components/Slider/AboutMeSlide4";
 
 const slides = [AboutMeSlide1, AboutMeSlide2, AboutMeSlide3, AboutMeSlide4];
 
+// Định nghĩa variants cho cả enter, center (animate) và exit
+const variants: Variants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
+};
+
+
 export default function AboutMe() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [stageH, setStageH] = useState<number>();
+  const slideRef = useRef<HTMLDivElement>(null);
   const SlideComponent = slides[index];
 
-  const handlerNext = () =>{
-   setDirection(1),
-   setIndex((prev) => (prev + 1) % slides.length);
-  }
+  useLayoutEffect(() => {
+    const el = slideRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      // +16 cho khoảng thở/bóng nếu cần
+      const h = el.getBoundingClientRect().height + 16;
+      setStageH(h);
+    };
+
+    // đo mượt sau khi layout xong
+    const rafMeasure = () => requestAnimationFrame(measure);
+
+    // quan sát mọi thay đổi kích thước của nội dung
+    const ro = new ResizeObserver(rafMeasure);
+    ro.observe(el);
+
+    // đo lần đầu + khi resize cửa sổ
+    rafMeasure();
+    window.addEventListener("resize", rafMeasure);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", rafMeasure);
+    };
+  }, [index]);
+
+  const handlerNext = () => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % slides.length);
+  };
 
   const handlerPrev = () => {
-    setDirection(-1),
+    setDirection(-1);
     setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  }
+  };
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: handlerNext,
     onSwipedRight: handlerPrev,
     preventScrollOnSwipe: true,
     trackMouse: true,
-  })
+  });
 
-  return (
+   return (
     <section className={styles.aboutSection} id="about">
-      <div className={styles.content} {...swipeHandlers}>
-        <button onClick={handlerPrev} className={styles.arrow}>&larr;</button>
+      <h2 className={styles.sectionTitle}>My Skills</h2>
+      <div
+        className={styles.content}
+        {...swipeHandlers}
+      >
+        <div className={styles.sliderGrid}>
+          <button onClick={handlerPrev} className={`${styles.arrow} ${styles.left}`} aria-label="Prev">←</button>
 
-        <div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ x:direction > 0 ? 300 : -300, opacity: 0 }}
-              animate={{ x:0, opacity:1 }}
-              exit={{ x:direction > 0 ? -300: 300, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <SlideComponent />
-            </motion.div>
-          </AnimatePresence>
+          <div className={styles.stage} style={{ height : stageH }}>
+            <AnimatePresence custom={direction} mode="wait">
+              <motion.div
+                key={index}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className={styles.slideStage}
+              >
+                <div ref={slideRef} className={styles.slideContent}>
+                  <SlideComponent />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <button onClick={handlerNext} className={`${styles.arrow} ${styles.right}`} aria-label="Next">→</button>
         </div>
-
-        <button onClick={handlerNext} className={styles.arrow}>&rarr;</button>
       </div>
+
 
       <div className={styles.dots}>
         {slides.map((_, i) => (
-          <span
-            key={i}
-            className={`${styles.dot} ${i === index ? styles.active : ""}`}
-          />
+          <span key={i} className={`${styles.dot} ${i === index ? styles.active : ""}`} />
         ))}
       </div>
     </section>

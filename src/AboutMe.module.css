@@ -9,8 +9,14 @@
   background-color: #F1EFEC;
   padding: 80px 20px;
   text-align: center;
-  display: -ms-inline-grid;
-  grid-template-columns: repeat(2,1fr);
+  width: 100%;
+}
+
+.sectionTitle{
+  text-align:center;
+  font-size:clamp(28px,5vw,56px);
+  font-weight:800;
+  margin: 0 0 28px;
 }
 
 .header {
@@ -44,25 +50,42 @@
 }
 
 .content {
+  --gutter: clamp(20px, 4vw, 56px);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin: 0 0 28px;
+  padding: 0 var(--gutter);
 }
 
-.arrow {
+.arrow{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;  /* bằng cột */
+  height: 100%;
   background: none;
-  border: none;
-  font-size: 3.5rem;
+  border: 0;
+  font-size: clamp(28px, 3.2vw, 44px);
   cursor: pointer;
-  padding: 0 20px;
-  color: #333;
-  transition: 0.2s;
+  transition: transform .2s;
 }
 
-.arrow:hover {
-  transform: scale(1.6);
+.arrows{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  z-index: 2;
+  pointer-events: none;
 }
+
+.arrow:hover{ transform: scale(1.1); }
 
 button:focus {
   outline: none;
@@ -135,6 +158,46 @@ body.dark .altCard {
   animation: fadeIn 0.4s ease-in-out;
 }
 
+.slideLayer{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  width: auto;                      /* thay vì width:100% */
+  z-index: 1;
+}
+
+.slideContent {
+  position:relative;
+  width:100%;
+  height:auto;
+  padding-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sliderGrid{
+  --arrowW: clamp(40px, 6vw, 72px);
+  display: grid;
+  grid-template-columns: var(--arrowW) minmax(0,1fr) var(--arrowW);
+  align-items: stretch;                /* căn giữa dọc cho mũi tên */
+  column-gap: clamp(8px, 2vw, 16px);
+  width: 100%;
+}
+
+.stage{
+  position: relative;
+  overflow: hidden;   /* che mép trượt theo trục X */
+  overflow-y: visible;
+}
+
+.slideStage{
+  position: relative;
+  will-change: transform;
+}
+
 .slide h3 {
   font-size: 1.8rem;
   color: #2c3e50;
@@ -168,6 +231,12 @@ body.dark .altCard {
 
 /* Moblie web */
 @media screen and (max-width: 880px) {
+  .sliderGrid{
+    grid-template-columns: 1fr;
+  }
+  .content {
+    --gutter: 12px
+  }
   .textWrapper {
     flex-direction: column;
     text-align: center;
@@ -176,7 +245,6 @@ body.dark .altCard {
     display: none;
   }
 }
-
 
 @keyframes fadeIn {
   from {
@@ -189,8 +257,6 @@ body.dark .altCard {
   }
 }
 
-
-
 /* Dark Mode */
 :global(.dark) .aboutSection {
   background-color: #181818;
@@ -199,7 +265,6 @@ body.dark .altCard {
 :global(.dark) .arrow {
   color: #eee;
 }
-
 
 :global(.dark) .slide {
   background-color: #1e1e1e;
