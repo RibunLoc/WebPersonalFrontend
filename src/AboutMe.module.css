@@ -189,13 +189,14 @@ body.dark .altCard {
 
 .stage{
   position: relative;
-  overflow: hidden;   /* che mép trượt theo trục X */
-  overflow-y: visible;
+  overflow: hidden;
 }
 
 .slideStage{
-  position: relative;
-  will-change: transform;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .slide h3 {

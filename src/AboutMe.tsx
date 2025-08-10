@@ -80,7 +80,7 @@ export default function AboutMe() {
           <button onClick={handlerPrev} className={`${styles.arrow} ${styles.left}`} aria-label="Prev">←</button>
 
           <div className={styles.stage} style={{ height : stageH }}>
-            <AnimatePresence custom={direction} mode="wait">
+            <AnimatePresence custom={direction} initial={false}>
               <motion.div
                 key={index}
                 custom={direction}
