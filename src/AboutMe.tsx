@@ -71,13 +71,21 @@ export default function AboutMe() {
 
    return (
     <section className={styles.aboutSection} id="about">
-      <h2 className={styles.sectionTitle}>My Skills</h2>
+      <h2 className={styles.sectionTitle}>About Me</h2>
       <div
         className={styles.content}
         {...swipeHandlers}
       >
         <div className={styles.sliderGrid}>
-          <button onClick={handlerPrev} className={`${styles.arrow} ${styles.left}`} aria-label="Prev">←</button>
+          <button
+            onClick={handlerPrev}
+            className={`${styles.navBtn} ${styles.left}`}
+            aria-label="Previous"
+          >
+            <svg viewBox="0 0 24 24" className={styles.icon} aria-hidden="true">
+              <path d="M16 4L8 12l8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
 
           <div className={styles.stage} style={{ height : stageH }}>
             <AnimatePresence custom={direction} initial={false}>
@@ -98,7 +106,16 @@ export default function AboutMe() {
             </AnimatePresence>
           </div>
 
-          <button onClick={handlerNext} className={`${styles.arrow} ${styles.right}`} aria-label="Next">→</button>
+          <button
+            onClick={handlerNext}
+            className={`${styles.navBtn} ${styles.right}`}
+            aria-label="Next"
+          >
+            <svg viewBox="0 0 24 24" className={styles.icon} aria-hidden="true">
+              <path d="M8 4l8 8-8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
         </div>
       </div>
 
