@@ -69,6 +69,11 @@ export default function AboutMe() {
     trackMouse: true,
   });
 
+  const goTo = (i:number) => {
+    setDirection(i > index ? 1 : -1);
+    setIndex(i);
+  }
+
    return (
     <section className={styles.aboutSection} id="about">
       <h2 className={styles.sectionTitle}>About Me</h2>
@@ -120,9 +125,36 @@ export default function AboutMe() {
       </div>
 
 
-      <div className={styles.dots}>
+      <div
+        className={styles.dots}
+        role="tablist"
+        aria-label="Chọn slide"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") goTo(Math.max(0, index - 1));
+          if (e.key === "ArrowRight") goTo(Math.min(slides.length - 1, index + 1));
+        }}
+        >
         {slides.map((_, i) => (
-          <span key={i} className={`${styles.dot} ${i === index ? styles.active : ""}`} />
+          <button
+            key={i}
+            type="button"
+            className={styles.dotBtn}
+            aria-label={`Tới slide ${i + 1}`}
+            aria-selected={ i === index}
+            role="tab"
+            onClick={() => goTo(i)}
+            >
+              <span className={styles.dotBase}/>
+              { i === index && (
+                <motion.span
+                  layoutId="dotActive"
+                  className={styles.dotActive}
+                  transition={{ type: "spring", stiffness: 520, damping: 34 }}
+                />
+              )}
+          </button>
+
+
         ))}
       </div>
     </section>

@@ -176,14 +176,57 @@ body.dark .altCard {
   margin-top: 30px;
 }
 
-.dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin: 0 5px;
-  border-radius: 50%;
-  background-color: #ccc;
+.dots{
+  position: relative;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 22px;
+  pointer-events: auto; /* đảm bảo bấm được nếu có layer phủ */
 }
+
+.dotBtn{
+  --size: 12px;
+  --hit: 30px;
+  position: relative;
+  width: var(--hit);
+  height: var(--hit);
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dotBtn:focus-visible{
+  outline: none;
+  /* vòng sáng focus cho a11y */
+  box-shadow: 0 0 0 3px rgba(59,130,246,.45);
+  border-radius: 999px;
+}
+
+.dotBase,
+.dotActive{
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 999px;
+}
+
+/* chấm nền xám (luôn hiện) */
+.dotBase{
+  background: #cfd3d6;
+}
+
+/* indicator đen (chỉ gắn vào dot đang active) – dùng layoutId để trượt mượt */
+.dotActive{
+  background: #262626;
+}
+
+/* hover phóng nhẹ */
+.dotBtn:hover .dotBase{ transform: scale(1.5); transition: transform .25s ease; }
 
 .active {
     background-color: #333;
@@ -218,6 +261,7 @@ body.dark .altCard {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 16px;
 }
 
 /* trước: align-items: stretch */
@@ -228,6 +272,7 @@ body.dark .altCard {
   align-items: center;                 /* căn giữa dọc cho nút */
   column-gap: clamp(8px, 2vw, 16px);
   width: 100%;
+
 }
 
 
@@ -278,6 +323,7 @@ body.dark .altCard {
 @media screen and (max-width: 880px) {
   .sliderGrid{
     --btn-size: clamp(52px, 12vw, 60px);
+    grid-template-columns: 1fr;
   }
   .content {
     --gutter: 12px
@@ -286,9 +332,18 @@ body.dark .altCard {
     flex-direction: column;
     text-align: center;
   }
+  .navBtn,
   .arrow {
-    display: none;
+    display: none !important;
   }
+  .dotActive {
+    transition: none !important;
+  }
+}
+
+@media (pointer: coarse) and (hover: none){
+  .sliderGrid{ grid-template-columns: 1fr; }
+  .navBtn, .arrow{ display: none !important; }
 }
 
 @keyframes fadeIn {
@@ -337,5 +392,8 @@ body.dark .altCard {
     0 2px 12px rgb(0 0 0 / 40%),
     inset 0 1px 0 rgb(255 255 255 / 6%);
 }
+
+:global(.dark) .dotBase{ background: #4b5563; }
+:global(.dark) .dotActive{ background: #e5e7eb; }
 
 
