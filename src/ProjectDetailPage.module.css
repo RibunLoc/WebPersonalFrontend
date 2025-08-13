@@ -2,24 +2,24 @@
 
 /* Layout tổng */
 .container {
-  background-color: var(--backgroud-color-reverse);
-  margin-top: 145px;
+  margin-top: 90px;
+  background-color: var(--background-project);
 }
 
 .wrapper {
   display: flex;
   max-width: 1100px;
-  margin: 2.5rem auto 0rem;
-  padding: 5rem 1rem;
+  margin: 1rem auto 0rem;
+  padding: 2rem 1rem;
   gap: 2rem;
   position: relative;
-  background-color: var(--backgroud-color-reverse);
+  background-color: var(--background-project);
 }
 
 /* button back */
 .backBtn {
   display: inline-block;
-  background: var(--tag);
+  background: var(--backbtn-project);
   color: var(--tag-text);
   border: none;
   border-radius: 6px;
@@ -36,7 +36,7 @@
 }
 
 .backBtn:hover {
-  background: #1e40af;
+  background: #1C6EA4;
   color: #fff;
 }
 
@@ -46,7 +46,7 @@
   align-items: center;
   background: var(--backgroud-e0e7ef-reverse);
   border-radius: 1rem;
-  box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 16px rgba(0,0,0,0.2);
   padding: 1.3rem 1.7rem;
   margin-bottom: 1.2rem;
   gap: 1.8rem;
@@ -109,7 +109,7 @@
 
 /* Nội dung chính */
 .content {
-  background: var(--card-bg);
+  background: var(--background-project-content);
   border-radius: 1.3rem;
   box-shadow: 0 4px 32px rgba(0,0,0,0.07);
   flex: 1 1 0;
@@ -176,17 +176,17 @@
 
 /* Sidebar mục lục */
 .tocSidebar {
-  width: 270px;
-  min-width: 200px;
   position: sticky;
-  top: 90px;
   height: fit-content;
-  background: var(--toc-mark);
+  background: var(--toc-mark) !important;
+  border: 1px solid var(--toc-glass-br);
   border-radius: 1.2rem;
-  box-shadow: 0 2px 18px rgba(0,0,0,0.05);
-  border: 1px solid #98D8EF;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.08);
   padding: 1.2rem 1.2rem 1.2rem 1.3rem;
-  font-size: 0.98rem;
+  font-size: 0.8rem;
+  will-change: transform;
+  transform: translateZ(0);
+  background-clip: padding-box;
 }
 
 .tocTitle {
@@ -202,20 +202,45 @@
 }
 
 .tocItem {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
   margin-bottom: 0.3em;
   padding-left: 0;
 }
 
-.tocLink {
-  color: var(--toc-link);
-  text-decoration: none;
-  transition: color 0.2s;
-  font-size: 0.98rem;
-  padding-left: 0.2em;
+.tocItem::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
 }
-.tocLink:hover {
-  color: #FFFCFB;
-  text-decoration: underline;
+
+.tocLink{
+  color: var(--toc-link);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 0.2em 0em 0.2em 1em;
+}
+
+.tocLink:hover{
+  background: var(--toc-mark-border);
+  border-radius: 8px;
+  color: var(--toc-link-hover);
+}
+
+.tocLink:focus,
+.tocLink:active{
+  background: transparent !important;
+  text-decoration: none;
 }
 
 .tocIndent2 { padding-left: 1.2em; }
@@ -226,3 +251,56 @@
   .tocSidebar { display: none; }
   .content { border-radius: 1.2rem; }
 }
+
+@media (min-width: 1025px) {
+
+  .wrapper {
+    max-width: var(--wrap);
+    margin: 2.5rem auto 0;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 1.6rem;
+    align-items: start;
+  }
+
+  .content {
+    min-width: 0;
+  }
+
+  .tocSidebar{
+    position: sticky;
+    top: 140px;
+    max-height: calc(100svh - 136px);
+    overflow: auto;
+    /* TOC co/giãn theo viewport, nhưng kẹp min/max để không xấu */
+    width: clamp(var(--toc-min), 26vw, var(--toc-max));
+    transition: width .2s ease;
+    scrollbar-gutter: stable; /* tránh giật layout khi xuất hiện scrollbar */
+  }
+
+  .tocLink{
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 430px) {
+  .content h1 {
+    font-size: 1.8rem;
+  }
+  .content h2 {
+    font-size: 1.2rem;
+  }
+  .content h3 {
+    font-size: 1rem;
+  }
+  .backBtn {
+    font-size: 0.9rem;
+    padding: 0.4em 0.8em;
+  }
+}
+

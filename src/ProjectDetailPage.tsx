@@ -4,6 +4,7 @@ import styles from './ProjectDetailPage.module.css';
 import { useParams } from 'react-router-dom';
 import remarkSlug from 'remark-slug';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // Hàm tạo mục lục
 function getTOC(markdown: string) {
@@ -31,6 +32,12 @@ export default function ProjectDataPage() {
   const toc = project?.detail ? getTOC(project.detail) : [];
   const navigate = useNavigate();
 
+ useEffect(() => {
+  const el = document.querySelector('header') as HTMLElement | null;
+  const h = el?.offsetHeight ?? 72;
+  document.documentElement.style.setProperty('--nav-h', `${h}px`);
+}, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -39,10 +46,10 @@ export default function ProjectDataPage() {
           {/* nút back */}
           <button
             className={styles.backBtn}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             type="button"
           >
-            ← Quay lại dự án
+            ← Quay lại
           </button>
           {/* meta box */}
           <div className={styles.metaBox}
@@ -84,23 +91,23 @@ export default function ProjectDataPage() {
             </div>
           )}
         </div>
-        <aside className={styles.tocSidebar}>
-          <div className={styles.tocTitle}>MỤC LỤC</div>
-          <ul className={styles.tocList}>
-            {toc.map((item) => (
-              <li
-                key={item.id}
-                className={`${styles.tocItem} ${
-                  item.level === 3 ? styles.tocIndent2 : ""
-                } ${item.level === 4 ? styles.tocIndent3 : ""}`}
-              >
-                <a href={`#${item.id}`} className={styles.tocLink}>
-                  {item.text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </aside>
+          <aside className={styles.tocSidebar}>
+            <div className={styles.tocTitle}>MỤC LỤC</div>
+            <ul className={styles.tocList}>
+              {toc.map((item) => (
+                <li
+                  key={item.id}
+                  className={`${styles.tocItem} ${
+                    item.level === 3 ? styles.tocIndent2 : ''
+                  } ${item.level === 4 ? styles.tocIndent3 : ''}`}
+                >
+                  <a href={`#${item.id}`} className={styles.tocLink} title={item.text}>
+                    {item.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
      </div>
     </div>
   );

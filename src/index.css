@@ -1,5 +1,5 @@
 :root {
-  --navbar-bg: #ffffff;
+  --navbar-bg: #8a838363;
   --text-color: #1a1a1a;
   --nav-hover: #e74c3c;
   --icon-bg: #000;
@@ -7,18 +7,35 @@
   --card-bg: #EEEEEE;
   --alt-card-bg: #f7f7f7;
   --border-dot-color:#393E46 ;
-  --background-color: #DDDDDD;
-  --backgroud-color-reverse: #F1EFEC;
+  --background-color: #C7C8CC;
+  --backgroud-color-reverse: #F8FAFC;
+  --background-project: #E9E3DF;
+  --background-project-content: rgba(75, 152, 194, 0.801);
+  --backgroud-e0e7ef-reverse: #a1c8e3cb;
+  --backbtn-project: #154D71;
   --tag: #A4CCD9;
-  --tag-text: #1F509A;
-  --toc-mark: #C9E6F0; /* color Mục lục */
-  --toc-link: #2563eb;
+  --tag-text: #EAEFEF;
+  --toc-mark: #63aeddd0;
+  --toc-mark-border: rgba(99, 137, 168, 0.616);
+  --toc-link: #093FB4;
+  --toc-link-hover: #FFF8F8;
+
+
+  --wrap: 1500px; /* = max-width của .wrapper */
+  --toc: 320px; /* = width của TOC */
+  --toc-max: 340px; /* max-width của TOC */
+  --toc-min: 280px; /* min-width của TOC */
+  --gap: 1rem; /* khoảng cách của content <-> TOC */
+  --pad: 1rem; /* padding của .Wrapper */
+  --nav-h: 90px;
+  --toc-gap-top: 16px;
+
   color: var(--text-color);
   background-color: #ffffff;
 }
 
 :root.dark {
-  --navbar-bg: #121212;
+  --navbar-bg: #201f1f5b;
   --text-color: #f4f4f4;
   --nav-hover: #ff6b6b;
   --icon-bg: #fff;
@@ -28,10 +45,16 @@
   --border-dot-color: #F2F2F2 ;
   --background-color: #363333;
   --backgroud-color-reverse: #181818;
+  --background-project: #181818;
+  --background-project-content: #082436da;
+  --backgroud-e0e7ef-reverse: #404a5469;
+  --backbtn-project: #1C6EA4;
   --tag: #024CAA;
   --tag-text: #C4E1F6;
-  --toc-mark: #254D70;
-  --toc-link: #ffffff;
+  --toc-mark: #43799bec;
+  --toc-mark-border: rgba(148,163,184,0.28);
+  --toc-link: #B8CFCE;
+  --toc-link-hover: #E8F9FF;
 
   color: var(--text-color);
   background-color: #1a1a1a;
