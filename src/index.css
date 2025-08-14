@@ -1,5 +1,6 @@
 :root {
-  --navbar-bg: #8a838363;
+  --navbar-bg: #21538086;
+  --navbar-text: #FFFBDE;
   --text-color: #1a1a1a;
   --nav-hover: #e74c3c;
   --icon-bg: #000;
@@ -35,7 +36,8 @@
 }
 
 :root.dark {
-  --navbar-bg: #201f1f5b;
+  --navbar-bg: #1340686b;
+  --navbar-text: #fffbdec5;
   --text-color: #f4f4f4;
   --nav-hover: #ff6b6b;
   --icon-bg: #fff;

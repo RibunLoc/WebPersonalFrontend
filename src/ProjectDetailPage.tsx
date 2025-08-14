@@ -33,10 +33,13 @@ export default function ProjectDataPage() {
   const navigate = useNavigate();
 
  useEffect(() => {
-  const el = document.querySelector('header') as HTMLElement | null;
-  const h = el?.offsetHeight ?? 72;
-  document.documentElement.style.setProperty('--nav-h', `${h}px`);
-}, []);
+    const el = document.querySelector('header') as HTMLElement | null;
+    const h = el?.offsetHeight ?? 72;
+    document.documentElement.style.setProperty('--nav-h', `${h}px`);
+  }, []);
+
+
+
 
   return (
     <div className={styles.container}>

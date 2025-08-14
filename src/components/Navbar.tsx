@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import styles from "./Navbar.module.css";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { MdClose } from "react-icons/md";
 
 const SECTIONS = ["home", "about", "experience", "project", "hobbies"] as const;
 
@@ -137,6 +138,12 @@ export default function Navbar() {
     hideDelay.current = window.setTimeout(() => setForceReveal(false), 120);
   };
 
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    document.body.style.overflow = isMobileMenuOpen  ? "hidden" : original || "";
+    return () => { document.body.style.overflow = original; };
+  }, [isMobileMenuOpen ]);
+
   return (
     <>
     {canHover && (
@@ -167,14 +174,17 @@ export default function Navbar() {
           </div>
 
           <button
-            className={styles.hamburger}
+            className={`${styles.hamburger} ${isMobileMenuOpen ? styles.active : ""}`}
             onClick={toggleMobileMenu}
-            aria-label="Open menu"
+            aria-label={isMobileMenuOpen ? "Đóng menu" : "Mở menu"}
             aria-expanded={isMobileMenuOpen}
             aria-controls="main-menu"
             type="button"
           >
-            <GiHamburgerMenu />
+            <span className={styles.hamburgerIcon} aria-hidden="true">
+              <GiHamburgerMenu className={styles.iconBurger} />
+              <MdClose className={styles.iconClose} />
+            </span>
           </button>
 
           {/* Menu + DarkMode */}
@@ -194,7 +204,9 @@ export default function Navbar() {
                     aria-current={isActive ? "page" : undefined}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {section.charAt(0).toUpperCase() + section.slice(1)}
+                    <span className={styles.linkLabel}>
+                      {section.charAt(0).toUpperCase() + section.slice(1)}
+                    </span>
                   </a>
                 );
               })}
