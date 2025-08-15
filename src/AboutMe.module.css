@@ -11,7 +11,7 @@
 }
 
 .aboutSection {
-  background-color: #F1EFEC;
+  background-color: var(--backgroud-color-reverse);
   padding: 80px 0px;
   text-align: center;
   width: 100%;
@@ -20,9 +20,11 @@
 
 .sectionTitle{
   text-align:center;
-  font-size:clamp(28px,5vw,56px);
-  font-weight:800;
-  margin: 0 0 28px;
+  font-size: clamp(24px, 2.2vw, 96px);
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  margin: 28px 0 28px;
+  color: var(--title);
 }
 
 .header {

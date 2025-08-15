@@ -13,9 +13,11 @@
 }
 
 .title {
-  font-size: 1.875rem;   /* text-3xl */
-  font-weight: 700;      /* font-bold */
-  margin-bottom: 2rem;   /* mb-8 */
+  font-size: clamp(24px, 2.2vw, 96px);
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  margin: 0 0 28px;
+  color: var(--title);
   text-align: center;
 }
 

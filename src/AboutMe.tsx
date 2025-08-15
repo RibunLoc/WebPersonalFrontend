@@ -76,7 +76,7 @@ export default function AboutMe() {
 
    return (
     <section className={styles.aboutSection} id="about">
-      <h2 className={styles.sectionTitle}>About Me</h2>
+      <h2 className={styles.sectionTitle}>Giới thiệu về tôi</h2>
       <div
         className={styles.content}
         {...swipeHandlers}
