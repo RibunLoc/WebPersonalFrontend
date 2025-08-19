@@ -59,38 +59,33 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    // def userInput = input(
-                    //     message: "Approve deploy container ${env.JOB_NAME} to server",
-                    //     ok: "Approve",
-                    //     submitter: "thanhloc"
-                    // )
-                    def CONTAINERID = sh(script: "docker ps -aq --filter name=${params.nameImageBuild}", returnStdout: true).trim()
-                    def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
-                    // echo "Xác nhận triển khai ${userInput}"
-                    docker.withRegistry("https://${params.urlDomainHarbor}", 'harbor') {
-                      withCredentials([
-                      string(credentialsId: 'frontend-api-url', variable: 'FRONTEND_API_URL'),
-                      string(credentialsId: 'turnstile-sitekey', variable: 'TURNSTILE_SITEKEY')
-                    ]) {
-                        sh """
-                        set -euo pipefail
-                        cat > .runtime.env <<EOF
-                        VITE_API_BASE=${params.FRONTEND_API_URL}
-                        VITE_TURNSTILE_SITEKEY=${params.TURNSTILE_SITEKEY}
-                        SENTRY_DSN=${params.SENTRY_DSN}
-                        APP_ENV=${params.APP_ENV}
-                        EOF
+                  // def userInput = input(
+                  //     message: "Approve deploy container ${env.JOB_NAME} to server",
+                  //     ok: "Approve",
+                  //     submitter: "thanhloc"
+                  // )
+                  def CONTAINERID = sh(script: "docker ps -aq --filter name=${params.nameImageBuild}", returnStdout: true).trim()
+                  def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
+                  // echo "Xác nhận triển khai ${userInput}"
+                  docker.withRegistry("https://${params.urlDomainHarbor}", 'harbor') {
+                      sh """
+                      set -eu
+                      cat > .runtime.env <<EOF
+VITE_API_BASE=${params.VITE_API_BASE}
+VITE_TURNSTILE_SITEKEY=${params.VITE_TURNSTILE_SITEKEY}
+SENTRY_DSN=${params.SENTRY_DSN}
+APP_ENV=${params.APP_ENV}
+EOF
 
-                        if [ -n "${CONTAINERID}" ]; then
-                            docker stop ${CONTAINERID}
-                            docker rm ${CONTAINERID}
-                        fi
+                      if [ -n "${CONTAINERID}" ]; then
+                          docker stop ${CONTAINERID}
+                          docker rm ${CONTAINERID}
+                      fi
 
-                        docker pull ${nameImagePush} || true
-                        docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
-                        docker run -d --name ${params.nameImageBuild} -p 9090:80 --env-file .runtime.env ${nameImagePush}
-                        """
-                      }
+                      docker pull ${nameImagePush} || true
+                      docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
+                      docker run -d --name ${params.nameImageBuild} -p 9090:80 --env-file .runtime.env ${nameImagePush}
+                      """
                     }
                 }
             }
