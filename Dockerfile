@@ -7,9 +7,12 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci --no-audit --no-fund
+
 COPY --chown=appuser:appgroup . .
-RUN npm run build
+USER appuser
+
+RUN npm run build -- --sourcemap=false
 
 # Stage 2: Nginx server
 FROM nginx:alpine

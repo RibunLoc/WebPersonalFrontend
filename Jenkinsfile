@@ -26,20 +26,6 @@ pipeline {
                 )
                 script {
                     env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    currentBuild.description = "Commit: ${env.GIT_COMMIT.take(7)} | Branch: ${env.GIT_BRANCH}"
-                }
-            }
-        }
-        stage('Build') {
-            agent { label 'master' }
-            steps {
-                script {
-                    sh '''
-                    echo "Installing dependencies..."
-                    npm install
-                    echo "Building the project..."
-                    npm run build
-                    '''
                 }
             }
         }
