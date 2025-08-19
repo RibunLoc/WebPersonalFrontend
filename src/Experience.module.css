@@ -103,7 +103,7 @@
 
 /* hover vào item (card/tags/… đều được) → dot sáng */
 .item:hover .dot,
-.item:focus-within .dot{            /* hỗ trợ tab/focus cho accessibility */
+.item:focus-within .dot{
   transform: translateX(-50%) scale(1.5);
   filter: saturate(1.15);
   box-shadow:

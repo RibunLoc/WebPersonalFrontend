@@ -4,7 +4,7 @@ import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 
-const SECTIONS = ["home", "about", "experience", "project", "hobbies"] as const;
+const SECTIONS = ["home", "about", "experience", "project", "contact"] as const;
 
 export default function Navbar() {
   // Khởi tạo dark mode: ưu tiên localStorage, fallback theo system

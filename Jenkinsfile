@@ -5,7 +5,11 @@ pipeline {
         string(name: 'nameImageBuild', defaultValue: 'web_frontend', description: 'Name of the Docker image to build')
         string(name: 'urlDomainHarbor', defaultValue: 'harbor.netsena.io.vn', description: "Domain of the Harbor registry so that you want to push the image")
         string(name: 'nameProject', defaultValue: 'personal_frontend', description: 'The project name on Harbor registry')
-        string(name: 'Tag', defaultValue: 'v0.5.0', description: 'Tag for the Docker image')
+        string(name: 'Tag', defaultValue: 'v1.0.0', description: 'Tag for the Docker image')
+        string(name: 'APP_ENV', defaultValue: 'production', description: 'Environment for the application (e.g., production, staging)')
+        string(name: 'VITE_API_BASE', defaultValue: 'https://api.holoc.id.vn', description: 'Base URL for the API')
+        string(name: 'VITE_TURNSTILE_SITEKEY', defaultValue: '0x4AAAAAABsArAAHb5Qp1ZGS', description: 'Turnstile site key for the application')
+        string(name: 'SENTRY_DSN', defaultValue: '', description: 'Sentry DSN for error tracking')
     }
     environment {
         GIT_REPO = 'https://github.com/RibunLoc/personal-website-frontend.git'
@@ -78,14 +82,29 @@ pipeline {
                     def nameImagePush = params.urlDomainHarbor + '/' + params.nameProject + '/' + params.nameImageBuild + ':' + params.Tag
                     // echo "Xác nhận triển khai ${userInput}"
                     docker.withRegistry("https://${params.urlDomainHarbor}", 'harbor') {
+                      withCredentials([
+                      string(credentialsId: 'frontend-api-url', variable: 'FRONTEND_API_URL'),
+                      string(credentialsId: 'turnstile-sitekey', variable: 'TURNSTILE_SITEKEY')
+                    ]) {
                         sh """
-                            if [ -n "${CONTAINERID}" ]; then
-                                docker stop ${CONTAINERID}
-                                docker rm ${CONTAINERID}
-                            fi
-                            docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
-                            docker run -d --name ${params.nameImageBuild} -p 9090:80 ${nameImagePush}
+                        set -euo pipefail
+                        cat > .runtime.env <<EOF
+                        VITE_API_BASE=${params.FRONTEND_API_URL}
+                        VITE_TURNSTILE_SITEKEY=${params.TURNSTILE_SITEKEY}
+                        SENTRY_DSN=${params.SENTRY_DSN}
+                        APP_ENV=${params.APP_ENV}
+                        EOF
+
+                        if [ -n "${CONTAINERID}" ]; then
+                            docker stop ${CONTAINERID}
+                            docker rm ${CONTAINERID}
+                        fi
+
+                        docker pull ${nameImagePush} || true
+                        docker rmi ${params.nameImageBuild}:${params.Tag} -f || true
+                        docker run -d --name ${params.nameImageBuild} -p 9090:80 --env-file .runtime.env ${nameImagePush}
                         """
+                      }
                     }
                 }
             }

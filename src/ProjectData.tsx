@@ -1,4 +1,22 @@
-const projects = [
+export type Project = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  views: number;
+  tags: string[];
+  author: {
+    name: string;
+    avatar?: string;
+  };
+  cover?: string;
+  detail?: string;
+  links?: string;
+}
+
+
+
+export const projects: Project[] = [
   {
     id: 'calico',
     title: 'Monitoring và Networking - ProJect Calico',
@@ -10,6 +28,7 @@ const projects = [
     views: 1,
     tags: ['kubernetes', 'Network', 'Calico'],
     description: 'Calico Kubernetes là một giải pháp mạng mã nguồn mở được sử dụng để triển khai và quản lý mạng trong một cụm Kubernetes. Nó cung cấp các tính năng mạng mạnh mẽ và linh hoạt, cho phép các container và pod trong cụm Kubernetes giao tiếp với nhau một cách an toàn và tin cậy',
+    links: 'https://projectcalico.docs.tigera.io/',
     detail: `
 ## Tổng quan
 
@@ -95,6 +114,7 @@ Calico sử dụng mô hình định tuyến IP trực tiếp (pure IP networkin
     tags: ['java', 'firebase', 'xml'],
     description: 'Quản lý tài chính là một vấn đề phức tạp và đóng vai trò quan trọng trong việc xây dựng \
           một tương lai tài chính ổn định và bền vững. Đối với cả cá nhân lẫn doanh nghiệp, việc quản lý hiệu quả các yếu tố như chi tiêu, thu nhập, ngân sách, và mục tiêu tài chính là điều cần thiết.',
+    links: 'https://finecoin.example.com',
     detail: `
 ## Giới thiệu
 Chào bạn! Mình là một sinh viên tại UIT (Trường Đại học Công nghệ Thông Tin – ĐHQG HCM), và đây là hành trình của nhóm mình trong quá trình xây dựng FineCoin – một ứng dụng quản lý tài chính trên thiết bị di động, dành cho cả cá nhân lẫn doanh nghiệp nhỏ.
@@ -181,5 +201,3 @@ Nếu bạn thấy ý tưởng hay ho, cần tư vấn hoặc góp ý, đừng n
     `
   }
 ];
-
-export default projects

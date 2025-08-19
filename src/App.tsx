@@ -7,7 +7,7 @@ import Experience from './Experience';
 import Project from './Project'
 import ProjectDetail from './ProjectDetailPage'
 import ScrollToTop from './components/ScrollToTop'
-
+import Contact from './Contact';
 
 function App() {
   return (
@@ -32,7 +32,9 @@ function App() {
                 <section id="project" className="h-screen bg-white">
                   <Project/>
                 </section>
-                <section id="hobbies" className="h-screen bg-gray-100"></section>
+                <section id="contact" className="h-screen bg-gray-100">
+                  <Contact />
+                </section>
               </>
             }
           />

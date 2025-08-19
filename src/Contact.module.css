@@ -1,0 +1,107 @@
+/* Contact.module.css (hoặc ContactSlide.module.css) */
+.contactSection {
+  background: var(--background-contact);
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.sectionDesc { color: var(--text-muted); }
+
+.form{
+  max-width: 520px;
+  margin: 0 auto;            /* center */
+  display: flex;             /* layout cột */
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--field-bg);
+  color: var(--text);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+.form textarea { min-height: 140px; resize: vertical; }
+
+.form input::placeholder,
+.form textarea::placeholder { color: color-mix(in srgb, var(--text-muted) 85%, transparent); }
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--btn-bg2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn-bg2) 35%, transparent);
+}
+
+/* Nút submit */
+.submitBtn, .form button{
+  position: relative;
+  display: inline-flex; align-items:center; justify-content:center; gap:10px;
+  width: 100%; padding: 16px 18px; border: 0; border-radius: 12px;
+  font-weight: 700; cursor: pointer;
+  transition: transform .15s, opacity .2s, box-shadow .2s, background .2s;
+  background: linear-gradient(180deg, var(--btn-bg1), var(--btn-bg2));
+  color: var(--btn-ink);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+.submitBtn:hover:not(:disabled){ transform: translateY(-1px); }
+.submitBtn:active:not(:disabled){ transform: translateY(0); }
+.submitBtn:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Spinner lấy màu theo chữ của nút (currentColor) -> hợp cả light/dark */
+.spinner{
+  width: 18px; height: 18px; border-radius:50%;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-right-color: currentColor;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg);} }
+.loading{ pointer-events:none; }
+
+/* Hiệu ứng done dùng màu success theo theme */
+.done{ animation: pulseDone 1.6s ease; }
+@keyframes pulseDone{
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 60%, transparent);
+         background: linear-gradient(180deg, color-mix(in srgb,var(--success) 70%, #22c55e),
+                                              color-mix(in srgb,var(--success) 55%, #16a34a)); }
+  60%  { box-shadow: 0 0 0 18px rgba(0,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+}
+
+/* Toast */
+.toast{
+  position: fixed; left:50%; bottom:18px;
+  transform: translate(-50%,24px) scale(.98);
+  opacity:0; pointer-events:none;
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px; border-radius:12px;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 8px 30px var(--shadow);
+  transition: transform .35s, opacity .35s; z-index:1000; font-weight:600;
+}
+.toastSuccess{ background: var(--success-bg); border:1px solid var(--success-brd); color: var(--success-ink); }
+.toastError{   background: var(--error-bg);   border:1px solid var(--error-brd);   color: var(--error-ink); }
+.show{ opacity:1; transform: translate(-50%,0) scale(1); }
+
+.icon{ width:28px; height:28px; }
+.circle,.circleError,.tick,.cross{ fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.circle{ stroke: var(--success); stroke-width:3; stroke-dasharray:166; stroke-dashoffset:166; animation: stroke .6s ease forwards; }
+.tick{   stroke: var(--success); stroke-width:3.5; stroke-dasharray:48;  stroke-dashoffset:48;  animation: stroke .6s .25s ease forwards; }
+.circleError{ stroke: var(--error); stroke-width:3; stroke-dasharray:166; stroke-dashoffset:166; animation: stroke .6s ease forwards; }
+.cross{  stroke: var(--error);  stroke-width:3.5; stroke-dasharray:64;  stroke-dashoffset:64;  animation: stroke .6s .25s ease forwards; }
+@keyframes stroke{ to{ stroke-dashoffset:0; } }
+
+.srOnly{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* (fallback cũ) */
+.successMsg{ color: var(--success); margin-top:8px; }
+.errorMsg{ color: var(--error); margin-top:8px; }
+
+@media (prefers-reduced-motion: reduce){
+  .spinner,.done,.toast,.circle,.tick,.circleError,.cross{ animation:none!important; transition:none!important; }
+}

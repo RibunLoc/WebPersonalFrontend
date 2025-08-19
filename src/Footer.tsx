@@ -14,7 +14,7 @@ export default function Footer() {
                     <a href="https://github.com/RibunLoc" target="_blank" rel="noopener noreferrer" aria-label="Github">
                         <FaGithub/>
                     </a>
-                    <a href="https://www.linkedin.com/in/l%E1%BB%99c-h%E1%BB%93-7659aa374/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/in/l%E1%BB%99c-h%E1%BB%93-86527637a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                         <FaLinkedin/>
                     </a>
                     <a href="mailto:hothanhloc12345@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email">

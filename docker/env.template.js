@@ -1,0 +1,7 @@
+// docker/env.template.js
+window.__RUNTIME_CONFIG__ = {
+  VITE_API_BASE: "$VITE_API_BASE",
+  VITE_TURNSTILE_SITEKEY: "$VITE_TURNSTILE_SITEKEY",
+  SENTRY_DSN: "$SENTRY_DSN",
+  APP_ENV: "$APP_ENV"
+}
