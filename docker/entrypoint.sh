@@ -8,11 +8,12 @@ set -eu
 
 cat > /usr/share/nginx/html/env.js <<EOF
 window.__RUNTIME_CONFIG__ = {
-  API_URL: "${VITE_API_BASE}",
-  TURNSTILE_SITEKEY: "${VITE_TURNSTILE_SITEKEY}",
+  VITE_API_BASE: "${VITE_API_BASE}",
+  VITE_TURNSTILE_SITEKEY: "${VITE_TURNSTILE_SITEKEY}",
   SENTRY_DSN: "${SENTRY_DSN}",
   APP_ENV: "${APP_ENV}"
 };
 EOF
+
 
 exec "$@"

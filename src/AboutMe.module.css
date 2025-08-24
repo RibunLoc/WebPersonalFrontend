@@ -11,7 +11,7 @@
 }
 
 .aboutSection {
-  background-color: var(--backgroud-color-reverse);
+  background-color: var(--about-section-bg);
   padding: 80px 0px;
   text-align: center;
   width: 100%;
@@ -46,7 +46,7 @@
 .underline {
   width: 60px;
   height: 8px;
-  background-color: #e74c3c;
+  background-color: var(--about-underline);
   margin: 12px auto 30px 0px;
 }
 
@@ -143,7 +143,7 @@ button:focus {
 
 .textWrapper p {
   font-size: 1rem;
-  color: #444;
+  color: var(--about-text-color);
   line-height: 1.6;
 }
 
@@ -153,8 +153,9 @@ button:focus {
   padding: 2rem;
   border-radius: 1.5rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  background-color: var(--card-bg);
   transition: background-color 0.3s ease;
+  background: var(--card-bg) !important;
+  color: var(--on-card)
 }
 
 .cardWrapper:hover {
@@ -219,12 +220,12 @@ body.dark .altCard {
 
 /* chấm nền xám (luôn hiện) */
 .dotBase{
-  background: #cfd3d6;
+  background: var(--about-dot-base);
 }
 
 /* indicator đen (chỉ gắn vào dot đang active) – dùng layoutId để trượt mượt */
 .dotActive{
-  background: #262626;
+  background: var(--about-dot-active);
 }
 
 /* hover phóng nhẹ */
@@ -235,12 +236,14 @@ body.dark .altCard {
 }
 
 .slide {
+  position: relative;
+  z-index: 2;
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #fff;
+  background-color: var(--about-slide-bg);
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: var(--about-slide-shadow);
   text-align: left;
   animation: fadeIn 0.4s ease-in-out;
 }
@@ -274,9 +277,7 @@ body.dark .altCard {
   align-items: center;                 /* căn giữa dọc cho nút */
   column-gap: clamp(8px, 2vw, 16px);
   width: 100%;
-
 }
-
 
 .stage{
   position: relative;
@@ -292,7 +293,7 @@ body.dark .altCard {
 
 .slide h3 {
   font-size: 1.8rem;
-  color: #2c3e50;
+  color: var(--about-heading);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -308,14 +309,14 @@ body.dark .altCard {
 .slide li {
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: #444;
+  color: var(--about-text-color);
   position: relative;
   padding-left: 1.5rem;
 }
 
 .slide li::before {
   content: "•";
-  color: #e74c3c;
+  color: var(--about--bullet);
   position: absolute;
   left: 0;
   font-size: 1.2rem;

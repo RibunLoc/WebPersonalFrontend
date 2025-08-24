@@ -6,7 +6,7 @@
   --nav-hover: #e74c3c;
   --icon-bg: #000;
   --icon-color: #fff;
-  --card-bg: #EEEEEE;
+  --card-bg: #afd3edcb;
   --alt-card-bg: #f7f7f7;
   --border-dot-color:#393E46 ;
   --background-color: #21538086;
@@ -21,6 +21,33 @@
   --toc-mark-border: rgba(99, 137, 168, 0.616);
   --toc-link: #093FB4;
   --toc-link-hover: #FFF8F8;
+
+   /* hero section */
+  --hero-overlay: rgba(0, 0, 0, 0.5);
+  --hero-text: #ffffff;
+  --hero-name-start: #6dd5ed;
+  --hero-name-end: #2193b0;
+  --hero-name-shadow: 0 3px 14px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.14);
+  --hero-subtitle: #CDF0EA;
+  --hero-subtitle-shadow: 0 3px 10px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 1.12);
+  --hero-avatar-border: #ffffff;
+  --hero-avatar-bg: #ffffff;
+  --hero-avatar-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  --about-section-bg: #f4f4f4;
+  --about-text-color: #444;
+
+  /* page about me */
+  --about-section-bg: #f4f4f4;
+  --about-text-color: #444;
+  --about-underline: #e74c3c;
+  --about-heading: #2c3e50;
+  --about-slide-bg: #ffffff;
+  --about-slide-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --about-dot-base: #cfd3d6;
+  --about-dot-active: #262626;
+  --about-bullet: #e74c3c;
+  --on-card: #fff;
+
 
   /* page experience */
   --card-bg-exp: #B3C8CF;
@@ -170,6 +197,30 @@
   --toc-mark-border: rgba(148,163,184,0.28);
   --toc-link: #B8CFCE;
   --toc-link-hover: #E8F9FF;
+
+  /* hero section  */
+  --hero-overlay: rgba(0, 0, 0, 0.6);
+  --hero-text: #f4f4f4;
+  --hero-name-start: #4ea0dc;
+  --hero-name-end: #1d4ed8;
+  --hero-name-shadow: 0 3px 14px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --hero-subtitle: #9ca3af;
+  --hero-subtitle-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 1.12);
+  --hero-avatar-border: #ffffff;
+  --hero-avatar-bg: #ffffff;
+  --hero-avatar-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+
+  /* page aboute me */
+  --about-section-bg: #113F67;
+  --about-text-color: #fafafa;
+  --about-text-color: #444;
+  --about-underline: #e74c3c;
+  --about-heading: #2c3e50;
+  --about-slide-bg: #ffffff;
+  --about-slide-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --about-dot-base: #819cb2;
+  --about-dot-active: #000000;
+  --about-bullet: #e74c3c;
 
   /* page experience */
   --card-bg-exp: #113F67;

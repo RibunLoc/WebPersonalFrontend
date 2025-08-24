@@ -5,11 +5,11 @@ export default function AboutMeSlide2() {
   return (
     <div className={styles.box} >
       <h3>📫 Contact Me</h3>
-      <p>This is my Information</p>
+      <p>Hãy liên hệ với tôi qua các kênh bên dưới.</p>
       <ul className={styles.contactList}>
         <li>
           <FaEnvelope className={styles.icon} />
-          <span> Email: </span> 
+          <span> Email: </span>
           <a href="mailto:hothanhloc12345@gmail.com" >hothanhloc12345@gmail.com</a>
         </li>
         <li>
@@ -20,11 +20,11 @@ export default function AboutMeSlide2() {
         <li>
           <FaLinkedinIn className={styles.icon} />
           <span> LinkedIn: </span>
-          <a href="https://www.linkedin.com/in/l%E1%BB%99c-h%E1%BB%93-7659aa374/" target="_blank" rel="noopener noreferrer">lộc-hồ</a>
+          <a href="https://www.linkedin.com/in/l%E1%BB%99c-h%E1%BB%93-86527637a/" target="_blank" rel="noopener noreferrer">lộc-hồ</a>
         </li>
         <li>
-          <FaGlobe className={styles.icon} /> 
-          <span>Webiste:</span>
+          <FaGlobe className={styles.icon} />
+          <span>Website:</span>
           <a href="https://holoc.id.vn" target="_blank" rel="noopener noreferrer">holoc.id.vn</a>
         </li>
       </ul>

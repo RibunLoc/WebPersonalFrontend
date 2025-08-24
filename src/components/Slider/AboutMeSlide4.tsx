@@ -4,12 +4,12 @@ import { SiMysql, SiGo } from 'react-icons/si';
 
 export default function AboutMeSlide4() {
     const skills = [
-        { icon: <FaGitAlt />, name: 'Unix Git', years: '1 years'},
-        { icon: <SiMysql/>, name: 'SQL (MySQL, PostgreeSQL)', years: '1 years'},
-        { icon: <FaHtml5/>, name: 'HTML5/CSS', years: '1 years' },
-        { icon: <FaAws/>, name: 'AWS', years: '1 years' },
-        { icon: <FaJs />, name: 'JavaScript (NodeJS, ReactJS, JQuery)', years: '3 months' },
-        { icon: <SiGo />, name: 'Go (Django)', years: '1 years' },
+        { icon: <FaGitAlt />, name: 'Unix & Git', years: '1 year'},
+        { icon: <SiMysql/>, name: 'SQL (MySQL, PostgreSQL)', years: '1 year'},
+        { icon: <FaHtml5/>, name: 'HTML5/CSS', years: '1 year' },
+        { icon: <FaAws/>, name: 'AWS', years: '1 year' },
+        { icon: <FaJs />, name: 'JavaScript (Node.js, React)', years: '3 months' },
+        { icon: <SiGo />, name: 'Go', years: '1 year' },
     ];
 
     return (

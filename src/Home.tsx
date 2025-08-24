@@ -5,11 +5,21 @@ export default function Home() {
   return (
     <>
       <section className={styles.hero} id="home">
-        <h1 className={styles.name}>Thanh Lộc</h1>
-        <p className={styles.subtitle}>
-          Student | Computer Networks and Data Communication
-        </p>
-        <img src="/avatar.jpg" alt="Avatar" className={styles.avatar} />
+        <div className={styles.overlay} />
+        <div className={styles.content}>
+          <h1 className={styles.name}>Thanh Lộc</h1>
+          <p className={styles.subtitle}>
+            Computer Networks &amp; Data Communication Student
+          </p>
+          <a href="#project" className={styles.cta}>
+            View My Projects
+          </a>
+        </div>
+        <img
+          src="/avatar.jpg"
+          alt="Avatar of Thanh Lộc"
+          className={styles.avatar}
+        />
       </section>
 
       {/* <section className={styles.aboutSection}>

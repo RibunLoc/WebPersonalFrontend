@@ -14,9 +14,10 @@ export default function AboutMeSlide1() {
       <div className={styles.box}>
         <h3>👤 Đây là thông tin chút về tớ</h3>
         <ul>
-          <li><strong>Full Name:</strong> Thanh Lộc</li>
+          <li><strong>Full Name:</strong> Hồ Thanh Lộc</li>
           <li><strong>Nickname:</strong> Ri bún</li>
           <li><strong>Email:</strong> hothanhcloc12345@gmail.com</li>
+          <li><strong>Quê nhà:</strong> Pleiku, Gia Lai</li>
           <li><strong>Nơi ở hiện tại:</strong> Ho Chi Minh City, Vietnam</li>
           <li><strong>Học tập:</strong> UIT – University of Information Technology</li>
           <li><strong>Bằng cấp:</strong> Computer Networking and Data Communication</li>
