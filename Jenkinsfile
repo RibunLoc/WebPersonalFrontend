@@ -5,7 +5,7 @@ pipeline {
         string(name: 'nameImageBuild', defaultValue: 'web_frontend', description: 'Name of the Docker image to build')
         string(name: 'urlDomainHarbor', defaultValue: 'harbor.netsena.io.vn', description: "Domain of the Harbor registry so that you want to push the image")
         string(name: 'nameProject', defaultValue: 'personal_frontend', description: 'The project name on Harbor registry')
-        string(name: 'Tag', defaultValue: 'v1.0.0', description: 'Tag for the Docker image')
+        string(name: 'Tag', defaultValue: 'v1.2.0', description: 'Tag for the Docker image')
         string(name: 'APP_ENV', defaultValue: 'production', description: 'Environment for the application (e.g., production, staging)')
         string(name: 'VITE_API_BASE', defaultValue: 'https://api.holoc.id.vn', description: 'Base URL for the API')
         string(name: 'VITE_TURNSTILE_SITEKEY', defaultValue: '0x4AAAAAABsArAAHb5Qp1ZGS', description: 'Turnstile site key for the application')
