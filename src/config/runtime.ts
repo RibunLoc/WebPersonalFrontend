@@ -1,6 +1,6 @@
 // src/config/runtime.ts
 type RuntimeShape = {
-  API_URL: string;
+  VITE_API_BASE: string;
   TURNSTILE_SITEKEY: string;
   APP_ENV: string;
   SENTRY_DSN: string;
@@ -18,8 +18,7 @@ declare global {
 const R = window.__RUNTIME_CONFIG__ ?? {};
 
 export const RUNTIME: RuntimeShape = {
-  API_URL:
-    R.API_URL ??
+  VITE_API_BASE:
     R.VITE_API_BASE ??                          // <— thêm dòng này
     import.meta.env.VITE_API_BASE ??
     "http://localhost:8080",

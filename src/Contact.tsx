@@ -16,7 +16,7 @@ declare global {
 type Status = "idle" | "pending" | "success" | "error";
 
 export const sitekey : string = RUNTIME.TURNSTILE_SITEKEY || "1x00000000000000000000AA";
-const BASE = (RUNTIME.API_URL || "").replace(/\/+$/, "");
+const BASE = (RUNTIME.VITE_API_BASE || "").replace(/\/+$/, "");
 
 // Helper ghép URL an toàn (hỗ trợ base absolute hoặc relative như "/api")
 export const apiUrl = (path: string) => {
