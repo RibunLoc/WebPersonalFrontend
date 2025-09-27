@@ -2,7 +2,7 @@ pipeline {
     agent none // sử dụng agent build riêng
 
     parameters {
-        string(name: 'nameImageBuild', defaultValue: 'web_frontend', description: 'Name of the Docker image to build')
+        string(name: 'nameImageBuild', defaultValue: 'harbor.netsena.io.vn/personal_frontend/web_frontend', description: 'Name of the Docker image to build')
         string(name: 'urlDomainHarbor', defaultValue: 'harbor.netsena.io.vn', description: "Domain of the Harbor registry so that you want to push the image")
         string(name: 'nameProject', defaultValue: 'personal_frontend', description: 'The project name on Harbor registry')
         string(name: 'Tag', defaultValue: 'v1.2.0', description: 'Tag for the Docker image')

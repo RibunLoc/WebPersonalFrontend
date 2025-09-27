@@ -3,6 +3,7 @@ import styles from "./Navbar.module.css";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 const SECTIONS = ["home", "about", "experience", "project", "contact"] as const;
 
@@ -14,6 +15,33 @@ export default function Navbar() {
     if (saved) return saved === "dark";
     return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
   });
+
+  // Thêm nhạc
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [drop, setDrop] = useState(false);
+  const audioRef = useRef<HTMLAudioElement|null>(null);
+
+  useEffect(() => {
+  audioRef.current = new Audio("/audio/bg-music.mp3");
+  audioRef.current.loop = true; // lặp nhạc
+  audioRef.current.volume = 0.6; // chỉnh âm lượng (0–1)
+}, []);
+
+  const handleClick = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (isPlaying) a.pause() ;
+    else {
+      a.play().catch((err) => {
+        console.error("Button Play error music:", err);
+      });
+    }
+    setIsPlaying(!isPlaying);
+
+    // kích hoạt animation rơi cho toàn button
+    setDrop(true);
+    window.setTimeout(() => setDrop(false), 650); // khớp với thời lượng keyframes
+  };
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState<string>("#home");
@@ -221,6 +249,21 @@ export default function Navbar() {
             >
               {darkMode ? <MdDarkMode /> : <MdOutlineDarkMode />}
             </button>
+
+            {/* === Nút Music === */}
+            {/* === Nút Nhạc === */}
+            <button
+              onClick={handleClick}
+              className={`${styles.musicBtn} ${drop ? styles.drop : ""} ${isPlaying ? styles.playing : ""}`}
+              type="button"
+              aria-label="Toggle music"
+            >
+              {isPlaying ? <FaPause  className={styles.icon}/> : <FaPlay className={styles.icon}/>}
+            </button>
+
+            <audio ref={audioRef} loop>
+              <source src="/music.mp3" type="audio/mpeg"/>
+            </audio>
           </div>
         </div>
       </header>

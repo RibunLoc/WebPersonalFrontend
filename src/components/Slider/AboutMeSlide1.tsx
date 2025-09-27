@@ -24,17 +24,6 @@ export default function AboutMeSlide1() {
           <li><strong>Ngôn ngữ:</strong> Vietnamese (native), English (intermediate)</li>
         </ul>
       </div>
-
-      <div className={styles.box}>
-        <h3>Hành trình của tớ</h3>
-        <p>
-          Xuất phát từ niềm đam mê với lĩnh vực mạng máy tính tại UIT, mình từng bước mở rộng kiến thức sang thế giới DevOps và Cloud Engineering. Trong quá trình học tập và thực hành, mình đã tích lũy kinh nghiệm triển khai các công nghệ hiện đại như Docker, Kubernetes, Jenkins, Terraform và AWS – từ xây dựng pipeline CI/CD, hạ tầng cloud đến bảo mật với GitOps.
-        </p>
-        <p>
-          Hiện tại, mình đang trên hành trình trở thành một DevOps Engineer theo định hướng cloud-native, với mục tiêu xây dựng những hệ thống đáng tin cậy, bảo mật và vận hành hiệu quả ở quy mô lớn.
-        </p>
-      </div>
-
     </div>
 
   );

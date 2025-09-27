@@ -40,11 +40,20 @@ const projects: Project[] = [
   {
     id: 'cloudcomputingOpenebula',
     title: 'System - Triển khai điện toán đám mây OpenNebula',
-    description: '',
-    techStack: ['ubuntu', 'nginx', 'Ansible', 'jmeter', 'vmware'],
+    description: 'Sử dụng VmWare và KVM để thực hiện xây dựng một nền tảng cung cấp điện toán',
+    techStack: ['ubuntu', 'nginx', 'Ansible', 'jmeter', 'vmware', 'kvm'],
     imageUrl: '/background.jpg',
     repoUrl: '',
   },
+  {
+    id: 'quanlycongviec',
+    title: 'DevOps - Ứng dụng web quản lý công việc Otaltask',
+    description: 'Triển khai ứng dụng web quản lý công việc Otaltask với công nghệ DevOps, Cloud, Microservices.',
+    techStack:  ['Terraform', 'AWS', 'Jenkins', 'Git'],
+    imageUrl: '/Project/bg-Octaltask.png',
+    repoUrl: 'https://github.com/RibunLoc/DevOps-task-management-web-platform',
+    liveDemoUrl: 'https://octaltask.holoc.id.vn'
+  }
 ];
 
 export default function ProjectsPage() {

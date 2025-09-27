@@ -52,7 +52,7 @@ html {
   line-height: 1.15;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #FFFBDE;
+  color: var(--text-color, #7d878b);
   opacity: 0.9;
 }
 
@@ -207,10 +207,77 @@ html {
 
   .toggleButton {
     align-self: flex-end;
-    width: 40px; height: 40px; padding: 0;
+    width: 50px; height: 50px; padding: 8px;
+  }
+
+  .musicBtn {
+    align-self: flex-end;
+    width: 50px; height: 50px; padding: 8px;
   }
 
 }
 
+/* CSS cho nút nhạc */
+.musicBtn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
 
+  /* màu nền & icon mặc định */
+  background-color: var(--icon-bg, #2a2a2a);
+  color: var(--icon-color, #e5e7eb);
+
+  transition: background .25s, color .25s, transform .2s;
+}
+
+.musicBtn:hover {
+  background: #2a2a2a;
+  border: #7d878b 1px solid;
+}
+.musicBtn:active{ transform: translateY(1px); }
+
+.icon{ inline-size:12px; block-size:20px; }
+
+.musicBtn.playing{
+  color: var(--music-icon-on, #a3cd0a9b);
+  background: #1d2a30;
+  border-color: rgba(34,211,238,.28);
+  box-shadow:
+    0 6px 22px rgba(34,211,238,.16),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* animation: rớt xuống và xoay (roll) */
+/* ==== Animation: toàn khối trượt từ trên xuống, có “lăn” nhẹ ==== */
+@keyframes dropFromTop {
+  0%   { transform: translateY(-130%) rotate(-12deg); opacity: 0; }
+  65%  { transform: translateY(10%) rotate(6deg); opacity: 1; }
+  82%  { transform: translateY(-6%) rotate(-2deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+/* Khi có class .drop, animate chính button */
+.musicBtn.drop{
+  animation: dropFromTop 0.65s cubic-bezier(.2,.8,.25,1) both;
+}
+
+/* (tuỳ chọn) viền/halo gradient khi rơi để trông “đã” hơn */
+.musicBtn.drop::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 50% -20%, rgba(34,211,238,.35), transparent 60%);
+  filter: blur(10px);
+  pointer-events: none;
+  animation: fadeHalo .65s ease both;
+}
+@keyframes fadeHalo {
+  0% { opacity: .9; }
+  100% { opacity: 0; }
+}
 

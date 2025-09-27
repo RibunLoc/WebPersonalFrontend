@@ -4,7 +4,6 @@
 .slide{   position: relative; z-index: 2; }
 
 .slide {
-  max-width: 800px;
   margin: 0 auto;
   text-align: center;
   padding: 1rem;
@@ -18,13 +17,22 @@
   overflow: clip;
 }
 
-.sectionTitle{
-  text-align:center;
-  font-size: clamp(24px, 2.2vw, 96px);
+.aboutSection ul,
+.aboutSection li {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+.aboutSection li::marker { content: "" !important; }
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 2.5vw, 48px);
   font-weight: 700;
-  letter-spacing: 1.3px;
-  margin: 28px 0 28px;
-  color: var(--title);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-wider);
+  color: var(--heading-color);
+  margin: 32px 0 36px;
 }
 
 .header {
@@ -84,7 +92,7 @@
 
   border: 0;
   border-radius: 999px;
-  background: rgb(255 255 255 / 72%);
+  background: var(--about-arrow);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: #111;
@@ -142,9 +150,12 @@ button:focus {
 }
 
 .textWrapper p {
-  font-size: 1rem;
-  color: var(--about-text-color);
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-base);
+  color: var(--text-color);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 1rem;
 }
 
 .cardWrapper {
@@ -238,14 +249,13 @@ body.dark .altCard {
 .slide {
   position: relative;
   z-index: 2;
-  max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: var(--about-slide-bg);
   border-radius: 1rem;
   box-shadow: var(--about-slide-shadow);
   text-align: left;
   animation: fadeIn 0.4s ease-in-out;
+  background-color: var(--about-section-bg);
 }
 
 .slideLayer{
@@ -288,16 +298,15 @@ body.dark .altCard {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 100%;
 }
 
+
 .slide h3 {
-  font-size: 1.8rem;
-  color: var(--about-heading);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 0.75rem;
 }
 
 .slide ul {
@@ -307,19 +316,25 @@ body.dark .altCard {
 }
 
 .slide li {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  color: var(--about-text-color);
   position: relative;
-  padding-left: 1.5rem;
+  padding-left: 1.4rem;           /* khoảng cách chữ với bullet */
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--about-text-color);
+  margin-bottom: 0.6rem;
 }
 
 .slide li::before {
-  content: "•";
-  color: var(--about--bullet);
+  content: "";
   position: absolute;
   left: 0;
-  font-size: 1.2rem;
+  top: 0.72em;                    /* canh giữa dòng chữ */
+  transform: translateY(-50%);
+  width: .5rem;
+  height: .5rem;
+  border-radius: 999px;
+  background: var(--about-bullet);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--about-bullet) 20%, transparent); /* viền mềm nhẹ */
 }
 
 /* Moblie web */

@@ -17,7 +17,7 @@
   font-weight: 700;
   letter-spacing: 1.3px;
   margin: 0 0 28px;
-  color: var(--title);
+  color: var(--heading-color);
   text-align: center;
 }
 

@@ -33,8 +33,8 @@
   top: 0; bottom: 0; width: var(--axis-w);
   background: linear-gradient(
     180deg,
-    rgba(145, 200, 228, 0.9),
-    rgba(70, 130, 169, 0.15)
+    var(--timeline-head),
+    var(--timeline-tail)
   );
   border-radius: 999px;
   filter:none;
@@ -91,7 +91,7 @@
   transform: translateX(-50%);
   border-radius:999px;
   background: radial-gradient(circle at 35% 35%, var(--accent-soft), var(--accent) 60%);
-  border:3px solid rgba(105,180,218,.7);
+  border:3px solid var(--accent-soft-border);
   box-shadow:
     0 0 0 3px rgba(145,200,228,.12),
     0 0 12px rgba(145,200,228,.28);
@@ -110,7 +110,7 @@
     0 0 0 4px rgba(145,200,228,.20),
     0 0 18px rgba(145,200,228,.45),
     0 0 36px rgba(145,200,228,.35);
-  border-color: rgba(105,180,218,.9);
+  border-color: var(--accent-soft-border-hover);
 }
 
 .card {
@@ -141,7 +141,7 @@
 
 .title {
   margin: 0;
-  color: var(--title);
+  color: var(--card-title-text-color, #e0e0e0);
   font-size: clamp(18px, 2.2vw, 22px);
   font-weight: 700;
   letter-spacing: .2px;
@@ -163,7 +163,7 @@
   padding:6px 12px; border-radius:999px;
   background: var(--chip-bg, rgba(255,255,255,.06));
   border: 1px solid var(--chip-border, rgba(255,255,255,.14));
-  color: var(--title, #f3f4f6);
+  color: var(--chip-text);
   font-size:.9rem;
   transition: background .18s ease, border-color .18s ease, transform .12s ease;
 }

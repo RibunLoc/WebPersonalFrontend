@@ -12,7 +12,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import mermaid from "mermaid";
 
 import styles from "./ProjectDetailPage.module.css";
-import { projects } from "./ProjectData";
+import { projects } from "./data/projects";
 
 // ===== Types =====
 type TOCItem = { level: number; text: string; id: string };
@@ -59,39 +59,31 @@ function CopyBtn({ text }: { text: string }) {
 
 function Mermaid({ chart }: { chart: string }) {
   const ref = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     let mounted = true;
-
     (async () => {
       try {
-        mermaid.initialize({ startOnLoad: false, theme: "default" });
+        const prefersDark =
+          typeof window !== "undefined" &&
+          window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+        mermaid.initialize({ startOnLoad: false, theme: prefersDark ? "dark" : "default" });
+
         if (!ref.current) return;
-
         const id = "mmd-" + Math.random().toString(36).slice(2);
-
-        // v10+: trả về Promise<{ svg, bindFunctions? }>
         const { svg, bindFunctions } = await mermaid.render(id, chart);
 
         if (!mounted || !ref.current) return;
         ref.current.innerHTML = svg;
-        // bind event handlers nếu biểu đồ có tương tác
         bindFunctions?.(ref.current);
-      } catch (err) {
-        if (ref.current) {
-          ref.current.textContent = "Mermaid render error";
-        }
-        // console.error(err);
+      } catch {
+        if (ref.current) ref.current.textContent = "Mermaid render error";
       }
     })();
-
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, [chart]);
-
   return <div className={styles.mermaidBox} ref={ref} />;
 }
+
 
 function MdImage(props: any) {
   const { src, alt } = props;
@@ -106,26 +98,42 @@ function MdImage(props: any) {
   );
 }
 
+// helper: lấy text thuần từ ReactNode
+function getRawText(node: any): string {
+  if (node == null) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(getRawText).join("");
+  if (node.props && node.props.children) return getRawText(node.props.children);
+  return "";
+}
+
 function CodeBlock({ inline, className, children, ...props }: any) {
-  const txt = String(children ?? "");
+  const raw = getRawText(children);
   const lang = (className || "").replace("language-", "");
-  if (!inline && lang === "mermaid") return <Mermaid chart={txt} />;
+
+  // Mermaid
+  if (!inline && lang === "mermaid") return <Mermaid chart={raw} />;
+
+  // Code block
   if (!inline) {
     return (
       <div className={styles.codeWrap}>
-        <CopyBtn text={txt} />
+        <CopyBtn text={raw} />
         <pre className={className} {...props}>
-          <code>{txt}</code>
+          <code className={className}>{children}</code>
         </pre>
       </div>
     );
   }
+
+  // Inline code
   return (
     <code className={className} {...props}>
-      {txt}
+      {children}
     </code>
   );
 }
+
 
 function Reactions({ storageKey }: { storageKey: string }) {
   const EMOS = ["👍", "🔥", "⭐"] as const;
@@ -320,8 +328,15 @@ function LeftProfile({
 type KeyLinks = {
   repo?: string; demo?: string; docs?: string; slides?: string; issue?: string; website?: string;
 };
-const normalizeLinks = (links?: string | KeyLinks): KeyLinks | undefined =>
-  !links ? undefined : (typeof links === "string" ? { repo: links } : links);
+
+// Hàm normalizeLinks để xử lý cả string hoặc object
+function normalizeLinks(links?: string | KeyLinks): KeyLinks | null {
+  if (!links) return null;
+  if (typeof links === "string") {
+    return { repo: links }; // nếu chỉ truyền string, coi như repo link
+  }
+  return links;
+}
 
 function SideKeyLinks({ links }: { links?: string | KeyLinks }) {
   const L = normalizeLinks(links);
@@ -391,11 +406,14 @@ function SideProjectInfo({
 
 
 
+
+
 // ===== Main Page =====
 export default function ProjectDataPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const project = projects.find((p) => p.id === id);
+
 
   // nav height -> CSS var for sticky/offset
   useEffect(() => {
@@ -644,23 +662,13 @@ export default function ProjectDataPage() {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[
                   rehypeSlug,
-                  rehypeHighlight,
-                  [
-                    rehypeAutolinkHeadings,
-                    {
-                      behavior: "append",
-                      properties: { className: "anchor" },
-                      content: { type: "text", value: " #" },
-                    },
-                  ],
+                  [rehypeHighlight, { detect: true, ignoreMissing: true }],
+                  [rehypeAutolinkHeadings, { behavior: "append", properties: { className: "anchor" }, content: { type:"text", value:" #" } }],
                   [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }],
                 ]}
-                components={{
-                  code: CodeBlock,
-                  img: MdImage,
-                }}
+                components={{ code: CodeBlock, img: MdImage }}
               >
-                {project.detail}
+                 {project.detail}
               </ReactMarkdown>
             </div>
           )}

@@ -1,0 +1,21 @@
+version: 0.2
+
+env:
+  variables"
+    NAME_IMAGE_BUILD: "web_frontend"
+    URL_DOMAIN_HARBOR: "harbor.netsena.io.vn"
+    NAME_PROJECT: "personal_frontend"
+    TAG: "v1.2.1"
+    APP_ENV: "production"
+    VITE_API_URL: "https://api.holoc.id.vn"
+    VITE_TURNSTILE_SITEKEY: "0x4AAAAAABsArAAHb5Qp1ZGS"
+    SENTRY_DSN: ""
+
+  secrets-manager:
+    HARBOR_USERNAME: ""
+    HARBOR_PASSWORD: ""
+
+phases:
+  install:
+    commands:
+      -
