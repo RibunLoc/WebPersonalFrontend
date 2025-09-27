@@ -7,10 +7,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
+USER appuser
+
 RUN npm ci --no-audit --no-fund
 
 COPY --chown=appuser:appgroup . .
-USER appuser
 
 RUN npm run build -- --sourcemap=false
 
