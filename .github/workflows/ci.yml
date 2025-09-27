@@ -66,4 +66,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  deploy_vps:
+    needs: docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Get tag sha
+        run: echo "SHA_TAG=sha-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
+      - name: ssh deploy to vps
+        uses: appleboy/ssh-action@v1.2.0
+        width:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -euo pipefail
+            whoami
+
+            sudo sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${{ env.SHA_TAG }}/" /etc/webapp.env
+
+            sudo systemctl reload webapp
+
+            sudo docker image prune -f
+
+            sudo docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
