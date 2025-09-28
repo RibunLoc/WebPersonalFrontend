@@ -93,7 +93,7 @@ jobs:
             set -euo pipefail
             echo "Deploying tag: ${SHA_TAG}"
 
-            IMAGE_TAG=${SHA_TAG:-v1.2.0}
+            IMAGE_TAG="${SHA_TAG:-v1.2.0}"
             echo "${{ secrets.VPS_PASSWORD }}" | sudo -S sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG='"${IMAGE_TAG}"'/' /etc/webapp.env
 
             echo "${{ secrets.VPS_PASSWORD }}" | sudo -S systemctl reload webapp
