@@ -116,9 +116,9 @@
   --text: #0f172a;
   --text-muted: #475569;
   --field-bg: #ffffff;
-  --btn-bg1: #e9efec;
-  --btn-bg2: #c4dad2;
-  --btn-ink: #0b0d10;
+  --btn-bg1: #91C8E4;
+  --btn-bg2: #749BC2;
+  --btn-ink: #113F67;
   --success: #16a34a;
   --error: #ef4444;
   --success-bg: rgba(22,163,74,.12);
@@ -129,7 +129,6 @@
   --error-ink: #7f1d1d;
 
   /* Project detail */
-  --text-muted: #64748b;
   --tag-pjdt: #82a9fc69;
   --surface-1: #ffffff;
   --surface-2: #e7f3ff;

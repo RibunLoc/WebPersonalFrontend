@@ -5,7 +5,7 @@
   text-align: center;
 }
 
-.sectionDesc { color: var(--text-muted); }
+.sectionDesc { color: var(--text-color); }
 
 .form{
   max-width: 520px;
@@ -48,7 +48,11 @@
   color: var(--btn-ink);
   box-shadow: 0 8px 24px var(--shadow);
 }
-.submitBtn:hover:not(:disabled){ transform: translateY(-1px); }
+.submitBtn:hover:not(:disabled){
+   transform: translateY(-2px);
+   color: var(--chip-text);
+   box-shadow: 0 12px 36px var(--shadow);
+  }
 .submitBtn:active:not(:disabled){ transform: translateY(0); }
 .submitBtn:disabled{ opacity:.6; cursor:not-allowed; }
 
