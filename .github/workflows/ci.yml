@@ -22,8 +22,7 @@ jobs:
       packages: write
       id-token: write
     outputs:
-      sha_tag: ${{ steps.meta.outputs.sha_tag }}
-      tags: ${{ steps.meta.outputs.tags }}
+      sha_tag: ${{ steps.extract.outputs.sha_tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -89,6 +88,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
+          envs: SHA_TAG
+          script_stop: true
           script: |
             set -euo pipefail
             echo "Deploying tag: ${SHA_TAG}"
