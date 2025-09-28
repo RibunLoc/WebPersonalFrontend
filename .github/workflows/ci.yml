@@ -72,7 +72,7 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: Get tag sha
-        run: echo "SHA_TAG=sha-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: echo "SHA_TAG=${{ steps.meta.outputs.version }}" >> $GITHUB_ENV
 
       - name: ssh deploy to vps
         uses: appleboy/ssh-action@v1.2.0
