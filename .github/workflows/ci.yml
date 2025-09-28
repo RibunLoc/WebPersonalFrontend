@@ -97,7 +97,7 @@ jobs:
             IMAGE_TAG="${SHA_TAG:-v1.2.0}"
             echo "${{ secrets.VPS_PASSWORD }}" | sudo -S sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG='"${IMAGE_TAG}"'/' /etc/webapp.env
 
-            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S systemctl restart webapp
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S systemctl restart webapp.service
 
             echo "${{ secrets.VPS_PASSWORD }}" | sudo -S docker image prune -f
 
