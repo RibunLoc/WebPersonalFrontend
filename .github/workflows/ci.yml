@@ -83,12 +83,11 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             set -euo pipefail
-            whoami
 
-            sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${{ env.SHA_TAG }}/" /etc/webapp.env
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${{ env.SHA_TAG }}/" /etc/webapp.env
 
-            systemctl reload webapp
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S systemctl reload webapp
 
-            docker image prune -f
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S docker image prune -f
 
-            docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
