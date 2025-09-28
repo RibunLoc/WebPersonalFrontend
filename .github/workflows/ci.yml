@@ -22,7 +22,7 @@ jobs:
       packages: write
       id-token: write
     outputs:
-      sha_tag: ${{ steps.meta.outputs.version }}
+      sha_tag: ${{ steps.meta.outputs.sha_tag }}
       tags: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout repository
@@ -62,12 +62,18 @@ jobs:
           push: true
           provenance: true
           sbom: false
-          build-args: |
-            VITE_BASE=/
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Extract SHA tag for next job
+        id: extract
+        run: |
+          set -euo pipefail
+          first_tag="$(echo "${{ steps.meta.outputs.tags }}" | head -n1 )"
+          sha_tag="${first_tag#*:}"
+          echo "SHA_TAG=${sha_tag}" >> $GITHUB_OUTPUT
 
   deploy_vps:
     needs: docker
@@ -87,7 +93,8 @@ jobs:
             set -euo pipefail
             echo "Deploying tag: ${SHA_TAG}"
 
-            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG='"${SHA_TAG}"'/' /etc/webapp.env
+            IMAGE_TAG=${SHA_TAG:-v1.2.0}
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG='"${IMAGE_TAG}"'/' /etc/webapp.env
 
             echo "${{ secrets.VPS_PASSWORD }}" | sudo -S systemctl reload webapp
 
