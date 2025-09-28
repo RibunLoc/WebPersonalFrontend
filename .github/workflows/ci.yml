@@ -85,10 +85,10 @@ jobs:
             set -euo pipefail
             whoami
 
-            sudo sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${{ env.SHA_TAG }}/" /etc/webapp.env
+            sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${{ env.SHA_TAG }}/" /etc/webapp.env
 
-            sudo systemctl reload webapp
+            systemctl reload webapp
 
-            sudo docker image prune -f
+            docker image prune -f
 
-            sudo docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+            docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
