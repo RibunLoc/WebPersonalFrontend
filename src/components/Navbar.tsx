@@ -129,13 +129,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      const previous = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = previous;
-      };
+    if (typeof document === "undefined") return;
+
+    if (!mobileOpen) {
+      document.body.classList.remove("menu-open");
+      document.body.style.overflow = "";
+      return;
     }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("menu-open");
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("menu-open");
+    };
   }, [mobileOpen]);
 
   return (
@@ -162,44 +171,54 @@ export default function Navbar() {
           id="main-navigation"
           className={`${styles.nav} ${mobileOpen ? styles.open : ""}`}
         >
-          <ul className={styles.linkList}>
-            {NAV_LINKS.map(({ href, label }) => {
-              const isActive = activeHash === href;
-              return (
-                <li key={href}>
-                  <a
-                    href={href}
-                    className={`${styles.link} ${isActive ? styles.active : ""}`}
-                    aria-current={isActive ? "page" : undefined}
-                    onClick={() => {
-                      setMobileOpen(false);
-                      setActiveHash(href);
-                    }}
-                  >
-                    {label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <div className={styles.navContent}>
+            <ul className={styles.linkList}>
+              {NAV_LINKS.map(({ href, label }) => {
+                const isActive = activeHash === href;
+                return (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      className={`${styles.link} ${isActive ? styles.active : ""}`}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setActiveHash(href);
+                      }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={styles.themeToggle}
-              aria-label="Đổi giao diện sáng/tối"
-              aria-pressed={darkMode}
-              onClick={() => setDarkMode((prev) => !prev)}
-            >
-              {darkMode ? (
-                <MdOutlineLightMode aria-hidden="true" />
-              ) : (
-                <MdOutlineDarkMode aria-hidden="true" />
-              )}
-            </button>
-            <a href="#contact" className={styles.cta} onClick={() => setMobileOpen(false)}>
-              Kết nối ngay
-            </a>
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.themeToggle}
+                aria-label="Đổi giao diện sáng/tối"
+                aria-pressed={darkMode}
+                onClick={() => setDarkMode((prev) => !prev)}
+              >
+                {darkMode ? (
+                  <MdOutlineLightMode aria-hidden="true" />
+                ) : (
+                  <MdOutlineDarkMode aria-hidden="true" />
+                )}
+              </button>
+              <a
+                href="#contact"
+                className={styles.cta}
+                onClick={() => setMobileOpen(false)}
+              >
+                Kết nối ngay
+              </a>
+            </div>
+
+            <p className={styles.mobileNote}>
+              Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.
+            </p>
           </div>
         </nav>
       </div>
