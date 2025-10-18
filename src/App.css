@@ -68,12 +68,12 @@
 
 .app-main {
   position: relative;
-  padding-top: calc(var(--nav-h) + clamp(2.5rem, 6vw, 4rem));
+  padding-top: calc(var(--nav-h, 82px) + clamp(2.5rem, 6vw, 4rem));
   padding-bottom: clamp(4rem, 10vw, 6rem);
 }
 
 .app-main--plain {
-  padding-top: calc(var(--nav-h) + clamp(1.5rem, 5vw, 3rem));
+  padding-top: calc(var(--nav-h, 82px) + clamp(1.5rem, 5vw, 3rem));
   padding-bottom: clamp(3rem, 8vw, 4.5rem);
 }
 
