@@ -8,6 +8,14 @@
   overflow-x: hidden;
 }
 
+.app-shell--plain {
+  background: var(--background-project-pjdt);
+}
+
+.app-shell--plain .app-surface {
+  display: none;
+}
+
 .app-shell > *:not(.app-surface):not(header) {
   z-index: 1;
 }
@@ -60,16 +68,23 @@
 
 .app-main {
   position: relative;
-  padding-top: calc(var(--nav-h) + clamp(2.5rem, 6vw, 4rem));
+  padding-top: calc(var(--nav-h, 82px) + clamp(2.5rem, 6vw, 4rem));
   padding-bottom: clamp(4rem, 10vw, 6rem);
+}
+
+.app-main--plain {
+  padding-top: calc(var(--nav-h, 82px) + clamp(1.5rem, 5vw, 3rem));
+  padding-bottom: clamp(3rem, 8vw, 4.5rem);
 }
 
 .page-stack {
   display: flex;
   flex-direction: column;
   gap: clamp(3.5rem, 8vw, 6rem);
-  width: min(1180px, calc(100% - clamp(1.5rem, 6vw, 6rem)));
+  width: min(1180px, 100%);
   margin: 0 auto;
+  padding-inline: clamp(1.5rem, 6vw, 5rem);
+  box-sizing: border-box;
 }
 
 .page-section {
@@ -126,7 +141,8 @@
   }
 
   .page-stack {
-    width: min(960px, calc(100% - clamp(1rem, 5vw, 3rem)));
+    width: min(960px, 100%);
+    padding-inline: clamp(1rem, 5vw, 3rem);
   }
 
   .page-section::before {
@@ -142,6 +158,7 @@
 
   .page-stack {
     gap: clamp(3rem, 12vw, 4rem);
+    padding-inline: clamp(0.75rem, 8vw, 1.75rem);
   }
 
   .page-section::before {

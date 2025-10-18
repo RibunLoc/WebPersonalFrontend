@@ -5,9 +5,9 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
   align-items: center;
   gap: clamp(2.5rem, 6vw, 5rem);
-  width: min(1150px, 100%);
-  margin: 0 auto;
-  padding: clamp(3rem, 8vw, 5rem) clamp(1.5rem, 6vw, 5rem) clamp(4rem, 10vw, 6rem);
+  width: min(1120px, calc(100% - clamp(2rem, 8vw, 5.5rem)));
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 5rem) clamp(1.75rem, 6vw, 4.25rem) clamp(4rem, 10vw, 6rem);
   border-radius: clamp(2.8rem, 6vw, 4.5rem);
   color: var(--hero-text);
   background: var(--hero-bg);
@@ -103,8 +103,9 @@
   white-space: normal;
   max-width: min(100%, 42ch);
   position: relative;
-  display: grid;
-  align-items: center;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
   letter-spacing: 0.01em;
   line-height: 1.45;
   /* Reserve space for two lines so layout below stays put */
@@ -120,7 +121,7 @@
   height: 1.05em;
   margin-left: 0.18em;
   background: currentColor;
-  vertical-align: -0.1em;
+  align-self: flex-end;
   animation: blink 1s steps(1) infinite;
 }
 
@@ -353,7 +354,7 @@
   .hero {
     grid-template-columns: minmax(0, 1fr);
     text-align: center;
-    padding: clamp(2.5rem, 8vw, 4.5rem);
+    padding: clamp(2.5rem, 10vw, 4.25rem) clamp(1.5rem, 8vw, 3rem) clamp(3rem, 12vw, 4.5rem);
   }
 
   .content {
@@ -382,8 +383,11 @@
 
 @media (max-width: 640px) {
   .hero {
-    padding: clamp(2rem, 10vw, 3.5rem);
+    width: 100%;
+    margin-inline: 0;
+    padding: clamp(2rem, 12vw, 3.5rem) clamp(1.25rem, 10vw, 2.5rem);
     border-radius: clamp(2rem, 8vw, 3rem);
+    gap: clamp(1.75rem, 8vw, 2.5rem);
   }
 
   .subtitle {
