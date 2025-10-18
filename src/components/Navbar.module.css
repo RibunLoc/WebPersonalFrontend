@@ -1,283 +1,298 @@
-body, a, button, .navbar, .link, .toggleButton, .hamburgerIcon {
-  transition: background-color 0.3s ease, color 0.3s ease;
+:root {
+  --nav-surface: rgba(255, 255, 255, 0.76);
+  --nav-border: rgba(148, 163, 184, 0.25);
+  --nav-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+  --nav-height: 82px;
 }
 
-html {
-  scroll-padding-top: var(--nav-h);
-  scroll-behavior: smooth;
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.navbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  z-index: 1000;
-  transform: translateY(0);
-  transition: transform .28s ease, background .2s ease, border-color .2s ease;
-  will-change: transform;
-  background: var(--navbar-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.hidden {
-  transform: translateY(-100%);
-}
-
-.revealZone {
-  position: fixed; top: 0; left: 0; right: 0;
-  height: 12px;
-  z-index: 999;
-  pointer-events: auto;
-  background: transparent;
-}
-@media (hover: none) {.revealZone{ display: none; } }
-
-.container {
-  display: flex; justify-content: space-between; align-items: center;
-  height: 100%;
-  width: 100%;
-  padding: 0rem 2rem;
+.inner {
+  width: min(1160px, calc(100% - 2.5rem));
   margin: 0 auto;
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--nav-border);
+  background: var(--nav-surface);
+  box-shadow: var(--nav-shadow);
+  position: relative;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
 
-.profile { display: flex; align-items: center; gap: 1rem; }
-
-.avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
-
-.name {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-color, #7d878b);
-  opacity: 0.9;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
 }
 
-.subtitle {
-  margin: 2px 0 0;
-  line-height: 1;
-  font-size: 0.85rem;
-  color: #c2e9fd;
+.brandText {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--heading-color);
 }
 
-.rightMenu {
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #60a5fa, #22d3ee);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.75);
+}
+
+.menuToggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--heading-color);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.menuToggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.menuIcon,
+.closeIcon {
+  font-size: 1.4rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.closeIcon {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.6) rotate(-90deg);
+}
+
+.menuToggle[aria-expanded="true"] .menuIcon {
+  opacity: 0;
+  transform: scale(0.6) rotate(90deg);
+}
+
+.menuToggle[aria-expanded="true"] .closeIcon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.nav {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+}
+
+.linkList {
+  list-style: none;
+  display: flex;
+  gap: 1.4rem;
+  margin: 0;
+  padding: 0;
 }
 
 .link {
   position: relative;
-  text-decoration: none;
   font-weight: 500;
-  color: var(--navbar-text, #e7e7e7);
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.3rem 0;
+  transition: color 0.2s ease;
 }
 
-.linkLabel {
-  position: relative;
-  display: inline-block;
-  padding-bottom: 4px;
-}
-
-.linkLabel::after {
+.link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -2px;
-  height: 2.5px;
+  bottom: -4px;
   width: 100%;
-  background: var(--navbar-hover, #91C8E4);
-  border-radius: 2px;
-
-  /* dugnf transform để không reflow layout */
-  transform: scaleX(0);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #60a5fa, #22d3ee);
   transform-origin: left;
-  transition: transform .3s ease, box-shadow .3s ease;
-  box-shadow: none;
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
 }
 
 .link:hover {
-  color: #91C8E4;
+  color: var(--heading-color);
 }
 
-.link:hover .linkLabel::after,
-.link.active .linkLabel::after,
-.link[aria-current="page"] .linkLabel::after {
+.link:hover::after,
+.link.active::after,
+.link[aria-current="page"]::after {
   transform: scaleX(1);
-  box-shadow: 0 4px 18px 2px #30586b91;
 }
 
-.navLinks {
-  display: flex;
-  gap: 1.5rem;
+.active {
+  color: var(--heading-color);
+}
+
+.actions {
+  display: inline-flex;
   align-items: center;
+  gap: 0.75rem;
 }
 
-.toggleButton{
-  display:inline-flex; justify-content:center; align-items:center;
-  width: 40px; height: 40px; padding: 0;
-  border: none;
-  background-color: var(--icon-bg, transparent);
-  color: var(--icon-color, #fff);
-  border-radius: 12px;
+.themeToggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--heading-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.hamburger{
-  display: none;
-  background: transparent; border: 0; cursor: pointer;
-  position: relative; z-index: 1002; line-height: 0; font-size: 0;
-  color: var(--text-color, #e7e7e7);
+.themeToggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
 }
 
-.hamburgerIcon{
-  position: relative; display: grid; place-items: center;
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(120deg, #2563eb, #22d3ee);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.28);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-  transition: transform .18s ease, background-color .28s ease, border-color .28s ease;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-/* 2 icon chồng lên nhau, thay đổi bằng opacity */
-.iconBurger, .iconClose{
-  position:absolute; inset:0; margin:auto;
-  transition: opacity .18s ease, transform .18s ease;
-  font-size:22px;
+@media (max-width: 1024px) {
+  .inner {
+    padding: 0.85rem 1.25rem;
+  }
+
+  .linkList {
+    gap: 1rem;
+  }
 }
 
-.iconBurger { opacity: 1; transform: rotate(0deg) scale(1);}
-.iconClose { opacity: 0; transform: rotate(-90deg) scale(.8);}
-
-.hamburger.active .hamburgerIcon { transform: rotate(90deg); }
-.hamburger.active .iconBurger{ opacity:0; transform: rotate(90deg) scale(.8); }
-.hamburger.active .iconClose { opacity:1; transform: rotate(0deg)  scale(1); }
-
-
-.hamburger[aria-expanded="true"] .hamburgerIcon {
-  transform:  rotate(90deg);
-}
-
-/* Mobile: reponsive */
-@media (max-width: 880px) {
-  .hamburger {
+@media (max-width: 960px) {
+  .menuToggle {
     display: inline-flex;
   }
 
-  .rightMenu {
-    position: fixed; top: var(--nav-h); left: 0; right: 0;
-    z-index: 1001;
-    background-color: #1a4a61c9;
-    display: flex;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(29, 15, 15, 0.918);
-
-    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
-    padding: 0 16px;
-    max-height: 0; overflow: hidden; opacity: 0;
-    transform: translateY(-8px); pointer-events: none;
-    transition: max-height .25s ease, opacity .2s ease, transform .2s ease, padding .2s ease;
-  }
-
-  .rightMenu.open {
-    padding: 12px 16px 16px;
-    max-height: 60vh; opacity: 1; transform: translateY(0); pointer-events: auto;
-  }
-
-  .linkLabel::after { display: none; }
-
-  .navLinks {
+  .nav {
+    position: absolute;
+    top: calc(100% + 18px);
+    right: 0;
     flex-direction: column;
-    gap: 1rem;
     align-items: flex-start;
+    padding: 1.25rem;
+    gap: 1.25rem;
+    min-width: min(320px, calc(100vw - 2rem));
+    border-radius: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 24px 58px rgba(15, 23, 42, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .linkList {
+    flex-direction: column;
+    gap: 0.75rem;
     width: 100%;
   }
 
-  .navLinks a {
-    display: block;
+  .link {
+    font-size: 1.05rem;
+  }
+
+  .actions {
     width: 100%;
-    padding: 10px 6px;
-    white-space: nowrap;
+    justify-content: space-between;
   }
 
-  .toggleButton {
-    align-self: flex-end;
-    width: 50px; height: 50px; padding: 8px;
+  .cta {
+    width: 100%;
+    justify-content: center;
   }
-
-  .musicBtn {
-    align-self: flex-end;
-    width: 50px; height: 50px; padding: 8px;
-  }
-
 }
 
-/* CSS cho nút nhạc */
-.musicBtn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px; height: 40px;
-  padding: 0;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-
-  /* màu nền & icon mặc định */
-  background-color: var(--icon-bg, #2a2a2a);
-  color: var(--icon-color, #e5e7eb);
-
-  transition: background .25s, color .25s, transform .2s;
+:global(.dark) {
+  --nav-surface: rgba(15, 23, 42, 0.8);
+  --nav-border: rgba(96, 165, 250, 0.25);
+  --nav-shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
 }
 
-.musicBtn:hover {
-  background: #2a2a2a;
-  border: #7d878b 1px solid;
-}
-.musicBtn:active{ transform: translateY(1px); }
-
-.icon{ inline-size:12px; block-size:20px; }
-
-.musicBtn.playing{
-  color: var(--music-icon-on, #a3cd0a9b);
-  background: #1d2a30;
-  border-color: rgba(34,211,238,.28);
-  box-shadow:
-    0 6px 22px rgba(34,211,238,.16),
-    inset 0 1px 0 rgba(255,255,255,.08);
+:global(.dark) .brandText,
+:global(.dark) .link,
+:global(.dark) .themeToggle,
+:global(.dark) .menuToggle {
+  color: #e2e8f0;
 }
 
-/* animation: rớt xuống và xoay (roll) */
-/* ==== Animation: toàn khối trượt từ trên xuống, có “lăn” nhẹ ==== */
-@keyframes dropFromTop {
-  0%   { transform: translateY(-130%) rotate(-12deg); opacity: 0; }
-  65%  { transform: translateY(10%) rotate(6deg); opacity: 1; }
-  82%  { transform: translateY(-6%) rotate(-2deg); }
-  100% { transform: translateY(0) rotate(0); }
+:global(.dark) .link:hover,
+:global(.dark) .active {
+  color: #f8fafc;
 }
 
-/* Khi có class .drop, animate chính button */
-.musicBtn.drop{
-  animation: dropFromTop 0.65s cubic-bezier(.2,.8,.25,1) both;
+:global(.dark) .menuToggle,
+:global(.dark) .themeToggle {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(96, 165, 250, 0.32);
 }
 
-/* (tuỳ chọn) viền/halo gradient khi rơi để trông “đã” hơn */
-.musicBtn.drop::after{
-  content:"";
-  position:absolute; inset:0;
-  border-radius: inherit;
-  background: radial-gradient(120% 60% at 50% -20%, rgba(34,211,238,.35), transparent 60%);
-  filter: blur(10px);
-  pointer-events: none;
-  animation: fadeHalo .65s ease both;
-}
-@keyframes fadeHalo {
-  0% { opacity: .9; }
-  100% { opacity: 0; }
+:global(.dark) .nav {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(96, 165, 250, 0.28);
 }
 
+:global(.dark) .cta {
+  box-shadow: 0 18px 36px rgba(34, 211, 238, 0.24);
+}

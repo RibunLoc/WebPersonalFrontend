@@ -1,115 +1,121 @@
-import styles from './Experience.module.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
+import styles from "./Experience.module.css";
 
-type Experience =  {
+type Experience = {
   title: string;
   company: string;
   time: string;
   location: string;
   desc: string;
   tags: string[];
-}
+};
 
 const experiences: Experience[] = [
   {
     title: "Sinh viên - UIT",
     company: "Trường ĐH CNTT",
     time: "2022 - Nay",
-    location: "HCM",
-    desc: "Nghiên cứu chuyên ngành Mạng máy tính, thực hiện nhiều bài tập lớn về mạng, cloud, bảo mật.",
-    tags: ["Networking", "Cloud", "Linux", "GO", "IOT"],
+    location: "TP. Hồ Chí Minh",
+    desc: "Chuyên sâu Mạng máy tính và Cloud, triển khai các đồ án lớn về bảo mật, hạ tầng và DevOps.",
+    tags: ["Networking", "Cloud", "Linux", "Go", "IoT"],
   },
   {
-    title: "Đồ án chuyên nghành - Đảm nhiệm vai trò triển khai ứng dụng quản lý công việc bằng microservices và DevOps",
-    company: "Trường ĐH CNTT",
+    title: "Triển khai ứng dụng quản lý công việc bằng microservices",
+    company: "Đồ án chuyên ngành",
     time: "02/2022 - 06/2022",
-    location: "HCM",
-    desc: "Tham gia phát triển ứng dụng web quản lý công việc trên nền điện toán đám mây AWS sử dụng công nghệ EKS (Elastic Kubernetes Service).",
-    tags: ["Docker", "K8s", "MySQL", "AWS", "Microservices"],
+    location: "TP. Hồ Chí Minh",
+    desc: "Xây dựng nền tảng quản lý công việc trên AWS với EKS, chia nhỏ microservices và tự động hoá CI/CD.",
+    tags: ["Docker", "Kubernetes", "MySQL", "AWS", "Microservices"],
   },
   {
-    title: "Hệ thống nhúng - Ứng dụng IoT cho hệ thống nhà thông minh",
-    company: "Trường ĐH CNTT",
+    title: "Nhà thông minh IoT",
+    company: "Nghiên cứu hệ thống nhúng",
     time: "2021 - 2022",
-    location: "HCM",
-    desc: "Nghiên cứu và phát triển hệ thống IoT cho nhà thông minh, bao gồm cảm biến và điều khiển từ xa.",
-    tags: ["IoT", "Embedded Systems", "Android Studio", "Firebase"],
-  }
+    location: "TP. Hồ Chí Minh",
+    desc: "Thiết kế hệ thống cảm biến và điều khiển từ xa, kết nối mobile app và hạ tầng Firebase thời gian thực.",
+    tags: ["IoT", "Embedded", "Android Studio", "Firebase"],
+  },
 ];
 
 export default function Experience() {
-  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    // nếu user chọn reduce motion → hiện luôn
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      itemRefs.current.forEach(el => el?.classList.add(styles.revealed));
+    const elements = itemsRef.current.filter(Boolean) as HTMLLIElement[];
+    if (elements.length === 0) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      elements.forEach((el) => el.classList.add(styles.visible));
       return;
     }
-    const io = new IntersectionObserver(
-      entries => {
-        entries.forEach(en => {
-          if (en.isIntersecting) {
-            (en.target as HTMLElement).classList.add(styles.revealed);
-            io.unobserve(en.target); // chỉ chạy 1 lần
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.visible);
+            observer.unobserve(entry.target);
           }
         });
       },
-      {
-        threshold: 0.15,           // 15% item xuất hiện là kích hoạt
-        rootMargin: "0px 0px -8% 0px" // kích hoạt sớm hơn 1 chút ở đáy
-      }
+      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
     );
 
-    itemRefs.current.forEach(el => el && io.observe(el));
-    return () => io.disconnect();
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section className={styles.experienceSection} id="experience">
-      <h2 className={styles.sectionTitle}>Kinh nghiệm</h2>
+    <section className={styles.section} id="experience">
+      <div className={styles.container}>
+        <div className={styles.header}> 
+          <p className={styles.eyebrow}>Hành trình nghề nghiệp</p>
+          <h2 className={styles.title}>Xây hạ tầng vững chắc cho sản phẩm tăng trưởng</h2>
+          <p className={styles.lead}>
+            Tôi luôn tìm cách kết nối giữa nhu cầu kinh doanh và kiến trúc kỹ thuật. Mỗi dự án dưới đây đều là bài học
+            về cách giữ hệ thống ổn định, có thể giám sát và mở rộng.
+          </p>
+        </div>
 
-      <ol className={styles.timeline} role="list">
-        {experiences.map((exp, idx) => (
-          <li
-            className={styles.item}
-            key={`${exp.title}-${idx}`}
-            ref={(el) => { itemRefs.current[idx] = el; }}
-            style={{ ["--i" as any] : idx }}// stagger animation
+        <ol className={styles.timeline} role="list">
+          {experiences.map((exp, index) => (
+            <li
+              key={`${exp.title}-${index}`}
+              ref={(el) => {
+                itemsRef.current[index] = el;
+              }}
+              className={styles.timelineItem}
             >
-              {/* cọc dọc + chấm mốc*/}
-              <div className={styles.marker} aria-hidden="true">
-                <span className={styles.dot} />
+              <div className={styles.node} aria-hidden="true">
+                <span />
               </div>
 
-              {/* card nội dung */}
-              <div className={styles.card}>
-                <header className={styles.header}>
-                  <h3 className={styles.title}>
-                    {exp.title} <span className={styles.company}>- {exp.company}</span>
-                  </h3>
+              <article className={styles.card}>
+                <header className={styles.cardHeader}>
+                  <div>
+                    <h3 className={styles.cardTitle}>{exp.title}</h3>
+                    <p className={styles.company}>{exp.company}</p>
+                  </div>
                   <div className={styles.meta}>
-                    <time className={styles.time}>{exp.time}</time>
-                    <span className={styles.bullet} aria-hidden="true">•</span>
-                    <span className={styles.location}>{exp.location}</span>
+                    <time>{exp.time}</time>
+                    <span aria-hidden="true">•</span>
+                    <span>{exp.location}</span>
                   </div>
                 </header>
 
-                <p className={styles.desc}>{exp.desc}</p>
+                <p className={styles.description}>{exp.desc}</p>
 
-                <ul className={styles.tags} role="list">
+                <ul className={styles.tagList}>
                   {exp.tags.map((tag) => (
-                    <li className={styles.tag} key={tag}>
-                      {tag}
-                    </li>
+                    <li key={tag}>{tag}</li>
                   ))}
                 </ul>
-
-              </div>
-
-          </li>
-        ))}
-      </ol>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }
