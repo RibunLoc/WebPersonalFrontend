@@ -103,8 +103,9 @@
   white-space: normal;
   max-width: min(100%, 42ch);
   position: relative;
-  display: grid;
-  align-items: center;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
   letter-spacing: 0.01em;
   line-height: 1.45;
   /* Reserve space for two lines so layout below stays put */
@@ -120,7 +121,7 @@
   height: 1.05em;
   margin-left: 0.18em;
   background: currentColor;
-  vertical-align: -0.1em;
+  align-self: flex-end;
   animation: blink 1s steps(1) infinite;
 }
 
