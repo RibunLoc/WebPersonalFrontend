@@ -27,7 +27,10 @@ export default function Navbar() {
   });
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("#home");
+  const [activeHash, setActiveHash] = useState(() => {
+    if (typeof window === "undefined") return "#home";
+    return window.location.hash || "#home";
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -70,12 +73,31 @@ export default function Navbar() {
 
   useEffect(() => {
     const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
+    if (!sections.some(Boolean)) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries
+        const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-          .forEach((entry) => setActiveHash(`#${entry.target.id}`));
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          setActiveHash(`#${visible[0].target.id}`);
+          return;
+        }
+
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+        const closest = sections
+          .filter((el): el is HTMLElement => Boolean(el))
+          .map((el) => ({
+            el,
+            distance: Math.abs(el.offsetTop - scrollPosition),
+          }))
+          .sort((a, b) => a.distance - b.distance)[0];
+
+        if (closest) {
+          setActiveHash(`#${closest.el.id}`);
+        }
       },
       {
         rootMargin: "-55% 0px -35% 0px",
@@ -85,6 +107,15 @@ export default function Navbar() {
 
     sections.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#home");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -98,13 +129,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      const previous = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = previous;
-      };
+    if (typeof document === "undefined") return;
+
+    if (!mobileOpen) {
+      document.body.classList.remove("menu-open");
+      document.body.style.overflow = "";
+      return;
     }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("menu-open");
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("menu-open");
+    };
   }, [mobileOpen]);
 
   return (
@@ -131,41 +171,54 @@ export default function Navbar() {
           id="main-navigation"
           className={`${styles.nav} ${mobileOpen ? styles.open : ""}`}
         >
-          <ul className={styles.linkList}>
-            {NAV_LINKS.map(({ href, label }) => {
-              const isActive = activeHash === href;
-              return (
-                <li key={href}>
-                  <a
-                    href={href}
-                    className={`${styles.link} ${isActive ? styles.active : ""}`}
-                    aria-current={isActive ? "page" : undefined}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <div className={styles.navContent}>
+            <ul className={styles.linkList}>
+              {NAV_LINKS.map(({ href, label }) => {
+                const isActive = activeHash === href;
+                return (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      className={`${styles.link} ${isActive ? styles.active : ""}`}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setActiveHash(href);
+                      }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={styles.themeToggle}
-              aria-label="Đổi giao diện sáng/tối"
-              aria-pressed={darkMode}
-              onClick={() => setDarkMode((prev) => !prev)}
-            >
-              {darkMode ? (
-                <MdOutlineLightMode aria-hidden="true" />
-              ) : (
-                <MdOutlineDarkMode aria-hidden="true" />
-              )}
-            </button>
-            <a href="#contact" className={styles.cta} onClick={() => setMobileOpen(false)}>
-              Kết nối ngay
-            </a>
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.themeToggle}
+                aria-label="Đổi giao diện sáng/tối"
+                aria-pressed={darkMode}
+                onClick={() => setDarkMode((prev) => !prev)}
+              >
+                {darkMode ? (
+                  <MdOutlineLightMode aria-hidden="true" />
+                ) : (
+                  <MdOutlineDarkMode aria-hidden="true" />
+                )}
+              </button>
+              <a
+                href="#contact"
+                className={styles.cta}
+                onClick={() => setMobileOpen(false)}
+              >
+                Kết nối ngay
+              </a>
+            </div>
+
+            <p className={styles.mobileNote}>
+              Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.
+            </p>
           </div>
         </nav>
       </div>
