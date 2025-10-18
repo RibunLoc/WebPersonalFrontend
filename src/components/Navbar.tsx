@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { HiMiniBars3BottomRight } from "react-icons/hi2";
+import { HiOutlineBars3 } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
 import styles from "./Navbar.module.css";
 
@@ -72,41 +72,68 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
-    if (!sections.some(Boolean)) return;
+    if (typeof window === "undefined") return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    const sections = NAV_LINKS.map(({ href }) =>
+      document.querySelector<HTMLElement>(href)
+    ).filter((section): section is HTMLElement => Boolean(section));
 
-        if (visible.length > 0) {
-          setActiveHash(`#${visible[0].target.id}`);
-          return;
+    if (sections.length === 0) return;
+
+    let raf = 0;
+
+    const calculateActive = () => {
+      raf = 0;
+      const navHeight = headerRef.current?.offsetHeight ?? 0;
+      const scrollPosition = window.scrollY + navHeight + 12;
+
+      let currentId = sections[0].id;
+
+      for (const section of sections) {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition >= sectionTop) {
+          currentId = section.id;
         }
-
-        const scrollPosition = window.scrollY + window.innerHeight / 2;
-        const closest = sections
-          .filter((el): el is HTMLElement => Boolean(el))
-          .map((el) => ({
-            el,
-            distance: Math.abs(el.offsetTop - scrollPosition),
-          }))
-          .sort((a, b) => a.distance - b.distance)[0];
-
-        if (closest) {
-          setActiveHash(`#${closest.el.id}`);
-        }
-      },
-      {
-        rootMargin: "-55% 0px -35% 0px",
-        threshold: [0.1, 0.25, 0.6],
       }
-    );
 
-    sections.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+      const newHash = `#${currentId}`;
+      setActiveHash((prev) => (prev === newHash ? prev : newHash));
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(calculateActive);
+    };
+
+    const onResize = () => {
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+        raf = 0;
+      }
+      calculateActive();
+    };
+
+    calculateActive();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#home");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -160,11 +187,15 @@ export default function Navbar() {
           type="button"
           aria-expanded={mobileOpen}
           aria-controls="main-navigation"
+          aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
           onClick={() => setMobileOpen((prev) => !prev)}
         >
-          <HiMiniBars3BottomRight className={styles.menuIcon} aria-hidden="true" />
-          <MdClose className={styles.closeIcon} aria-hidden="true" />
-          <span className={"sr-only"}>Mở menu</span>
+          {mobileOpen ? (
+            <MdClose className={styles.icon} aria-hidden="true" />
+          ) : (
+            <HiOutlineBars3 className={styles.icon} aria-hidden="true" />
+          )}
+          <span className={styles.srOnly}>{mobileOpen ? "Đóng menu" : "Mở menu"}</span>
         </button>
 
         <nav
