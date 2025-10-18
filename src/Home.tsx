@@ -54,6 +54,7 @@ export default function Home() {
 
         <p className={`${styles.subtitle} ${isDeleting ? styles.deleting : ''}`} aria-live="polite">
           {text}
+          {"\u2060"}
           <span className={styles.cursor} aria-hidden="true" />
         </p>
 

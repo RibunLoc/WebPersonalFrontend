@@ -19,7 +19,13 @@
 }
 
 :global(.dark) .section::before {
-  background: linear-gradient(160deg, rgba(37, 99, 235, 0.26), transparent 65%);
+  background: linear-gradient(155deg, rgba(37, 99, 235, 0.32), rgba(15, 118, 110, 0.18) 70%, transparent 88%);
+}
+
+:global(.dark) .section {
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .container {

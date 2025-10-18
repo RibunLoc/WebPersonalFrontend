@@ -93,21 +93,25 @@
 }
 
 .subtitle {
-  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
-  font-weight: 600;
+  /* Smaller and more compact for smoother typing */
+  font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+  font-weight: 500;
   color: var(--hero-subtitle);
   text-shadow: var(--hero-subtitle-shadow);
   margin: 0;
-  white-space: nowrap;
-  max-width: none;
+  /* Allow wrapping so long sentences don’t get clipped */
+  white-space: normal;
+  max-width: min(100%, 42ch);
   position: relative;
   display: grid;
   align-items: center;
+  letter-spacing: 0.01em;
   line-height: 1.45;
-  min-height: clamp(3.4rem, 6.5vw, 4.4rem);
+  /* Reserve space for two lines so layout below stays put */
+  min-height: calc(1.45em * 2.1);
   padding-block: 0.1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: initial;
 }
 
 .cursor {
@@ -359,10 +363,7 @@
 
   .subtitle {
     margin-inline: auto;
-    white-space: normal;
-    overflow: visible;
-    max-width: min(100%, 32ch);
-    text-overflow: initial;
+    max-width: min(100%, 36ch);
   }
 
   .heroHighlights {

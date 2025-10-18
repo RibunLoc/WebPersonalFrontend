@@ -8,9 +8,12 @@
   overflow-x: hidden;
 }
 
-.app-shell > *:not(.app-surface) {
-  position: relative;
+.app-shell > *:not(.app-surface):not(header) {
   z-index: 1;
+}
+
+.app-shell > *:not(.app-surface):not(header) {
+  position: relative;
 }
 
 .app-surface {
