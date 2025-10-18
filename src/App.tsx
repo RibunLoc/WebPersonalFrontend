@@ -8,6 +8,7 @@ import Project from './Project'
 import ProjectDetail from './ProjectDetailPage'
 import ScrollToTop from './components/ScrollToTop'
 import Contact from './Contact';
+import * as Sentry from '@sentry/react';
 
 function App() {
   return (
@@ -34,6 +35,15 @@ function App() {
                 </section>
                 <section id="contact" className="h-screen bg-gray-100">
                   <Contact />
+                </section>
+                <section id="sentry" className="h-screen bg-gray-100">
+                  <button
+                    onClick={() => {
+                      throw new Error('This is your first error!');
+                    }}
+                  >
+                    Break the world
+                  </button>
                 </section>
               </>
             }
