@@ -1,7 +1,9 @@
 .section {
   width: 100%;
   padding: clamp(4.5rem, 12vw, 6.5rem) 0;
-  background: transparent;
+  background: var(--experience-bg);
+  border-radius: clamp(2.5rem, 6vw, 3.5rem);
+  box-shadow: var(--experience-shell-shadow);
 }
 
 .container {
@@ -16,6 +18,7 @@
   gap: 1rem;
   text-align: left;
   max-width: 760px;
+  color: var(--experience-ink);
 }
 
 .eyebrow {
@@ -31,14 +34,14 @@
   font-family: var(--font-heading);
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.18;
-  color: var(--heading-color);
+  color: var(--experience-title);
 }
 
 .lead {
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.7;
-  color: var(--text-muted);
+  color: var(--experience-lead);
 }
 
 .timeline {
@@ -99,11 +102,12 @@
   position: relative;
   border-radius: 24px;
   padding: clamp(1.5rem, 4vw, 2rem);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+  background: var(--experience-card-bg);
+  border: 1px solid var(--experience-card-border);
+  box-shadow: var(--experience-card-shadow);
   display: grid;
   gap: 1.1rem;
+  color: var(--experience-ink);
 }
 
 .card::after {
@@ -131,12 +135,12 @@
   margin: 0;
   font-size: clamp(1.25rem, 2.2vw, 1.45rem);
   font-weight: 600;
-  color: var(--heading-color);
+  color: var(--experience-title);
 }
 
 .company {
   margin: 0.25rem 0 0;
-  color: var(--text-muted);
+  color: var(--experience-meta);
   font-weight: 500;
 }
 
@@ -145,12 +149,12 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--experience-meta);
 }
 
 .description {
   margin: 0;
-  color: var(--text-color);
+  color: var(--experience-body);
   line-height: 1.7;
 }
 
@@ -168,10 +172,12 @@
   align-items: center;
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
-  background: rgba(37, 99, 235, 0.12);
-  color: var(--heading-color);
+  background: var(--experience-chip-bg);
+  color: var(--experience-chip-text);
   font-weight: 500;
   font-size: 0.95rem;
+  border: 1px solid var(--experience-chip-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 720px) {
@@ -188,20 +194,21 @@
   }
 }
 
-:global(.dark) .card {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 36px 70px rgba(2, 6, 23, 0.55);
+.section::before {
+  content: "";
+  position: absolute;
+  inset: clamp(-1.8rem, -4vw, -2.6rem);
+  border-radius: inherit;
+  background: linear-gradient(140deg, rgba(148, 163, 184, 0.14), transparent 60%);
+  pointer-events: none;
+  z-index: -1;
 }
 
-:global(.dark) .description,
-:global(.dark) .meta,
-:global(.dark) .company,
-:global(.dark) .lead {
-  color: rgba(226, 232, 240, 0.78);
+.section {
+  position: relative;
+  overflow: hidden;
 }
 
-:global(.dark) .tagList li {
-  background: rgba(59, 130, 246, 0.18);
-  color: #f8fafc;
+:global(.dark) .section::before {
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.28), transparent 60%);
 }

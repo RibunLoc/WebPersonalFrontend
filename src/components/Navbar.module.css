@@ -285,6 +285,18 @@
   color: #e2e8f0;
 }
 
+:global(.dark) .menuToggle,
+:global(.dark) .themeToggle {
+  background: color-mix(in srgb, rgba(15, 23, 42, 0.92) 80%, rgba(59, 130, 246, 0.2));
+  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.45);
+}
+
+:global(.dark) .menuToggle:hover,
+:global(.dark) .themeToggle:hover {
+  background: color-mix(in srgb, rgba(37, 99, 235, 0.25) 65%, rgba(15, 23, 42, 0.85));
+  box-shadow: 0 20px 46px rgba(15, 118, 110, 0.28);
+}
+
 :global(.dark) .link:hover,
 :global(.dark) .active {
   color: #f8fafc;

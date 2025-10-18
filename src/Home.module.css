@@ -101,9 +101,11 @@
   white-space: normal;
   max-width: 32ch;
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
-  min-height: clamp(2.6rem, 6vw, 3.4rem);
+  line-height: 1.45;
+  min-height: clamp(3.4rem, 6.5vw, 4.4rem);
+  padding-block: 0.1rem;
 }
 
 .cursor {
