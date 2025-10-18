@@ -384,9 +384,11 @@
 
 @media (max-width: 640px) {
   .hero {
-    width: calc(100% - clamp(1.25rem, 8vw, 2rem));
+    width: 100%;
+    margin-inline: 0;
     padding: clamp(2rem, 12vw, 3.5rem) clamp(1.25rem, 10vw, 2.5rem);
     border-radius: clamp(2rem, 8vw, 3rem);
+    gap: clamp(1.75rem, 8vw, 2.5rem);
   }
 
   .subtitle {

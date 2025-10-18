@@ -3,6 +3,9 @@
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Poppins', 'Segoe UI', sans-serif;
 
+  /* Navigation */
+  --nav-h: 82px;
+
   /* Core palette */
   --text-color: #0f172a;
   --text-muted: #475569;
