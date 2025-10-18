@@ -275,7 +275,7 @@
   --nav-button-bg: rgba(15, 23, 42, 0.78);
   --nav-button-border: rgba(96, 165, 250, 0.32);
   --nav-button-ink: #e2e8f0;
-  --nav-mobile-surface: rgba(13, 20, 35, 0.94);
+  --nav-mobile-surface: rgba(13, 20, 35, 0.82);
 }
 
 :global(.dark) .brandText,
@@ -291,7 +291,6 @@
 }
 
 :global(.dark) .nav {
-  background: var(--nav-mobile-surface);
   border-color: var(--nav-border);
 }
 
