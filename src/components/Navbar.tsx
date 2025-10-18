@@ -27,7 +27,10 @@ export default function Navbar() {
   });
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("#home");
+  const [activeHash, setActiveHash] = useState(() => {
+    if (typeof window === "undefined") return "#home";
+    return window.location.hash || "#home";
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -70,12 +73,31 @@ export default function Navbar() {
 
   useEffect(() => {
     const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
+    if (!sections.some(Boolean)) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries
+        const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-          .forEach((entry) => setActiveHash(`#${entry.target.id}`));
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          setActiveHash(`#${visible[0].target.id}`);
+          return;
+        }
+
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+        const closest = sections
+          .filter((el): el is HTMLElement => Boolean(el))
+          .map((el) => ({
+            el,
+            distance: Math.abs(el.offsetTop - scrollPosition),
+          }))
+          .sort((a, b) => a.distance - b.distance)[0];
+
+        if (closest) {
+          setActiveHash(`#${closest.el.id}`);
+        }
       },
       {
         rootMargin: "-55% 0px -35% 0px",
@@ -85,6 +107,15 @@ export default function Navbar() {
 
     sections.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#home");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -140,7 +171,10 @@ export default function Navbar() {
                     href={href}
                     className={`${styles.link} ${isActive ? styles.active : ""}`}
                     aria-current={isActive ? "page" : undefined}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setActiveHash(href);
+                    }}
                   >
                     {label}
                   </a>
