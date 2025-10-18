@@ -1,8 +1,28 @@
 /* Contact.module.css (hoặc ContactSlide.module.css) */
 .contactSection {
+  position: relative;
   background: var(--background-contact);
   padding: 80px 20px;
   text-align: center;
+  border-radius: clamp(2.2rem, 6vw, 3rem);
+  box-shadow: var(--contact-shell-shadow);
+  border: 1px solid var(--contact-border);
+  overflow: hidden;
+}
+
+.contactSection::before {
+  content: "";
+  position: absolute;
+  inset: clamp(-1.5rem, -4vw, -2rem);
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgba(148, 163, 184, 0.16), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contactSection > * {
+  position: relative;
+  z-index: 1;
 }
 
 .sectionDesc { color: var(--text-color); }
@@ -115,6 +135,12 @@
     radial-gradient(circle at 18% 12%, rgba(59, 130, 246, 0.18), transparent 60%),
     radial-gradient(circle at 82% 18%, rgba(45, 212, 191, 0.16), transparent 62%),
     linear-gradient(180deg, rgba(8, 15, 32, 0.92), rgba(4, 12, 28, 0.94));
+  box-shadow: var(--contact-shell-shadow);
+  border-color: var(--contact-border);
+}
+
+:global(.dark) .contactSection::before {
+  background: linear-gradient(160deg, rgba(37, 99, 235, 0.22), transparent 60%);
 }
 
 :global(.dark) .form input,
