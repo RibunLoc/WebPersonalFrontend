@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { HiMiniBars3BottomRight } from "react-icons/hi2";
+import { HiOutlineBars3 } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
 import styles from "./Navbar.module.css";
 
@@ -27,7 +27,10 @@ export default function Navbar() {
   });
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("#home");
+  const [activeHash, setActiveHash] = useState(() => {
+    if (typeof window === "undefined") return "#home";
+    return window.location.hash || "#home";
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -69,22 +72,68 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-          .forEach((entry) => setActiveHash(`#${entry.target.id}`));
-      },
-      {
-        rootMargin: "-55% 0px -35% 0px",
-        threshold: [0.1, 0.25, 0.6],
-      }
-    );
+    if (typeof window === "undefined") return;
 
-    sections.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+    const sections = NAV_LINKS.map(({ href }) =>
+      document.querySelector<HTMLElement>(href)
+    ).filter((section): section is HTMLElement => Boolean(section));
+
+    if (sections.length === 0) return;
+
+    let raf = 0;
+
+    const calculateActive = () => {
+      raf = 0;
+      const navHeight = headerRef.current?.offsetHeight ?? 0;
+      const scrollPosition = window.scrollY + navHeight + 12;
+
+      let currentId = sections[0].id;
+
+      for (const section of sections) {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition >= sectionTop) {
+          currentId = section.id;
+        }
+      }
+
+      const newHash = `#${currentId}`;
+      setActiveHash((prev) => (prev === newHash ? prev : newHash));
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(calculateActive);
+    };
+
+    const onResize = () => {
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+        raf = 0;
+      }
+      calculateActive();
+    };
+
+    calculateActive();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#home");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -98,13 +147,22 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      const previous = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = previous;
-      };
+    if (typeof document === "undefined") return;
+
+    if (!mobileOpen) {
+      document.body.classList.remove("menu-open");
+      document.body.style.overflow = "";
+      return;
     }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("menu-open");
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("menu-open");
+    };
   }, [mobileOpen]);
 
   return (
@@ -120,52 +178,69 @@ export default function Navbar() {
           type="button"
           aria-expanded={mobileOpen}
           aria-controls="main-navigation"
+          aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
           onClick={() => setMobileOpen((prev) => !prev)}
         >
-          <HiMiniBars3BottomRight className={styles.menuIcon} aria-hidden="true" />
-          <MdClose className={styles.closeIcon} aria-hidden="true" />
-          <span className={"sr-only"}>Mở menu</span>
+          {mobileOpen ? (
+            <MdClose className={styles.icon} aria-hidden="true" />
+          ) : (
+            <HiOutlineBars3 className={styles.icon} aria-hidden="true" />
+          )}
+          <span className={styles.srOnly}>{mobileOpen ? "Đóng menu" : "Mở menu"}</span>
         </button>
 
         <nav
           id="main-navigation"
           className={`${styles.nav} ${mobileOpen ? styles.open : ""}`}
         >
-          <ul className={styles.linkList}>
-            {NAV_LINKS.map(({ href, label }) => {
-              const isActive = activeHash === href;
-              return (
-                <li key={href}>
-                  <a
-                    href={href}
-                    className={`${styles.link} ${isActive ? styles.active : ""}`}
-                    aria-current={isActive ? "page" : undefined}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <div className={styles.navContent}>
+            <ul className={styles.linkList}>
+              {NAV_LINKS.map(({ href, label }) => {
+                const isActive = activeHash === href;
+                return (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      className={`${styles.link} ${isActive ? styles.active : ""}`}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setActiveHash(href);
+                      }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={styles.themeToggle}
-              aria-label="Đổi giao diện sáng/tối"
-              aria-pressed={darkMode}
-              onClick={() => setDarkMode((prev) => !prev)}
-            >
-              {darkMode ? (
-                <MdOutlineLightMode aria-hidden="true" />
-              ) : (
-                <MdOutlineDarkMode aria-hidden="true" />
-              )}
-            </button>
-            <a href="#contact" className={styles.cta} onClick={() => setMobileOpen(false)}>
-              Kết nối ngay
-            </a>
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.themeToggle}
+                aria-label="Đổi giao diện sáng/tối"
+                aria-pressed={darkMode}
+                onClick={() => setDarkMode((prev) => !prev)}
+              >
+                {darkMode ? (
+                  <MdOutlineLightMode aria-hidden="true" />
+                ) : (
+                  <MdOutlineDarkMode aria-hidden="true" />
+                )}
+              </button>
+              <a
+                href="#contact"
+                className={styles.cta}
+                onClick={() => setMobileOpen(false)}
+              >
+                Kết nối ngay
+              </a>
+            </div>
+
+            <p className={styles.mobileNote}>
+              Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.
+            </p>
           </div>
         </nav>
       </div>

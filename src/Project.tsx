@@ -74,8 +74,11 @@ export default function Project() {
         </div>
 
         <div className={styles.grid}>
-          {projects.map((project) => (
-            <article key={project.id} className={styles.card}>
+          {projects.map((project, index) => (
+            <article
+              key={project.id}
+              className={`${styles.card} ${index % 2 === 1 ? styles.cardAlternate : ''}`}
+            >
               {project.imageUrl && (
                 <div className={styles.media}>
                   <img src={project.imageUrl} alt={project.title} loading="lazy" />
