@@ -98,14 +98,16 @@
   color: var(--hero-subtitle);
   text-shadow: var(--hero-subtitle-shadow);
   margin: 0;
-  white-space: normal;
-  max-width: 32ch;
+  white-space: nowrap;
+  max-width: none;
   position: relative;
   display: grid;
   align-items: center;
   line-height: 1.45;
   min-height: clamp(3.4rem, 6.5vw, 4.4rem);
   padding-block: 0.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cursor {
@@ -357,6 +359,10 @@
 
   .subtitle {
     margin-inline: auto;
+    white-space: normal;
+    overflow: visible;
+    max-width: min(100%, 32ch);
+    text-overflow: initial;
   }
 
   .heroHighlights {
@@ -377,6 +383,11 @@
   .hero {
     padding: clamp(2rem, 10vw, 3.5rem);
     border-radius: clamp(2rem, 8vw, 3rem);
+  }
+
+  .subtitle {
+    white-space: normal;
+    max-width: 100%;
   }
 
   .heroHighlights {

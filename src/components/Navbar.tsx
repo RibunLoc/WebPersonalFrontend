@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
@@ -18,6 +18,7 @@ export default function Navbar() {
     return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
   }, []);
 
+  const headerRef = useRef<HTMLElement | null>(null);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window === "undefined") return false;
     const saved = window.localStorage.getItem("theme");
@@ -32,6 +33,40 @@ export default function Navbar() {
     document.documentElement.classList.toggle("dark", darkMode);
     window.localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    const headerEl = headerRef.current;
+    if (!headerEl) return;
+
+    const root = document.documentElement;
+    const setHeight = () => {
+      root.style.setProperty("--nav-h", `${headerEl.offsetHeight}px`);
+    };
+
+    setHeight();
+
+    let frame = 0;
+    const resizeObserver = typeof window.ResizeObserver !== "undefined"
+      ? new window.ResizeObserver(() => {
+          frame = window.requestAnimationFrame(setHeight);
+        })
+      : null;
+
+    resizeObserver?.observe(headerEl);
+    window.addEventListener("resize", setHeight);
+
+    return () => {
+      window.removeEventListener("resize", setHeight);
+      if (resizeObserver && headerEl) {
+        resizeObserver.unobserve(headerEl);
+        resizeObserver.disconnect();
+      }
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
@@ -73,7 +108,7 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <header className={styles.wrapper}>
+    <header ref={headerRef} className={styles.wrapper}>
       <div className={styles.inner}>
         <a href="#home" className={styles.brand} aria-label="Về đầu trang">
           <span className={styles.dot} aria-hidden="true" />

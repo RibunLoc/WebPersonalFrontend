@@ -215,6 +215,12 @@
   --toc-gap-top: 16px;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 24px);
+  background-color: var(--bg-page);
+}
+
 :root,
 :root.dark {
   color: var(--text-color);
@@ -227,9 +233,9 @@
   --heading-color: #f8fafc;
   --text: var(--text-color);
 
-  --bg-page: #0b1120;
-  --surface-1: #0f172a;
-  --surface-2: #131c31;
+  --bg-page: #020617;
+  --surface-1: #071120;
+  --surface-2: #0d1d36;
 
   --border: rgba(148, 163, 184, 0.22);
   --border-dot-color: rgba(148, 163, 184, 0.3);
@@ -254,7 +260,7 @@
   --icon-bg: #e2e8f0;
   --icon-color: #0b1220;
 
-  --background-color: rgba(15, 23, 42, 0.92);
+  --background-color: rgba(5, 12, 26, 0.92);
   --background-color-reverse: #0f172a;
 
   --hero-bg: linear-gradient(135deg, rgba(5, 13, 33, 0.94), rgba(8, 27, 52, 0.9) 55%, rgba(4, 13, 30, 0.96));
