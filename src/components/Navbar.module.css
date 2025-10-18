@@ -94,26 +94,13 @@
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
 }
 
-.menuIcon,
-.closeIcon {
-  font-size: 1.4rem;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+.icon {
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
 }
 
-.closeIcon {
-  position: absolute;
-  opacity: 0;
-  transform: scale(0.6) rotate(-90deg);
-}
-
-.menuToggle[aria-expanded="true"] .menuIcon {
-  opacity: 0;
-  transform: scale(0.6) rotate(90deg);
-}
-
-.menuToggle[aria-expanded="true"] .closeIcon {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
+.menuToggle[aria-expanded="true"] .icon {
+  transform: rotate(90deg);
 }
 
 .nav {
@@ -235,7 +222,7 @@
   display: none;
 }
 
-.sr-only {
+.srOnly {
   position: absolute;
   width: 1px;
   height: 1px;
