@@ -1,272 +1,134 @@
-import { useEffect, useState, useRef } from "react";
-import styles from "./Navbar.module.css";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { useEffect, useMemo, useState } from "react";
+import { MdOutlineDarkMode, MdDarkMode } from "react-icons/md";
+import { HiMiniBars3BottomRight } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
-import { FaPlay, FaPause } from "react-icons/fa";
+import styles from "./Navbar.module.css";
 
-const SECTIONS = ["home", "about", "experience", "project", "contact"] as const;
+const NAV_LINKS = [
+  { href: "#home", label: "Trang chủ" },
+  { href: "#about", label: "Giới thiệu" },
+  { href: "#experience", label: "Kinh nghiệm" },
+  { href: "#project", label: "Dự án" },
+  { href: "#contact", label: "Liên hệ" },
+] as const;
 
 export default function Navbar() {
-  // Khởi tạo dark mode: ưu tiên localStorage, fallback theo system
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
+  const prefersDark = useMemo(() => {
     if (typeof window === "undefined") return false;
-    const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
     return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-  });
-
-  // Thêm nhạc
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [drop, setDrop] = useState(false);
-  const audioRef = useRef<HTMLAudioElement|null>(null);
-
-  useEffect(() => {
-  audioRef.current = new Audio("/audio/bg-music.mp3");
-  audioRef.current.loop = true; // lặp nhạc
-  audioRef.current.volume = 0.6; // chỉnh âm lượng (0–1)
-}, []);
-
-  const handleClick = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (isPlaying) a.pause() ;
-    else {
-      a.play().catch((err) => {
-        console.error("Button Play error music:", err);
-      });
-    }
-    setIsPlaying(!isPlaying);
-
-    // kích hoạt animation rơi cho toàn button
-    setDrop(true);
-    window.setTimeout(() => setDrop(false), 650); // khớp với thời lượng keyframes
-  };
-
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState<string>("#home");
-
-
-  // Ân hiện theo cuộn
-  const [isHidden, setIsHidden] = useState(false);
-  const [atTop, setAtTop] = useState(true);
-  const [forceReveal, setForceReveal] = useState(false);
-  const lastY = useRef(0);
-  const ticking = useRef(false);
-
-  const [canHover, setCanHover] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setCanHover(window.matchMedia?.("(hover: hover)").matches ?? false);
   }, []);
 
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (!ticking.current) {
-        window.requestAnimationFrame(() => {
-          setAtTop( y < 10 );
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const saved = window.localStorage.getItem("theme");
+    if (!saved) return prefersDark;
+    return saved === "dark";
+  });
 
-          if (forceReveal || isMobileMenuOpen) {
-            lastY.current = y;
-            ticking.current = false;
-            return;
-          }
-
-          const goingDown = y > lastY.current;
-
-          if (goingDown && y > 120 && !isMobileMenuOpen) {
-            setIsHidden(true);
-          } else if ( !goingDown ) {
-            setIsHidden(false);
-          }
-
-          lastY.current = y;
-          ticking.current = false;
-        });
-        ticking.current = true;
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isMobileMenuOpen, forceReveal]);
-
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState("#home");
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
+    window.localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
-
-  // Theo dõi section bằng IntersectionObserver để set active link mượt hơn
   useEffect(() => {
-  let raf = 0;                               // id của requestAnimationFrame
-  let disconnect: (() => void) | undefined;  // lưu cleanup cho observer
-
-  const start = () => {
-    const els = SECTIONS.map((id) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => Boolean(el)
-    );
-
-    if (els.length === 0) {
-      // DOM section chưa sẵn -> thử lại frame sau
-      raf = requestAnimationFrame(start);
-      return;
-    }
-
+    const sections = NAV_LINKS.map(({ href }) => document.querySelector<HTMLElement>(href));
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveLink(`#${entry.target.id}`);
-          }
-        }
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+          .forEach((entry) => setActiveHash(`#${entry.target.id}`));
       },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0.01 }
+      {
+        rootMargin: "-55% 0px -35% 0px",
+        threshold: [0.1, 0.25, 0.6],
+      }
     );
 
-    els.forEach((el) => observer.observe(el));
+    sections.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
-    // lưu cleanup để gọi khi unmount
-    disconnect = () => observer.disconnect();
-  };
-
-  start();
-
-  return () => {
-    if (raf) cancelAnimationFrame(raf);
-    if (disconnect) disconnect();
-  };
-}, []);
-
-  // Đóng menu khi resize về desktop (tránh kẹt trạng thái mở)
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
+      if (window.innerWidth >= 960) {
+        setMobileOpen(false);
+      }
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const shouldShow = !isHidden || forceReveal || atTop || isMobileMenuOpen;
-
-
-  const hideDelay = useRef<number | null>(null);
-  const holdReveal = () => {
-    if (hideDelay.current) {
-      clearTimeout(hideDelay.current);
-      hideDelay.current = null;
-    }
-    setForceReveal(true);
-  };
-  const releaseReveal = () => {
-    // delay nhỏ để tránh giật khi chuyển tiếp giữa revealZone ↔ navbar
-    if (hideDelay.current) clearTimeout(hideDelay.current);
-    hideDelay.current = window.setTimeout(() => setForceReveal(false), 120);
-  };
-
   useEffect(() => {
-    const original = document.body.style.overflow;
-    document.body.style.overflow = isMobileMenuOpen  ? "hidden" : original || "";
-    return () => { document.body.style.overflow = original; };
-  }, [isMobileMenuOpen ]);
+    if (mobileOpen) {
+      const previous = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = previous;
+      };
+    }
+  }, [mobileOpen]);
 
   return (
-    <>
-    {canHover && (
-      <div
-      className={styles.revealZone }
-      aria-hidden="true"
-      role="presentation"
-      onMouseEnter={holdReveal}
-      onMouseLeave={releaseReveal}
-    />
-    )}
+    <header className={styles.wrapper}>
+      <div className={styles.inner}>
+        <a href="#home" className={styles.brand} aria-label="Về đầu trang">
+          <span className={styles.dot} aria-hidden="true" />
+          <span className={styles.brandText}>Thanh Lộc</span>
+        </a>
 
-    <header
-      className={`${styles.navbar} ${shouldShow ? "" : styles.hidden}`}
-      onMouseEnter={holdReveal}
-      onMouseLeave={releaseReveal}
-      onFocusCapture={holdReveal}
-      onBlurCapture={releaseReveal}
-    >
-      <div className={styles.container}>
-        {/* Avatar + tên */}
-        <div className={styles.profile}>
-          <img src="/avatar.jpg" alt="Avatar" className={styles.avatar} />
-            <div>
-              <h1 className={styles.name}>Thanh Lộc</h1>
-              <p className={styles.subtitle}>Ri bún</p>
-            </div>
-          </div>
+        <button
+          className={styles.menuToggle}
+          type="button"
+          aria-expanded={mobileOpen}
+          aria-controls="main-navigation"
+          onClick={() => setMobileOpen((prev) => !prev)}
+        >
+          <HiMiniBars3BottomRight className={styles.menuIcon} aria-hidden="true" />
+          <MdClose className={styles.closeIcon} aria-hidden="true" />
+          <span className={"sr-only"}>Mở menu</span>
+        </button>
 
-          <button
-            className={`${styles.hamburger} ${isMobileMenuOpen ? styles.active : ""}`}
-            onClick={toggleMobileMenu}
-            aria-label={isMobileMenuOpen ? "Đóng menu" : "Mở menu"}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="main-menu"
-            type="button"
-          >
-            <span className={styles.hamburgerIcon} aria-hidden="true">
-              <GiHamburgerMenu className={styles.iconBurger} />
-              <MdClose className={styles.iconClose} />
-            </span>
-          </button>
-
-          {/* Menu + DarkMode */}
-          <div
-            id="main-menu"
-            className={`${styles.rightMenu} ${isMobileMenuOpen ? styles.open : ""}`}
-          >
-            <nav className={styles.navLinks}>
-              {SECTIONS.map((section) => {
-                const href = `#${section}`;
-                const isActive = activeLink === href;
-                return (
+        <nav
+          id="main-navigation"
+          className={`${styles.nav} ${mobileOpen ? styles.open : ""}`}
+        >
+          <ul className={styles.linkList}>
+            {NAV_LINKS.map(({ href, label }) => {
+              const isActive = activeHash === href;
+              return (
+                <li key={href}>
                   <a
-                    key={section}
                     href={href}
                     className={`${styles.link} ${isActive ? styles.active : ""}`}
                     aria-current={isActive ? "page" : undefined}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => setMobileOpen(false)}
                   >
-                    <span className={styles.linkLabel}>
-                      {section.charAt(0).toUpperCase() + section.slice(1)}
-                    </span>
+                    {label}
                   </a>
-                );
-              })}
-            </nav>
+                </li>
+              );
+            })}
+          </ul>
 
+          <div className={styles.actions}>
             <button
-              onClick={() => setDarkMode((v) => !v)}
-              className={styles.toggleButton}
               type="button"
-              aria-label="Toggle dark mode"
-              title="Toggle dark mode"
+              className={styles.themeToggle}
+              aria-label="Đổi giao diện sáng/tối"
+              onClick={() => setDarkMode((prev) => !prev)}
             >
-              {darkMode ? <MdDarkMode /> : <MdOutlineDarkMode />}
+              {darkMode ? <MdDarkMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
             </button>
-
-            {/* === Nút Music === */}
-            {/* === Nút Nhạc === */}
-            <button
-              onClick={handleClick}
-              className={`${styles.musicBtn} ${drop ? styles.drop : ""} ${isPlaying ? styles.playing : ""}`}
-              type="button"
-              aria-label="Toggle music"
-            >
-              {isPlaying ? <FaPause  className={styles.icon}/> : <FaPlay className={styles.icon}/>}
-            </button>
-
-            <audio ref={audioRef} loop>
-              <source src="/music.mp3" type="audio/mpeg"/>
-            </audio>
+            <a href="#contact" className={styles.cta} onClick={() => setMobileOpen(false)}>
+              Kết nối ngay
+            </a>
           </div>
-        </div>
-      </header>
-    </>
+        </nav>
+      </div>
+    </header>
   );
 }

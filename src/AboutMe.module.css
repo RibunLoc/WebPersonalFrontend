@@ -1,420 +1,321 @@
-/* Ưu tiên layer: cho phần content/slide nổi cao hơn header */
-.header{ position: relative; z-index: 1; }
-.content{ position: relative; z-index: 2; }
-.slide{   position: relative; z-index: 2; }
-
-.slide {
-  margin: 0 auto;
-  text-align: center;
-  padding: 1rem;
-}
-
-.aboutSection {
-  background-color: var(--about-section-bg);
-  padding: 80px 0px;
-  text-align: center;
+.section {
   width: 100%;
-  overflow: clip;
+  padding: clamp(4rem, 10vw, 6.5rem) 0;
+  color: var(--text-color);
 }
 
-.aboutSection ul,
-.aboutSection li {
-  list-style: none !important;
-  margin: 0;
-  padding: 0;
-}
-.aboutSection li::marker { content: "" !important; }
-
-.sectionTitle {
-  font-family: var(--font-heading);
-  font-size: clamp(28px, 2.5vw, 48px);
-  font-weight: 700;
-  line-height: var(--lh-heading);
-  letter-spacing: var(--tracking-wider);
-  color: var(--heading-color);
-  margin: 32px 0 36px;
-}
-
-.header {
-  position: relative;
-  padding: 0 4rem;
+.container {
+  width: min(1120px, calc(100% - clamp(2rem, 8vw, 6rem)));
+  margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 1rem;
+  text-align: left;
+  max-width: 720px;
+}
+
+.eyebrow {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brand);
 }
 
 .title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: left;
-}
-
-.underline {
-  width: 60px;
-  height: 8px;
-  background-color: var(--about-underline);
-  margin: 12px auto 30px 0px;
-}
-
-.socialLinks {
-  display: flex;
-  gap: 1rem;
-  font-size: 1.25rem;
-  margin: 52px 0;
-}
-
-.content {
-  box-sizing: border-box;
-  --gutter: clamp(20px, 4vw, 56px);
-  position: relative;
-  overflow-x: clip;
-  overflow-y: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 0 28px;
-  padding: 0 var(--gutter);
-}
-
-/* Nút điều hướng – dùng được cho cả .navBtn và .arrow */
-.navBtn,
-.arrow{
-  /* nằm trong grid-cell, không gây tràn ngang */
-  position: relative;
-  width: var(--btn-size);
-  height: var(--btn-size);
-  display: grid;
-  place-items: center;
-  justify-self: center;
-  align-self: center;
-
-  border: 0;
-  border-radius: 999px;
-  background: var(--about-arrow);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  color: #111;
-
-  box-shadow:
-    0 2px 10px rgb(0 0 0 / 16%),
-    inset 0 1px 0 rgb(255 255 255 / 60%);
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
-  touch-action: manipulation;
-}
-
-/* icon svg bên trong */
-.icon{
-  width: 54%;
-  height: 54%;
-}
-
-/* nếu bạn còn dùng .left/.right để canh */
-.left{  justify-self: start; }
-.right{ justify-self: end; }
-
-.navBtn:hover,
-.arrow:hover{ transform: scale(1.06); }
-
-.navBtn:active,
-.arrow:active{ transform: scale(.97); }
-
-.navBtn:focus-visible,
-.arrow:focus-visible{
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgb(59 130 246 / 55%),
-    0 8px 24px rgb(0 0 0 / 25%);
-}
-
-.navBtn[disabled],
-.arrow[disabled]{ opacity: .35; pointer-events: none; }
-
-button:focus {
-  outline: none;
-}
-
-.textWrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.textWrapper > div {
-  flex: 1;
-}
-
-.textWrapper p {
-  font-family: var(--font-body);
-  font-size: var(--fs-lg);
-  line-height: var(--lh-base);
-  color: var(--text-color);
-  letter-spacing: var(--tracking-wide);
-  margin-bottom: 1rem;
-}
-
-.cardWrapper {
-  position: relative;
-  z-index: 0;
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.3s ease;
-  background: var(--card-bg) !important;
-  color: var(--on-card)
-}
-
-.cardWrapper:hover {
-  z-index: 10;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
-}
-
-.altCard {
-  background-color: var(--alt-card-bg);
-}
-
-body.dark .cardWrapper {
-  background-color: var(--card-bg-dark);
-}
-
-body.dark .altCard {
-  background-color: var(--alt-card-bg-dark);
-}
-
-.dots {
-  margin-top: 30px;
-}
-
-.dots{
-  position: relative;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 22px;
-  pointer-events: auto; /* đảm bảo bấm được nếu có layer phủ */
-}
-
-.dotBtn{
-  --size: 12px;
-  --hit: 30px;
-  position: relative;
-  width: var(--hit);
-  height: var(--hit);
-  display: grid;
-  place-items: center;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
-
-.dotBtn:focus-visible{
-  outline: none;
-  /* vòng sáng focus cho a11y */
-  box-shadow: 0 0 0 3px rgba(59,130,246,.45);
-  border-radius: 999px;
-}
-
-.dotBase,
-.dotActive{
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 999px;
-}
-
-/* chấm nền xám (luôn hiện) */
-.dotBase{
-  background: var(--about-dot-base);
-}
-
-/* indicator đen (chỉ gắn vào dot đang active) – dùng layoutId để trượt mượt */
-.dotActive{
-  background: var(--about-dot-active);
-}
-
-/* hover phóng nhẹ */
-.dotBtn:hover .dotBase{ transform: scale(1.5); transition: transform .25s ease; }
-
-.active {
-    background-color: #333;
-}
-
-.slide {
-  position: relative;
-  z-index: 2;
-  margin: 0 auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: var(--about-slide-shadow);
-  text-align: left;
-  animation: fadeIn 0.4s ease-in-out;
-  background-color: var(--about-section-bg);
-}
-
-.slideLayer{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--gutter);
-  right: var(--gutter);
-  width: auto;                      /* thay vì width:100% */
-  z-index: 1;
-}
-
-.slideContent {
-  position:relative;
-  width:100%;
-  height:auto;
-  padding-bottom: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 16px;
-}
-
-/* trước: align-items: stretch */
-.sliderGrid{
-  --btn-size: clamp(60px, 8vw, 76px);
-  display: grid;
-  grid-template-columns: var(--btn-size) minmax(0,1fr) var(--btn-size);
-  align-items: center;                 /* căn giữa dọc cho nút */
-  column-gap: clamp(8px, 2vw, 16px);
-  width: 100%;
-}
-
-.stage{
-  position: relative;
-  overflow: hidden;
-}
-
-.slideStage{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-}
-
-
-.slide h3 {
   font-family: var(--font-heading);
-  font-size: var(--fs-xl);
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  line-height: 1.2;
+  margin: 0;
+  color: var(--heading-color);
+}
+
+.intro {
+  font-size: clamp(1rem, 2.1vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.heroLayout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: stretch;
+}
+
+.profileCard {
+  position: relative;
+  border-radius: 28px;
+  padding: clamp(1.5rem, 4vw, 2rem);
+  background: linear-gradient(200deg, rgba(255, 255, 255, 0.9), rgba(226, 232, 240, 0.65));
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.12);
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2rem);
+  align-content: start;
+}
+
+.portraitWrap {
+  position: relative;
+  width: min(100%, 220px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.portraitGlow {
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.35), transparent 65%),
+    radial-gradient(circle at 80% 20%, rgba(34, 211, 238, 0.35), transparent 60%);
+  filter: blur(12px);
+  z-index: 0;
+}
+
+.portrait {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  border: 6px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
+}
+
+.metaList {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.metaList div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.metaList dt {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.metaList dd {
+  margin: 0;
   font-weight: 600;
   color: var(--heading-color);
-  margin-bottom: 0.75rem;
 }
 
-.slide ul {
-  list-style-type: none;
-  padding-left: 0;
-  margin-top: 1rem;
+.storyBlock {
+  display: grid;
+  gap: clamp(1.5rem, 5vw, 2.75rem);
 }
 
-.slide li {
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 3vw, 1.5rem);
+}
+
+.highlightCard {
   position: relative;
-  padding-left: 1.4rem;           /* khoảng cách chữ với bullet */
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--about-text-color);
-  margin-bottom: 0.6rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 44px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  display: grid;
+  gap: 0.65rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.slide li::before {
+.highlightCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(37, 99, 235, 0.16);
+}
+
+.highlightCard h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.highlightCard p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.focusCard {
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2rem);
+  background: linear-gradient(140deg, rgba(37, 99, 235, 0.12), rgba(45, 212, 191, 0.12));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 24px 50px rgba(37, 99, 235, 0.12);
+}
+
+.focusCard h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.focusCard ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.focusCard li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--heading-color);
+  font-weight: 500;
+}
+
+.focusCard li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.72em;                    /* canh giữa dòng chữ */
-  transform: translateY(-50%);
-  width: .5rem;
-  height: .5rem;
+  top: 0.55rem;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
-  background: var(--about-bullet);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--about-bullet) 20%, transparent); /* viền mềm nhẹ */
+  background: linear-gradient(120deg, #60a5fa, #22d3ee);
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
 }
 
-/* Moblie web */
-@media screen and (max-width: 880px) {
-  .sliderGrid{
-    --btn-size: clamp(52px, 12vw, 60px);
+.capabilityPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 2.75rem);
+  padding: clamp(1.75rem, 5vw, 2.5rem);
+  border-radius: 26px;
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 28px 56px rgba(15, 23, 42, 0.1);
+}
+
+.capabilityCopy h3 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.6rem);
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.capabilityCopy p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.capabilityList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.capabilityList li {
+  position: relative;
+  padding-left: 2rem;
+  font-weight: 500;
+  color: var(--heading-color);
+}
+
+.capabilityList li::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.12);
+}
+
+@media (max-width: 960px) {
+  .heroLayout {
     grid-template-columns: 1fr;
   }
-  .content {
-    --gutter: 12px
+
+  .profileCard {
+    max-width: 420px;
+    margin: 0 auto;
   }
-  .textWrapper {
-    flex-direction: column;
-    text-align: center;
-  }
-  .navBtn,
-  .arrow {
-    display: none !important;
+
+  .capabilityPanel {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .dotActive {
-    transition: none !important;
+@media (max-width: 640px) {
+  .container {
+    width: calc(100% - 2.5rem);
+  }
+
+  .sectionHeader {
+    text-align: left;
+  }
+
+  .focusCard li,
+  .capabilityList li {
+    padding-left: 1.4rem;
+  }
+
+  .focusCard li::before {
+    top: 0.5rem;
+  }
+
+  .capabilityList li::before {
+    left: 0;
+    top: 0.65rem;
   }
 }
 
-@media (pointer: coarse) and (hover: none){
-  .sliderGrid{ grid-template-columns: 1fr; }
-  .navBtn, .arrow{ display: none !important; }
+:global(.dark) .profileCard,
+:global(.dark) .highlightCard {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(59, 130, 246, 0.28);
+  box-shadow: 0 30px 60px rgba(2, 6, 23, 0.55);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+:global(.dark) .highlightCard p,
+:global(.dark) .intro,
+:global(.dark) .capabilityCopy p,
+:global(.dark) .metaList dt {
+  color: rgba(226, 232, 240, 0.78);
 }
 
-/* Dark Mode */
-:global(.dark) .aboutSection {
-  background-color: #181818;
+:global(.dark) .capabilityPanel {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(59, 130, 246, 0.28);
+  box-shadow: 0 32px 70px rgba(2, 6, 23, 0.6);
 }
 
-:global(.dark) .arrow {
-  color: #eee;
+:global(.dark) .focusCard {
+  background: linear-gradient(140deg, rgba(37, 99, 235, 0.25), rgba(45, 212, 191, 0.18));
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
-:global(.dark) .slide {
-  background-color: #1e1e1e;
-  color: #eee;
+:global(.dark) .metaList dd,
+:global(.dark) .capabilityList li,
+:global(.dark) .focusCard li,
+:global(.dark) .title {
+  color: #f8fafc;
 }
-
-:global(.dark) .slide li {
-  color: #eee;
-}
-
-:global(.dark) .slide li::before {
-  color: #ff7675;
-}
-
-:global(.dark) .slide h3 {
-  color: #f1c40f;
-}
-
-/* Dark mode cho nút */
-:global(.dark) .navBtn,
-:global(.dark) .arrow{
-  background: rgb(0 0 0 / 42%);
-  color: #f3f3f3;
-  box-shadow:
-    0 2px 12px rgb(0 0 0 / 40%),
-    inset 0 1px 0 rgb(255 255 255 / 6%);
-}
-
-:global(.dark) .dotBase{ background: #4b5563; }
-:global(.dark) .dotActive{ background: #e5e7eb; }
-
-

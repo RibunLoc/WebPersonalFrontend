@@ -1,5 +1,5 @@
-import styles from './Project.module.css'
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import styles from "./Project.module.css";
 
 interface Project {
   id: string;
@@ -7,86 +7,103 @@ interface Project {
   description: string;
   techStack: string[];
   imageUrl?: string;
-    repoUrl: string;
+  repoUrl?: string;
   liveDemoUrl?: string;
 }
 
 const projects: Project[] = [
   {
-    id: 'quanlytaichinh',
-    title: 'Mobile - Ứng dụng quản lý tài chính cá nhân và doanh nghiệp',
-    description: 'Ứng dụng mobile quản lý tài chính cá nhân và doanh nghiệp với android studio và firebase.',
-    techStack: ['Java', 'Google firebase', 'chart'],
-    imageUrl: '/mobile-app.png',
-    repoUrl: 'https://github.com/RibunLoc/MobileApp',
+    id: "quanlytaichinh",
+    title: "Ứng dụng quản lý tài chính cá nhân & doanh nghiệp",
+    description:
+      "Ứng dụng mobile giúp theo dõi thu chi, nhắc nhở hoá đơn và tổng hợp báo cáo realtime trên Android cùng Firebase.",
+    techStack: ["Java", "Firebase", "Realtime Database"],
+    imageUrl: "/mobile-app.png",
+    repoUrl: "https://github.com/RibunLoc/MobileApp",
   },
   {
-    id: 'calico',
-    title: 'Monitoring và Networking - ProJect_Calico',
-    description: 'Cấu hình mạng ảo trên Kubernetes sử dụng Calico, gồm triển khai Calico CNI, thiết lập NetworkPolicy, BGP peer và IPAM.',
-    techStack: ['Kubernetes', 'Calico', 'NetworkPolicy', 'BGP', 'loki', 'Opentelemetry', 'prometheus', ' Grafana'],
-    imageUrl: '/Calico.png',
-    repoUrl: 'https://github.com/RibunLoc/ProJect_Calico',
+    id: "calico",
+    title: "Tối ưu hoá hạ tầng mạng với Project Calico",
+    description:
+      "Thiết kế network policy, giám sát lưu lượng và tích hợp observability cho cụm Kubernetes quy mô doanh nghiệp.",
+    techStack: ["Kubernetes", "Calico", "NetworkPolicy", "BGP", "Grafana"],
+    imageUrl: "/Calico.png",
+    repoUrl: "https://github.com/RibunLoc/ProJect_Calico",
   },
   {
-    id: 'musicweb',
-    title: 'DevOps - Ứng dụng web nghe nhạc',
-    description: 'Triển khai web nghe nhạc với AWS (vpc, ecs, ec2, iam, s3) và jenkins.',
-    techStack: ['Terraform', 'AWS', 'Jenkins', 'ECS'],
-    imageUrl: '/background.jpg',
-    repoUrl: 'https://github.com/yourusername/terraform-aws',
-    liveDemoUrl: 'https://infra.example.com',
+    id: "musicweb",
+    title: "Hệ thống DevOps cho nền tảng nghe nhạc",
+    description:
+      "Xây dựng kiến trúc hạ tầng và pipeline CI/CD trên AWS với Terraform, ECS, Jenkins và giám sát tập trung.",
+    techStack: ["Terraform", "AWS", "Jenkins", "ECS"],
+    imageUrl: "/background.jpg",
+    repoUrl: "https://github.com/yourusername/terraform-aws",
+    liveDemoUrl: "https://infra.example.com",
   },
   {
-    id: 'cloudcomputingOpenebula',
-    title: 'System - Triển khai điện toán đám mây OpenNebula',
-    description: 'Sử dụng VmWare và KVM để thực hiện xây dựng một nền tảng cung cấp điện toán',
-    techStack: ['ubuntu', 'nginx', 'Ansible', 'jmeter', 'vmware', 'kvm'],
-    imageUrl: '/background.jpg',
-    repoUrl: '',
+    id: "cloudcomputingOpenebula",
+    title: "Triển khai điện toán đám mây OpenNebula",
+    description:
+      "Kết hợp VMware & KVM để xây dựng môi trường private cloud, tối ưu hoá tài nguyên và đảm bảo tính sẵn sàng.",
+    techStack: ["Ubuntu", "Nginx", "Ansible", "JMeter", "VMware", "KVM"],
+    imageUrl: "/background.jpg",
   },
   {
-    id: 'quanlycongviec',
-    title: 'DevOps - Ứng dụng web quản lý công việc Otaltask',
-    description: 'Triển khai ứng dụng web quản lý công việc Otaltask với công nghệ DevOps, Cloud, Microservices.',
-    techStack:  ['Terraform', 'AWS', 'Jenkins', 'Git'],
-    imageUrl: '/Project/bg-Octaltask.png',
-    repoUrl: 'https://github.com/RibunLoc/DevOps-task-management-web-platform',
-    liveDemoUrl: 'https://octaltask.holoc.id.vn'
-  }
+    id: "quanlycongviec",
+    title: "Nền tảng quản lý công việc Octaltask",
+    description:
+      "Triển khai kiến trúc DevOps + Microservices toàn diện cho nền tảng quản trị công việc, tích hợp giám sát thời gian thực.",
+    techStack: ["Terraform", "AWS", "Jenkins", "Git"],
+    imageUrl: "/Project/bg-Octaltask.png",
+    repoUrl: "https://github.com/RibunLoc/DevOps-task-management-web-platform",
+    liveDemoUrl: "https://octaltask.holoc.id.vn",
+  },
 ];
 
-export default function ProjectsPage() {
+export default function Project() {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="project">
       <div className={styles.container}>
-        <h2 className={styles.title}>Dự án nổi bật</h2>
+        <div className={styles.header}>
+          <p className={styles.eyebrow}>Dự án nổi bật</p>
+          <h2 className={styles.title}>Những sản phẩm tôi đã đồng hành & kiến tạo</h2>
+          <p className={styles.lead}>
+            Mỗi dự án đều là sự kết hợp giữa chiến lược hạ tầng, bảo mật và trải nghiệm người dùng. Tôi ưu tiên tính ổn định
+            và khả năng mở rộng để đội ngũ phát triển an tâm triển khai tính năng mới.
+          </p>
+        </div>
+
         <div className={styles.grid}>
           {projects.map((project) => (
-            <div key={project.title} className={styles.card}>
+            <article key={project.id} className={styles.card}>
               {project.imageUrl && (
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className={styles.image}
-                />
+                <div className={styles.media}>
+                  <img src={project.imageUrl} alt={project.title} loading="lazy" />
+                  <div className={styles.mediaOverlay} />
+                </div>
               )}
+
               <div className={styles.content}>
                 <h3 className={styles.cardTitle}>{project.title}</h3>
-                <p className={styles.description}>
-                  {project.description}
-                </p>
-                <div className={styles.techStack}>
+                <p className={styles.description}>{project.description}</p>
+
+                <ul className={styles.techList}>
                   {project.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className={styles.techBadge}
-                    >
-                      {tech}
-                    </span>
+                    <li key={`${project.id}-${tech}`}>{tech}</li>
                   ))}
-                </div>
-                <div className={styles.links}>
+                </ul>
+
+                <div className={styles.actions}>
+                  {project.repoUrl && (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.link}
+                    >
+                      GitHub
+                    </a>
+                  )}
                   {project.liveDemoUrl && (
                     <a
                       href={project.liveDemoUrl}
@@ -94,26 +111,15 @@ export default function ProjectsPage() {
                       rel="noopener noreferrer"
                       className={styles.link}
                     >
-                      Live Demo
+                      Live demo
                     </a>
                   )}
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.link}
-                  >
-                    GitHub Repo
-                  </a>
-                  <Link
-                    to={`/projects/${project.id}`}
-                    className={styles.moreBtn}
-                  >
-                    Xem thêm
+                  <Link to={`/projects/${project.id}`} className={styles.detailButton}>
+                    Xem chi tiết
                   </Link>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
