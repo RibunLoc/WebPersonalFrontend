@@ -118,7 +118,7 @@
 .cursor {
   display: inline-block;
   width: 0.16em;
-  height: 1.05em;
+  height: 0.9em;
   margin-left: 0.18em;
   background: currentColor;
   align-self: flex-end;
