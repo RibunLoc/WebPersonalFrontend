@@ -1,74 +1,58 @@
 :root {
-
   /* Typography */
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Poppins', 'Segoe UI', sans-serif;
 
-  --text-color: #0b1220;
+  /* Core palette */
+  --text-color: #0f172a;
   --text-muted: #475569;
-  --heading-color: #0f172a;
+  --heading-color: #0b1220;
+  --text: var(--text-color);
 
-  --fs-base: 1rem;        /* 16px */
-  --fs-sm: 0.9375rem;     /* 15px */
-  --fs-lg: 1.125rem;      /* 18px */
-  --fs-xl: 1.5rem;        /* 24px */
-  --fs-2xl: 1.875rem;     /* 30px */
+  --bg-page: #f6f8fb;
+  --surface-1: #ffffff;
+  --surface-2: #f1f5f9;
 
-  --lh-base: 1.65;
-  --lh-heading: 1.3;
-  --tracking-wide: 0.02em;
-  --tracking-wider: 0.04em;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-dot-color: #d6dde8;
+  --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 32px 80px rgba(15, 23, 42, 0.12);
+  --shadow: rgba(15, 23, 42, 0.18);
+  --radius: 14px;
 
-  /* Base */
-  --text-color: #0b1220;
-  --navbar-bg: #146C94;
-  --navbar-text: #0b1220;
-  --nav-hover: #1d4ed8;
-  --icon-bg: #0b1220;
-  --icon-color: #ffffff;
-
-  /* Nền tổng thể */
-  --bg-page: #f7f9fc;                 /* sáng, sạch hơn */
-  --background-color: #548CA8;        /* alias nền trắng */
-  --background-color-reverse: #F6F5F5; /* giữ tên để không vỡ CSS hiện có */
-
-  /* Card mặc định */
-  --card-bg: #b8cdda;                 /* trước là #7390b4 -> chuyển trắng cho đồng bộ */
-  --alt-card-bg: #f1f5f9;
-
-  /* Border & shadow */
-  --border: color-mix(in srgb, #0f172a 12%, transparent);
-  --shadow: rgba(2,6,23,.12);
-
-  /* Brand */
   --brand: #2563eb;
   --brand-strong: #1d4ed8;
-  --brand-ghost: #edf2ff;
-
-  /* Accent / gradient */
-  --accent: #D3E0EA;                  /* cyan nhấn nhẹ */
-  --accent-soft: #F6F5F5;
-  --accent-soft-border: #D3E0EA;
+  --brand-ghost: rgba(37, 99, 235, 0.12);
+  --accent: #d3e0ea;
+  --accent-soft: #f6f5f5;
+  --accent-soft-border: #d3e0ea;
   --accent-soft-border-hover: #b6d1e7;
   --accent-1: #60a5fa;
   --accent-2: #a78bfa;
 
-  /* Navbar & misc */
-  --border-dot-color: #d6dde8;
+  --navbar-bg: rgba(255, 255, 255, 0.9);
+  --navbar-text: var(--heading-color);
+  --nav-hover: #2563eb;
+  --icon-bg: var(--heading-color);
+  --icon-color: #ffffff;
+
+  --background-color: rgba(255, 255, 255, 0.85);
+  --background-color-reverse: #0f172a;
 
   /* Hero */
-  --hero-overlay: rgba(0, 0, 0, 0.35);
+  --hero-overlay: rgba(14, 75, 110, 0.35);
   --hero-text: #ffffff;
   --hero-name-start: #6dd5ed;
   --hero-name-end: #2193b0;
   --hero-name-shadow: 0 3px 14px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.12);
   --hero-subtitle: #7d7f82;
-  --hero-subtitle-shadow: 0 2px 8px rgba(2,6,23,.08);
+  --hero-subtitle-shadow: 0 2px 8px rgba(2, 6, 23, 0.08);
   --hero-avatar-border: #ffffff;
   --hero-avatar-bg: #ffffff;
-  --hero-avatar-shadow: 0 8px 22px rgba(2,6,23,.12);
+  --hero-avatar-shadow: 0 8px 22px rgba(2, 6, 23, 0.12);
   --greet-color: #99cbd1;
-  --name-stroke-color: rgba(255,255,255,.45);
+  --name-stroke-color: rgba(255, 255, 255, 0.45);
   --name-stroke-width: 1.25px;
   --name-glow: #7bdcff;
   --name-glow-2: #3dd6c9;
@@ -80,96 +64,62 @@
   --glow-r3: 28px;
   --name-pulse-scale: 1.2;
   --name-pulse-duration: 1.2s;
-
-  /* Chips / cards on hero */
-  --hero-card: #ffffffcc;
+  --hero-card: rgba(255, 255, 255, 0.82);
 
   /* About */
-  --about-section-bg: #F6F5F5;        /* nền block About xanh nhạt */
+  --card-bg: #ffffff;
+  --alt-card-bg: #f8fafc;
+  --about-section-bg: #f6f5f5;
   --about-text-color: #334155;
-  --about-underline: #2563eb;         /* gạch dưới tiêu đề */
+  --about-underline: #2563eb;
   --about-heading: #0b1220;
   --about-slide-bg: #ffffff;
-  --about-slide-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);; /* sâu hơn một chút */
-  --about-dot-base: #d0d6e0;          /* xám xanh dịu */
-  --about-dot-active: #0f172a;        /* active rõ nét */
-  --about-bullet: #0ea4e900;            /* dấu chấm đầu dòng */
+  --about-slide-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --about-dot-base: #d0d6e0;
+  --about-dot-active: #0f172a;
+  --about-bullet: #0ea4e9;
+  --about-arrow: rgba(255, 255, 255, 0.9);
   --on-card: #0b1220;
-  --about-arrow: rgba(255,255,255,0.9); /* glassy cho nút mũi tên */
 
   /* Experience */
   --card-bg-exp: #ffffff;
   --card-border: #e2e8f0;
-  --card-shadow: 0 10px 30px rgba(2,6,23,.10);
-  --card-title-text-color: #1B3C53;
-  --title: #F6F1F1;
+  --card-shadow: 0 10px 30px rgba(2, 6, 23, 0.1);
+  --card-title-text-color: #1b3c53;
+  --title: #f6f1f1;
   --muted: #475569;
-  --chip-bg: #58A0C8;
+  --chip-bg: #58a0c8;
+  --chip-border: #58a0c8;
+  --chip-hover: #749bc2;
   --chip-text: #ffffff;
-  --chip-border: #58A0C8;
-  --chip-hover: #749BC2;
   --timeline-head: rgb(188, 204, 220);
   --timeline-tail: rgb(154, 166, 178);
 
   /* Contact */
   --background-contact: #e6f0fb;
-  --text: #0f172a;
-  --text-muted: #475569;
   --field-bg: #ffffff;
-  --btn-bg1: #91C8E4;
-  --btn-bg2: #749BC2;
-  --btn-ink: #113F67;
+  --btn-bg1: #91c8e4;
+  --btn-bg2: #749bc2;
+  --btn-ink: #113f67;
   --success: #16a34a;
   --error: #ef4444;
-  --success-bg: rgba(22,163,74,.12);
-  --success-brd: rgba(22,163,74,.35);
+  --success-bg: rgba(22, 163, 74, 0.12);
+  --success-brd: rgba(22, 163, 74, 0.35);
   --success-ink: #065f46;
-  --error-bg: rgba(239,68,68,.12);
-  --error-brd: rgba(239,68,68,.35);
+  --error-bg: rgba(239, 68, 68, 0.12);
+  --error-brd: rgba(239, 68, 68, 0.35);
   --error-ink: #7f1d1d;
 
   /* Project detail */
-  --tag-pjdt: #82a9fc69;
-  --surface-1: #ffffff;
-  --surface-2: #e7f3ff;
+  --tag-pjdt: rgba(130, 169, 252, 0.42);
+  --tag-text-pjdt: #1d4ed8;
   --rbBadge: #e5e3ff;
-
-  /* Code colors */
-  --code-inline-bg: #f1f5f9;
-  --code-inline-fg: #b91c1c;
-  --code-block-bg: #0f172a;
-  --code-block-fg: #f8fafc;
-
-  /* TOC / blockquote */
-  --toc-bg: #ffffff;
-  --toc-link: #0b1220;
-  --toc-link-hover: #0b1220;
-  --toc-link-hover-bg: color-mix(in srgb, var(--brand) 12%, transparent);
-  --blockquote-bg: color-mix(in srgb, var(--brand) 8%, #ffffff);
-
-  /* MetaBox & background accents */
-  --metabox-bg: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.74));
-  --bg-dot-1: #cfe2ff;
-  --bg-dot-2: #e8f0ff;
-  --bg-grid: #e6eefc;
-  --blob-1: #dbeafe;
-  --blob-2: #ede9fe;
-  --blob-3: #dcfce7;
-
-  /* Layout tokens */
-  --radius: 14px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-md: 0 6px 20px rgba(0,0,0,0.10);
-  --shadow-lg: 0 14px 36px rgba(0,0,0,0.16);
-
-  /* Aliases giữ nguyên tên cũ để tương thích */
   --background-project: var(--bg-page);
   --background-project-content: var(--surface-1);
-  --backgroud-e0e7ef-reverse: #e2e8f0;
   --background-project-pjdt: var(--bg-page);
+  --background-project-content-pjdt: var(--surface-1);
   --text-color-pjdt: var(--text-color);
   --text-muted-pjdt: var(--text-muted);
-  --background-project-content-pjdt: var(--surface-1);
   --field-bg-pjdt: var(--surface-2);
   --card-border-pjdt: var(--border);
   --brand-pjdt: var(--brand);
@@ -178,19 +128,37 @@
   --btn-ghost-bg-pjdt: var(--surface-2);
   --btn-ghost-br-pjdt: var(--border);
   --btn-bg2-pjdt: var(--accent-1);
-  --background-context-code-pjdt: var(--code-block-bg);
+  --background-context-code-pjdt: #0f172a;
+  --metabox-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.74));
+  --bg-dot-1: #cfe2ff;
+  --bg-dot-2: #e8f0ff;
+  --bg-grid: #e6eefc;
+  --blob-1: #dbeafe;
+  --blob-2: #ede9fe;
+  --blob-3: #dcfce7;
+
+  /* Code & prose */
+  --code-inline-bg: #f1f5f9;
+  --code-inline-fg: #b91c1c;
+  --code-block-bg: #0f172a;
+  --code-block-fg: #f8fafc;
+
+  --toc-bg: #ffffff;
+  --toc-link: #0b1220;
+  --toc-link-hover: #0b1220;
+  --toc-link-hover-bg: color-mix(in srgb, var(--brand) 14%, transparent);
   --tocside-background: var(--toc-bg);
   --toc-link-pjdt: var(--toc-link);
   --toc-link-hover-pjdt: var(--toc-link-hover);
   --toc-link-hover-background-pjdt: var(--toc-link-hover-bg);
-  --toc-mark-pjdt: var(--blockquote-bg);
-  --background-metabox-pjdt: var(--metabox-bg);
+  --toc-mark-pjdt: color-mix(in srgb, var(--brand) 8%, #ffffff);
+  --blockquote-bg: color-mix(in srgb, var(--brand) 8%, #ffffff);
+
+  /* Layout */
   --radius-pjdt: var(--radius);
   --shadow-sm-pjdt: var(--shadow-sm);
   --shadow-md-pjdt: var(--shadow-md);
   --shadow-lg-pjdt: var(--shadow-lg);
-
-  /* Layout sizes */
   --wrap: 1500px;
   --toc: 320px;
   --toc-max: 340px;
@@ -199,204 +167,179 @@
   --pad: 1rem;
   --nav-h: 82px;
   --toc-gap-top: 16px;
+}
 
+:root,
+:root.dark {
   color: var(--text-color);
   background-color: var(--bg-page);
 }
 
 :root.dark {
-  --text-sectionTitle: clamp(40px, 6vw, 104px ) 0;
-
-  --navbar-bg: #1340686b;
-  --navbar-text: #fffbdec5;
-  --text-color: #f4f4f4;
-  --nav-hover: #ff6b6b;
-  --heading-color: #C0DBEA;
-  --icon-bg: #fff;
-  --icon-color: #000;
-  --card-bg: #000000;
-  --alt-card-bg: #2c2c2c;
-  --border-dot-color: #F2F2F2 ;
-  --background-color: #363333;
-  --backgroud-color-reverse: #181818;
-  --background-project: #181818;
-  --background-project-content: #082436da;
-  --backgroud-e0e7ef-reverse: #404a5469;
-  --backbtn-project: #1C6EA4;
-  --tag: #024CAA;
-  --tag-text: #C4E1F6;
-  --toc-mark: #43799bec;
-  --toc-mark-border: rgba(148,163,184,0.28);
-  --toc-link: #B8CFCE;
-  --toc-link-hover: #E8F9FF;
-
-  /* hero section  */
-  --hero-overlay: rgba(0, 0, 0, 0.6);
-  --hero-text: #f4f4f4;
-  --hero-name-start: #4ea0dc;
-  --hero-name-end: #1d4ed8;
-  --hero-name-shadow: 0 3px 14px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.4);
-  --hero-subtitle: #48a9d9c3;
-  --hero-subtitle-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 1.12);
-  --hero-avatar-border: #ffffff;
-  --hero-avatar-bg: #ffffff;
-  --hero-avatar-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  --greet-color: #91C8E4;
-  --name-stroke-color: rgba(74, 179, 211, 0.45);
-  --glow1: 60%;
-  --glow2: 50%;
-  --glow3: 30%;
-  --glow-r1: 8px;
-  --glow-r2: 20px;
-  --glow-r3: 20px;
-  --name-pulse-scale: 1.2;
-  --name-pulse-duration: 1s;
-
-  /* page aboute me */
-  --about-section-bg: #113F67;
-  --about-text-color: #fafafa;
-  --about-text-color: #444;
-  --about-underline: #e74c3c;
-  --about-heading: #2c3e50;
-  --about-slide-bg: #ffffff;
-  --about-slide-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --about-dot-base: #819cb2;
-  --about-dot-active: #000000;
-  --about-bullet: #e74c3c;
-  --about-arrow: #64748b;
-
-  /* page experience */
-  --card-bg-exp: #113F67;
-  --card-border: #0e3150;
-  --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-  --card-title-text-color: #AFD3E2;
-  --title: #fafafa;
-  --muted: rgba(255, 255, 255, 0.7);
-  --chip-bg: #7886C7;
-  --chip-border: #7886C7;
-  --chip-hover: #2D336B;
-  --chip-text: #F5F7F8;
-  --accent: #33A1E0; /* đỏ san hô nhẹ cho cọc time */
-  --accent-soft: #AFD3E2;
-  --accent-soft-border: #4599c9;
-  --accent-soft-border-hover: #5aabda;
-  --timeline-head: rgba(145, 200, 228, 0.9);
-  --timeline-tail: rgba(70, 130, 169, 0.15);
-
-  /* page contact me */
-  --background-contact: #113F67;
-  --text: #e5e7eb;
-  --text-muted: #9ca3af;
-  --field-bg: rgba(255,255,255,.06);
-  --card-border: rgba(255,255,255,.12);
-  --btn-bg1: #67b0e6;
-  --btn-bg2: #4ea0dc;
-  --btn-ink: #ffffff;
-  --success: #34d399;
-  --error: #f87171;
-  --success-bg: rgba(52,211,153,.12);
-  --success-brd: rgba(52,211,153,.35);
-  --success-ink: #d1fae5;
-  --error-bg: rgba(248,113,113,.12);
-  --error-brd: rgba(248,113,113,.35);
-  --error-ink: #fee2e2;
-  --shadow: rgba(0,0,0,.25);
-
-  /* project detail */
-  --bg-page: #0b1120;
-  --text: #e5e7eb;
+  --text-color: #e2e8f0;
   --text-muted: #94a3b8;
-  --tag-pjdt: #5484ecda;
+  --heading-color: #f8fafc;
+  --text: var(--text-color);
+
+  --bg-page: #0b1120;
   --surface-1: #0f172a;
-  --surface-2: #0b1220;
-  --border: rgba(148,163,184,.22);
-  --rbBadge: #e5e3ff;
+  --surface-2: #131c31;
+
+  --border: rgba(148, 163, 184, 0.22);
+  --border-dot-color: rgba(148, 163, 184, 0.3);
+  --shadow-sm: 0 12px 32px rgba(2, 6, 23, 0.45);
+  --shadow-md: 0 24px 60px rgba(2, 6, 23, 0.55);
+  --shadow-lg: 0 38px 80px rgba(2, 6, 23, 0.65);
+  --shadow: rgba(2, 6, 23, 0.55);
 
   --brand: #3b82f6;
   --brand-strong: #2563eb;
-  --brand-ghost: rgba(96,165,250,.15);
-
+  --brand-ghost: rgba(59, 130, 246, 0.18);
+  --accent: rgba(59, 130, 246, 0.18);
+  --accent-soft: rgba(30, 64, 175, 0.2);
+  --accent-soft-border: rgba(59, 130, 246, 0.32);
+  --accent-soft-border-hover: rgba(96, 165, 250, 0.42);
   --accent-1: #60a5fa;
   --accent-2: #a78bfa;
+
+  --navbar-bg: rgba(15, 23, 42, 0.85);
+  --navbar-text: #e2e8f0;
+  --nav-hover: #93c5fd;
+  --icon-bg: #e2e8f0;
+  --icon-color: #0b1220;
+
+  --background-color: rgba(15, 23, 42, 0.92);
+  --background-color-reverse: #0f172a;
+
+  --hero-overlay: rgba(2, 20, 45, 0.65);
+  --hero-text: #f8fafc;
+  --hero-name-start: #93c5fd;
+  --hero-name-end: #38bdf8;
+  --hero-name-shadow: 0 4px 16px rgba(2, 6, 23, 0.75);
+  --hero-subtitle: #93c5fd;
+  --hero-subtitle-shadow: 0 3px 12px rgba(2, 6, 23, 0.7);
+  --hero-avatar-border: rgba(148, 163, 184, 0.35);
+  --hero-avatar-bg: rgba(15, 23, 42, 0.75);
+  --hero-avatar-shadow: 0 18px 38px rgba(2, 6, 23, 0.65);
+  --greet-color: #91c8e4;
+  --name-stroke-color: rgba(96, 165, 250, 0.35);
+  --name-glow: #7bdcff;
+  --name-glow-2: #38bdf8;
+  --glow1: 60%;
+  --glow2: 45%;
+  --glow3: 30%;
+  --glow-r1: 10px;
+  --glow-r2: 20px;
+  --glow-r3: 28px;
+  --name-pulse-duration: 1s;
+  --hero-card: rgba(15, 23, 42, 0.8);
+
+  --card-bg: rgba(15, 23, 42, 0.85);
+  --alt-card-bg: rgba(30, 41, 59, 0.75);
+  --about-section-bg: #0f172a;
+  --about-text-color: #e2e8f0;
+  --about-underline: #60a5fa;
+  --about-heading: #f8fafc;
+  --about-slide-bg: rgba(15, 23, 42, 0.85);
+  --about-slide-shadow: 0 32px 70px rgba(2, 6, 23, 0.6);
+  --about-dot-base: rgba(148, 163, 184, 0.38);
+  --about-dot-active: #dbeafe;
+  --about-bullet: rgba(59, 130, 246, 0.8);
+  --about-arrow: rgba(148, 163, 184, 0.5);
+  --on-card: #f8fafc;
+
+  --card-bg-exp: rgba(15, 23, 42, 0.85);
+  --card-border: rgba(59, 130, 246, 0.28);
+  --card-shadow: 0 36px 70px rgba(2, 6, 23, 0.55);
+  --card-title-text-color: #e0f2fe;
+  --title: #f8fafc;
+  --muted: rgba(226, 232, 240, 0.8);
+  --chip-bg: rgba(59, 130, 246, 0.18);
+  --chip-border: rgba(59, 130, 246, 0.35);
+  --chip-hover: rgba(96, 165, 250, 0.28);
+  --chip-text: #bfdbfe;
+  --timeline-head: rgba(96, 165, 250, 0.65);
+  --timeline-tail: rgba(37, 99, 235, 0.2);
+
+  --background-contact: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.9));
+  --field-bg: rgba(15, 23, 42, 0.6);
+  --btn-bg1: #3b82f6;
+  --btn-bg2: #0ea5e9;
+  --btn-ink: #f8fafc;
+  --success: #34d399;
+  --error: #f87171;
+  --success-bg: rgba(52, 211, 153, 0.12);
+  --success-brd: rgba(52, 211, 153, 0.35);
+  --success-ink: #d1fae5;
+  --error-bg: rgba(248, 113, 113, 0.12);
+  --error-brd: rgba(248, 113, 113, 0.35);
+  --error-ink: #fee2e2;
+
+  --tag-pjdt: rgba(59, 130, 246, 0.24);
+  --tag-text-pjdt: #bfdbfe;
+  --background-project: #0b1120;
+  --background-project-content: #0f172a;
+  --background-project-pjdt: #0b1120;
+  --background-project-content-pjdt: rgba(15, 23, 42, 0.92);
+  --text-color-pjdt: var(--text-color);
+  --text-muted-pjdt: var(--text-muted);
+  --field-bg-pjdt: rgba(15, 23, 42, 0.7);
+  --card-border-pjdt: rgba(148, 163, 184, 0.22);
+  --btn-primary-bg: var(--brand);
+  --btn-primary-bg-hover-pjdt: var(--brand-strong);
+  --btn-ghost-bg-pjdt: rgba(15, 23, 42, 0.7);
+  --btn-ghost-br-pjdt: rgba(148, 163, 184, 0.25);
+  --btn-bg2-pjdt: var(--accent-1);
+  --background-context-code-pjdt: #111827;
+  --metabox-bg: linear-gradient(180deg, rgba(2, 20, 45, 0.85), rgba(2, 12, 32, 0.82));
+  --bg-dot-1: rgba(59, 130, 246, 0.35);
+  --bg-dot-2: rgba(37, 99, 235, 0.28);
+  --bg-grid: rgba(59, 130, 246, 0.18);
+  --blob-1: rgba(59, 130, 246, 0.4);
+  --blob-2: rgba(124, 58, 237, 0.35);
+  --blob-3: rgba(16, 185, 129, 0.35);
 
   --code-inline-bg: #111827;
   --code-inline-fg: #fca5a5;
   --code-block-bg: #0b1220;
   --code-block-fg: #e5e7eb;
 
-  --toc-bg: #0f172a;
-  --toc-link: #e5e7eb;
+  --toc-bg: rgba(15, 23, 42, 0.85);
+  --toc-link: #e2e8f0;
   --toc-link-hover: #ffffff;
-  --toc-link-hover-bg: rgba(96,165,250,.18);
-  --blockquote-bg: rgba(148,163,184,.12);
+  --toc-link-hover-bg: rgba(59, 130, 246, 0.25);
+  --tocside-background: var(--toc-bg);
+  --toc-link-pjdt: var(--toc-link);
+  --toc-link-hover-pjdt: var(--toc-link-hover);
+  --toc-link-hover-background-pjdt: var(--toc-link-hover-bg);
+  --toc-mark-pjdt: rgba(59, 130, 246, 0.2);
+  --blockquote-bg: rgba(59, 130, 246, 0.18);
 
-  --background-context-code-pjdt: var(--code-block-bg);
-  --metabox-bg: linear-gradient(180deg, rgba(0, 21, 71, 0.92), rgba(0, 16, 53, 0.9));
-  --bg-dot-1: #6b7280;
-  --bg-dot-2: #94a3b8;
-  --bg-grid: rgba(148,163,184,.28);
-  --blob-1: #1d4ed8;
-  --blob-2: #7c3aed;
-  --blob-3: #059669;
-
-
-
-  color: var(--text-color);
-  background-color: #1a1a1a;
+  --rbBadge: rgba(129, 140, 248, 0.2);
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--brand);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
+
 a:hover {
-  color: #535bf2;
+  color: var(--brand-strong);
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #ffffff; /* nền trắng mặc định */
-
-}
-
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  color: var(--text-color);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

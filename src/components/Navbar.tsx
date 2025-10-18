@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { MdOutlineDarkMode, MdDarkMode } from "react-icons/md";
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
 import styles from "./Navbar.module.css";
@@ -119,9 +119,14 @@ export default function Navbar() {
               type="button"
               className={styles.themeToggle}
               aria-label="Đổi giao diện sáng/tối"
+              aria-pressed={darkMode}
               onClick={() => setDarkMode((prev) => !prev)}
             >
-              {darkMode ? <MdDarkMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
+              {darkMode ? (
+                <MdOutlineLightMode aria-hidden="true" />
+              ) : (
+                <MdOutlineDarkMode aria-hidden="true" />
+              )}
             </button>
             <a href="#contact" className={styles.cta} onClick={() => setMobileOpen(false)}>
               Kết nối ngay
