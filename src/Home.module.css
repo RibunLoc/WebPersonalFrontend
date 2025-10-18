@@ -10,8 +10,8 @@
   padding: clamp(3rem, 8vw, 5rem) clamp(1.5rem, 6vw, 5rem) clamp(4rem, 10vw, 6rem);
   border-radius: clamp(2.8rem, 6vw, 4.5rem);
   color: var(--hero-text);
-  background: linear-gradient(135deg, rgba(14, 75, 110, 0.95), rgba(88, 160, 200, 0.86));
-  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.32);
+  background: var(--hero-bg);
+  box-shadow: var(--hero-shadow);
   overflow: hidden;
 }
 
@@ -21,6 +21,7 @@
   z-index: 0;
   background:
     radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.24), transparent 52%),
+    linear-gradient(var(--hero-overlay), var(--hero-overlay)),
     url('/japan-background.jpg') no-repeat center center / cover;
   mix-blend-mode: screen;
   opacity: 0.28;
@@ -72,7 +73,7 @@
   font-size: clamp(1rem, 2.2vw, 1.35rem);
   font-weight: 600;
   letter-spacing: 0.2px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--hero-greeting);
   margin: 0;
 }
 
@@ -85,22 +86,24 @@
   font-size: clamp(3.2rem, 8vw, 5.6rem);
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff, #dff6ff 38%, #b7e4ff 88%);
+  background: linear-gradient(90deg, var(--hero-name-start), var(--hero-name-mid) 38%, var(--hero-name-end) 88%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 12px 30px rgba(12, 74, 110, 0.32);
+  text-shadow: var(--hero-name-shadow);
 }
 
 .subtitle {
-  --color: rgba(226, 242, 255, 0.88);
   font-size: clamp(1.1rem, 2.6vw, 1.8rem);
   font-weight: 600;
-  color: var(--color);
-  text-shadow: 0 3px 8px rgba(15, 23, 42, 0.2);
+  color: var(--hero-subtitle);
+  text-shadow: var(--hero-subtitle-shadow);
   margin: 0;
   white-space: normal;
   max-width: 32ch;
   position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(2.6rem, 6vw, 3.4rem);
 }
 
 .cursor {
@@ -147,16 +150,16 @@
 }
 
 .btnPrimary {
-  color: #041424;
+  color: var(--hero-btn-primary-text);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(215, 236, 255, 0.92));
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 18px 46px rgba(15, 23, 42, 0.25);
 }
 
 .btnGhost {
-  color: #f8fafc;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--hero-btn-ghost-color);
+  background: var(--hero-btn-ghost-bg);
+  border-color: var(--hero-btn-ghost-border);
   backdrop-filter: blur(12px);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 14px 32px rgba(8, 51, 68, 0.28);
 }
@@ -219,9 +222,9 @@
   align-items: flex-start;
   padding: 1.2rem 1.4rem;
   border-radius: 1.5rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  box-shadow: 0 18px 40px rgba(8, 47, 73, 0.22);
+  background: var(--hero-highlight-bg);
+  border: 1px solid var(--hero-highlight-border);
+  box-shadow: var(--hero-highlight-shadow);
   backdrop-filter: blur(18px);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -237,8 +240,8 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.22);
-  color: #012a4a;
+  background: var(--hero-highlight-icon-bg);
+  color: var(--hero-highlight-icon-ink);
   font-size: 1.35rem;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
@@ -247,14 +250,14 @@
   margin: 0 0 0.25rem;
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--hero-highlight-title);
 }
 
 .highlightDesc {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.55;
-  color: rgba(236, 249, 255, 0.78);
+  color: var(--hero-highlight-desc);
 }
 
 .portrait {
@@ -282,8 +285,8 @@
   aspect-ratio: 1;
   border-radius: clamp(2rem, 4vw, 3rem);
   object-fit: cover;
-  border: 6px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 26px 64px rgba(8, 47, 73, 0.38);
+  border: 6px solid var(--hero-avatar-border);
+  box-shadow: var(--hero-avatar-shadow);
   animation: avatarFloat 12s ease-in-out infinite;
 }
 
@@ -296,9 +299,9 @@
   padding: 1rem 1.25rem;
   max-width: clamp(200px, 20vw, 240px);
   border-radius: 1.5rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(232, 244, 255, 0.85));
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
-  color: #082f49;
+  background: var(--hero-portrait-card-bg);
+  box-shadow: var(--hero-portrait-card-shadow);
+  color: var(--hero-portrait-card-ink);
 }
 
 .portraitTag {
@@ -306,7 +309,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #0f3c62;
+  color: var(--hero-portrait-tag);
 }
 
 .portraitNote {
@@ -388,44 +391,6 @@
   }
 }
 
-:global(.dark) .hero {
-  background: linear-gradient(135deg, rgba(13, 28, 57, 0.94), rgba(2, 44, 73, 0.92));
-  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.6);
-}
-
 :global(.dark) .overlay {
   opacity: 0.18;
-}
-
-:global(.dark) .highlightCard {
-  background: linear-gradient(160deg, rgba(15, 23, 42, 0.72), rgba(30, 58, 95, 0.55));
-  border-color: rgba(148, 163, 184, 0.35);
-  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.5);
-}
-
-:global(.dark) .highlightTitle {
-  color: #e0f2fe;
-}
-
-:global(.dark) .highlightDesc {
-  color: rgba(191, 219, 254, 0.8);
-}
-
-:global(.dark) .btnPrimary {
-  color: #0f172a;
-}
-
-:global(.dark) .btnGhost {
-  background: linear-gradient(180deg, rgba(148, 163, 184, 0.24), rgba(30, 58, 95, 0.2));
-  border-color: rgba(148, 163, 184, 0.4);
-}
-
-:global(.dark) .portraitCard {
-  background: linear-gradient(180deg, rgba(30, 64, 175, 0.92), rgba(17, 94, 89, 0.9));
-  color: #dbeafe;
-  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.6);
-}
-
-:global(.dark) .portraitTag {
-  color: #bfdbfe;
 }
