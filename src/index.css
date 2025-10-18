@@ -262,9 +262,9 @@ html {
   --heading-color: #f8fafc;
   --text: var(--text-color);
 
-  --bg-page: #020617;
-  --surface-1: #071120;
-  --surface-2: #0d1d36;
+  --bg-page: #050b19;
+  --surface-1: #081327;
+  --surface-2: #0f1f39;
 
   --border: rgba(148, 163, 184, 0.22);
   --border-dot-color: rgba(148, 163, 184, 0.3);
