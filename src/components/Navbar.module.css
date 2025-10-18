@@ -479,7 +479,6 @@
 }
 
 :global(.dark) .nav {
-  background: var(--nav-mobile-surface);
   border-color: var(--nav-border);
 }
 
