@@ -137,6 +137,15 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || "#home");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 960) {
         setMobileOpen(false);
