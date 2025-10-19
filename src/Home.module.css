@@ -6,6 +6,8 @@
   align-items: center;
   gap: clamp(2.5rem, 6vw, 5rem);
   width: min(1120px, calc(100% - clamp(2rem, 8vw, 5.5rem)));
+  max-width: 100vw;
+  overflow-x: clip;
   margin-inline: auto;
   padding: clamp(3rem, 8vw, 5rem) clamp(1.75rem, 6vw, 4.25rem) clamp(4rem, 10vw, 6rem);
   border-radius: clamp(2.8rem, 6vw, 4.5rem);
@@ -92,43 +94,50 @@
   text-shadow: var(--hero-name-shadow);
 }
 
-.subtitle {
-  /* Smaller and more compact for smoother typing */
+.subtitle{
+  --lines: 2;
+  --lh: 1.45;
+  line-height: var(--lh);
   font-size: clamp(0.9rem, 1.8vw, 1.25rem);
   font-weight: 500;
   color: var(--hero-subtitle);
-  text-shadow: var(--hero-subtitle-shadow);
   margin: 0;
-  /* Allow wrapping so long sentences don’t get clipped */
   white-space: normal;
   max-width: min(100%, 42ch);
   position: relative;
-  display: inline-flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  letter-spacing: 0.01em;
-  line-height: 1.45;
-  /* Reserve space for two lines so layout below stays put */
-  min-height: calc(1.45em * 2.1);
-  height: 1.45em;
-  padding-block: 0.1rem;
-  overflow: visible;
-  text-overflow: initial;
+
+  /* Tránh flex gây lệch baseline khi wrap */
+  display: inline-block;
+  vertical-align: top;
+  letter-spacing: .01em;
+  padding-block: .1rem;
+
+  /* --- Fallback: cố định 2 dòng theo công thức 1em * line-height * lines --- */
+  min-height: calc(1em * var(--lh) * var(--lines));
+  max-height: calc(1em * var(--lh) * var(--lines));
+  overflow: hidden;
+
+  /* --- Nếu trình duyệt hỗ trợ đơn vị 1lh (ổn định hơn), dùng luôn --- */
+}
+@supports (height: 1lh) {
+  .subtitle{
+    min-height: calc(var(--lines) * 1lh);
+    max-height: calc(var(--lines) * 1lh);
+  }
 }
 
-.cursor {
+/* Caret/cursor bám baseline, không làm tăng chiều cao khối */
+.cursor{
   display: inline-block;
-  width: 0.16em;
-  height: 0.9em;
-  margin-left: 0.18em;
+  width: 2px;
+  height: 1em;              /* theo cỡ chữ hiện tại */
+  margin-left: .2ch;
   background: currentColor;
-  align-self: flex-end;
+  vertical-align: -0.12em;  /* hạ nhẹ để khít đáy chữ */
   animation: blink 1s steps(1) infinite;
 }
 
-.deleting .cursor {
-  opacity: 0.7;
-}
+.deleting .cursor { opacity: 0.7; }
 
 @keyframes blink {
   50% {
@@ -385,13 +394,17 @@
 @media (max-width: 640px) {
   .hero {
     width: 100%;
+    max-width: 100vw;
     margin-inline: 0;
-    padding: clamp(2rem, 12vw, 3.5rem) clamp(1.25rem, 10vw, 2.5rem);
+    padding: clamp(1.5rem, 8vw, 2.5rem) clamp(1rem, 6vw, 1.5rem);
     border-radius: clamp(2rem, 8vw, 3rem);
     gap: clamp(1.75rem, 8vw, 2.5rem);
+    overflow-x: clip;
+
   }
 
   .subtitle {
+    --lines: 2;
     white-space: normal;
     max-width: 100%;
   }
@@ -406,7 +419,23 @@
   }
 
   .portraitCard {
-    bottom: clamp(-2rem, -8vw, -1.5rem);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: clamp(-1.5rem, -6vw, -1rem);
+    max-width: min(88%, 260px);
+    padding: 0.8rem 1rem;           /* giảm padding cho cân đối */
+    border-radius: 1.25rem;
+  }
+
+  .portraitTag {
+    font-size: 0.7rem;              /* nhỏ hơn nhẹ */
+    letter-spacing: 0.06em;
+  }
+
+  .portraitNote {
+    font-size: 0.85rem;             /* từ 0.95 → 0.85 */
+    line-height: 1.4;
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback  } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
@@ -31,6 +31,40 @@ export default function Navbar() {
     if (typeof window === "undefined") return "#home";
     return window.location.hash || "#home";
   });
+
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+
+  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!mobileOpen) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setMobileOpen(false);
+      return;
+    }
+    if (e.key === "Tab" && panelRef.current) {
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      }
+    }
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (mobileOpen && panelRef.current) {
+      const first = panelRef.current.querySelector<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      first?.focus();
+    }
+  }, [mobileOpen]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -72,60 +106,110 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const sections = NAV_LINKS
+      .map(({ href }) => document.querySelector<HTMLElement>(href))
+      .filter((el): el is HTMLElement => !!el);
+    if (!sections.length) return;
 
-    const sections = NAV_LINKS.map(({ href }) =>
-      document.querySelector<HTMLElement>(href)
-    ).filter((section): section is HTMLElement => Boolean(section));
+    const navH = headerRef.current?.offsetHeight ?? 82;
 
-    if (sections.length === 0) return;
+    // Bản đồ theo dõi mức giao cắt và vị trí theo thời điểm gần nhất
+    const vis = new Map<string, { ratio: number; top: number }>();
 
-    let raf = 0;
+    const pickActive = () => {
+      if (!sections.length) return;
+      // Ưu tiên section có |top - navH| nhỏ nhất trong số đang intersect
+      const inter = sections
+        .map((s) => {
+          const v = vis.get(s.id);
+          const top = s.getBoundingClientRect().top; // cập nhật top “tươi”
+          return {
+            id: s.id,
+            top,
+            ratio: v?.ratio ?? 0,
+            dist: Math.abs(top - navH - 12),
+          };
+        })
+        .filter((x) => x.ratio > 0);
 
-    const calculateActive = () => {
-      raf = 0;
-      const navHeight = headerRef.current?.offsetHeight ?? 0;
-      const scrollPosition = window.scrollY + navHeight + 12;
+      let candidate: { id: string } | undefined;
 
-      let currentId = sections[0].id;
+      if (inter.length) {
+        candidate = inter.sort((a, b) => a.dist - b.dist || b.ratio - a.ratio)[0];
+      } else {
+        // Fallback: chọn cái gần mép trên nhất ngay cả khi không intersect
+        candidate = sections
+          .map((s) => ({ id: s.id, dist: Math.abs(s.getBoundingClientRect().top - navH - 12) }))
+          .sort((a, b) => a.dist - b.dist)[0];
+      }
 
-      for (const section of sections) {
-        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-        if (scrollPosition >= sectionTop) {
-          currentId = section.id;
+      if (candidate) {
+        const newHash = `#${candidate.id}`;
+        setActiveHash((prev) => (prev === newHash ? prev : newHash));
+      }
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const id = (e.target as HTMLElement).id;
+          vis.set(id, { ratio: e.intersectionRatio, top: e.boundingClientRect.top });
         }
+        // Gọi chọn active sau mỗi batch
+        pickActive();
+      },
+      {
+        root: null,
+        // “Bắt giữa”: phần tử cắt qua vùng giữa màn hình thì được tính intersect
+        rootMargin: `-${navH + 12}px 0px -50% 0px`,
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
       }
+    );
 
-      const newHash = `#${currentId}`;
-      setActiveHash((prev) => (prev === newHash ? prev : newHash));
-    };
+    sections.forEach((s) => io.observe(s));
+    // Chạy lần đầu
+    pickActive();
 
-    const onScroll = () => {
-      if (raf) return;
-      raf = window.requestAnimationFrame(calculateActive);
-    };
-
-    const onResize = () => {
-      if (raf) {
-        window.cancelAnimationFrame(raf);
-        raf = 0;
-      }
-      calculateActive();
-    };
-
-    calculateActive();
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      if (raf) {
-        window.cancelAnimationFrame(raf);
-      }
-    };
+    return () => io.disconnect();
   }, []);
+
+
+
+  // Add smooth scroll handler
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      // Chỉ custom trên mobile; desktop cho anchor hoạt động tự nhiên
+      if (window.innerWidth >= 960) return;
+
+      e.preventDefault();
+      setPendingHref(href);     // đánh dấu đích
+      setMobileOpen(false);     // đóng menu -> effect body unlock sẽ chạy
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (pendingHref && !mobileOpen) {
+      const target = document.querySelector<HTMLElement>(pendingHref);
+      if (target) {
+        const navHeight = headerRef.current?.offsetHeight ?? 82;
+        const y =
+          target.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+
+        // cập nhật hash cho lịch sử
+        window.history.pushState(null, "", pendingHref);
+
+        // đợi 1–2 frame cho layout ổn định rồi cuộn
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+          });
+        });
+      }
+      setPendingHref(null);
+    }
+  }, [pendingHref, mobileOpen]);
+
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -179,70 +263,90 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
           aria-controls="main-navigation"
           aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
-          onClick={() => setMobileOpen((prev) => !prev)}
+          onClick={() => setMobileOpen((v) => !v)}
         >
-          {mobileOpen ? (
-            <MdClose className={styles.icon} aria-hidden="true" />
-          ) : (
-            <HiOutlineBars3 className={styles.icon} aria-hidden="true" />
-          )}
+          {mobileOpen ? <MdClose className={styles.icon} aria-hidden="true" /> : <HiOutlineBars3 className={styles.icon} aria-hidden="true" />}
           <span className={styles.srOnly}>{mobileOpen ? "Đóng menu" : "Mở menu"}</span>
         </button>
 
-        <nav
-          id="main-navigation"
-          className={`${styles.nav} ${mobileOpen ? styles.open : ""}`}
-        >
-          <div className={styles.navContent}>
-            <ul className={styles.linkList}>
-              {NAV_LINKS.map(({ href, label }) => {
-                const isActive = activeHash === href;
-                return (
-                  <li key={href}>
-                    <a
-                      href={href}
-                      className={`${styles.link} ${isActive ? styles.active : ""}`}
-                      aria-current={isActive ? "page" : undefined}
-                      onClick={() => {
-                        setMobileOpen(false);
-                        setActiveHash(href);
-                      }}
-                    >
-                      {label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
 
-            <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.themeToggle}
-                aria-label="Đổi giao diện sáng/tối"
-                aria-pressed={darkMode}
-                onClick={() => setDarkMode((prev) => !prev)}
-              >
-                {darkMode ? (
-                  <MdOutlineLightMode aria-hidden="true" />
-                ) : (
-                  <MdOutlineDarkMode aria-hidden="true" />
-                )}
-              </button>
-              <a
-                href="#contact"
-                className={styles.cta}
-                onClick={() => setMobileOpen(false)}
-              >
-                Kết nối ngay
-              </a>
-            </div>
-
-            <p className={styles.mobileNote}>
-              Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.
-            </p>
+        <nav id="main-navigation" className={`${styles.nav} ${mobileOpen ? styles.open : ""}`} onKeyDown={onKeyDown}>
+        {/* --- DESKTOP BAR --- */}
+        <div className={styles.navContent}>
+          <ul className={styles.linkList}>
+            {NAV_LINKS.map(({ href, label }) => {
+              const isActive = activeHash === href;
+              return (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className={`${styles.link} ${isActive ? styles.active : ""}`}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={(e) => handleLinkClick(e, href)}
+                  >
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.themeToggle}
+              aria-label="Đổi giao diện sáng/tối"
+              aria-pressed={darkMode}
+              onClick={() => setDarkMode(v => !v)}
+            >
+              {darkMode ? <MdOutlineLightMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
+            </button>
+            <a href="#contact" className={styles.cta} onClick={(e) => handleLinkClick(e, '#contact')}>Kết nối ngay</a>
           </div>
-        </nav>
+        </div>
+
+        {/* --- MOBILE OVERLAY --- */}
+        {mobileOpen && (
+          <button
+            type="button"
+            aria-label="Đóng menu"
+            className={styles.backdrop}
+            onClick={() => setMobileOpen(false)}
+            tabIndex={-1}
+          />
+        )}
+        <div className={styles.navPanel} ref={panelRef} aria-hidden={!mobileOpen}>
+          <ul className={styles.linkList}>
+            {NAV_LINKS.map(({ href, label }, i) => {
+              const isActive = activeHash === href;
+              return (
+                <li key={href} style={{ "--i": i } as React.CSSProperties}>
+                  <a
+                    href={href}
+                    className={`${styles.link} ${isActive ? styles.active : ""}`}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={(e) => handleLinkClick(e, href)}
+                  >
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.themeToggle}
+              aria-label="Đổi giao diện sáng/tối"
+              aria-pressed={darkMode}
+              onClick={() => setDarkMode(v => !v)}
+            >
+              {darkMode ? <MdOutlineLightMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
+            </button>
+            <a href="#contact" className={styles.cta} onClick={(e) => handleLinkClick(e, '#contact')}>Kết nối ngay</a>
+          </div>
+          <p className={styles.mobileNote}>Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.</p>
+        </div>
+      </nav>
       </div>
     </header>
   );
