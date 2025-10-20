@@ -1,6 +1,6 @@
 .container{
   position: relative;
-  margin: clamp(68px, 8vw, 96px) auto 0;
+  margin: 72px auto 0;
   isolation: isolate;
   background: var(--background-project-pjdt);
   color: var(--text-color-pjdt);
@@ -48,9 +48,10 @@
   grid-template-columns: minmax(220px, 270px) minmax(0, 1fr) minmax(240px, 290px);
   gap: clamp(1.2rem, 2vw, 2.2rem);
   align-items: start;
-  width: min(1280px, 100% - clamp(2rem, 6vw, 4.5rem));
-  margin: clamp(1.2rem, 4vw, 2.8rem) auto 0;
-  padding: clamp(2rem, 4vw, 3rem) clamp(1.2rem, 5vw, 3.2rem);
+  width: min(1500px, 100%);
+  box-sizing: border-box;
+  margin: clamp(1.1rem, 3vw, 2.2rem) auto 0;
+  padding: clamp(2.2rem, 4vw, 3.1rem) clamp(1.6rem, 4vw, 3.4rem);
 }
 
 /* ===== React Bits styles ===== */
@@ -529,8 +530,8 @@
 @media (max-width: 1024px){
   .wrapper{
     grid-template-columns: minmax(0, 1fr);
-    width: min(960px, 100% - clamp(1.2rem, 5vw, 2.6rem));
-    padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.1rem, 5vw, 2rem);
+    width: min(960px, 100%);
+    padding: clamp(1.6rem, 5vw, 2.4rem) clamp(1.2rem, 5vw, 2.2rem);
     gap: 1.4rem;
   }
   .leftSidebar{ display: none; }

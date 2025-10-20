@@ -540,18 +540,31 @@ export default function ProjectDataPage() {
   }, [tocOpen]);
 
   useEffect(() => {
-    const anchors = [
-      tocListDesktopRef.current?.querySelector(
-        `.${styles.active} .${styles.tocLink}`
-      ) as HTMLAnchorElement | null,
-      tocListDrawerRef.current?.querySelector(
-        `.${styles.active} .${styles.tocLink}`
-      ) as HTMLAnchorElement | null,
-    ].filter(Boolean) as HTMLAnchorElement[];
+    const adjustScroll = (list: HTMLUListElement | null) => {
+      if (!list) return;
+      const active = list.querySelector(`.${styles.active}`) as
+        | HTMLElement
+        | null;
+      if (!active) return;
 
-    anchors.forEach((anchor) =>
-      anchor.scrollIntoView({ block: "nearest", inline: "nearest" })
-    );
+      const padding = 12;
+      const top = active.offsetTop;
+      const bottom = top + active.offsetHeight;
+      const viewTop = list.scrollTop;
+      const viewBottom = viewTop + list.clientHeight;
+
+      if (top < viewTop + padding) {
+        list.scrollTop = Math.max(0, top - padding);
+      } else if (bottom > viewBottom - padding) {
+        list.scrollTop = Math.min(
+          list.scrollHeight,
+          bottom - list.clientHeight + padding
+        );
+      }
+    };
+
+    adjustScroll(tocListDesktopRef.current);
+    if (tocOpen) adjustScroll(tocListDrawerRef.current);
   }, [activeId, tocOpen]);
 
   // share
