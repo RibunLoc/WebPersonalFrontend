@@ -8,6 +8,7 @@ import {
   type AnchorHTMLAttributes,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
+  type MutableRefObject,
 } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -497,6 +498,32 @@ export default function ProjectDataPage() {
     return () => window.removeEventListener("scroll", handler);
   }, [project?.detail]);
 
+  useEffect(() => {
+    if (!activeId) return;
+    const keepVisible = (ref: MutableRefObject<HTMLUListElement | null>) => {
+      const list = ref.current;
+      if (!list) return;
+      const item = list.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`);
+      if (!item) return;
+      const padding = 18;
+      const top = item.offsetTop;
+      const bottom = top + item.offsetHeight;
+      const viewTop = list.scrollTop;
+      const viewBottom = viewTop + list.clientHeight;
+      if (top < viewTop + 12) {
+        list.scrollTo({ top: Math.max(0, top - padding), behavior: "smooth" });
+      } else if (bottom > viewBottom - 12) {
+        list.scrollTo({
+          top: Math.max(0, bottom - list.clientHeight + padding),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    keepVisible(tocListDesktopRef);
+    if (tocOpen) keepVisible(tocListDrawerRef);
+  }, [activeId, tocOpen]);
+
   // smooth scroll with offset
   const handleTocClick = (e: ReactMouseEvent, id: string) => {
     e.preventDefault();
@@ -538,34 +565,6 @@ export default function ProjectDataPage() {
       document.body.style.overflow = prev;
     };
   }, [tocOpen]);
-
-  useEffect(() => {
-    const adjustScroll = (list: HTMLUListElement | null) => {
-      if (!list) return;
-      const active = list.querySelector(`.${styles.active}`) as
-        | HTMLElement
-        | null;
-      if (!active) return;
-
-      const padding = 12;
-      const top = active.offsetTop;
-      const bottom = top + active.offsetHeight;
-      const viewTop = list.scrollTop;
-      const viewBottom = viewTop + list.clientHeight;
-
-      if (top < viewTop + padding) {
-        list.scrollTop = Math.max(0, top - padding);
-      } else if (bottom > viewBottom - padding) {
-        list.scrollTop = Math.min(
-          list.scrollHeight,
-          bottom - list.clientHeight + padding
-        );
-      }
-    };
-
-    adjustScroll(tocListDesktopRef.current);
-    if (tocOpen) adjustScroll(tocListDrawerRef.current);
-  }, [activeId, tocOpen]);
 
   // share
   const share = async () => {
@@ -619,10 +618,10 @@ export default function ProjectDataPage() {
           <p>Không tìm thấy dự án.</p>
           <button
             className={styles.backBtn}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             type="button"
           >
-            Về danh sách
+            Về trang chủ
           </button>
         </div>
       </div>
@@ -652,6 +651,7 @@ export default function ProjectDataPage() {
       {toc.map((item) => (
         <li
           key={item.id}
+          data-toc-id={item.id}
           className={cx(
             styles.tocItem,
             item.level === 3 && styles.tocIndent2,
@@ -688,10 +688,10 @@ export default function ProjectDataPage() {
           <div className={styles.toolbar}>
             <button
               className={styles.backBtn}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               type="button"
             >
-              Quay lại
+              Trang chủ
             </button>
             <button
               className={styles.printBtn}

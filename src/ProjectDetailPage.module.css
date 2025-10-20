@@ -1,10 +1,10 @@
 .container{
   position: relative;
-  margin: 72px auto 0;
+  margin: calc(var(--nav-h,72px) + clamp(.6rem, 1.6vw, 2rem)) auto 0;
   isolation: isolate;
   background: var(--background-project-pjdt);
   color: var(--text-color-pjdt);
-  padding-bottom: clamp(3rem, 6vw, 4.4rem);
+  padding-bottom: clamp(3.2rem, 5vw, 5rem);
 }
 
 .bgDots::before,
@@ -45,13 +45,13 @@
 
 .wrapper{
   display: grid;
-  grid-template-columns: minmax(220px, 270px) minmax(0, 1fr) minmax(240px, 290px);
-  gap: clamp(1.2rem, 2vw, 2.2rem);
+  grid-template-columns: minmax(240px, 330px) minmax(0, 1fr) minmax(250px, 330px);
+  gap: clamp(1.4rem, 2.4vw, 2.8rem);
   align-items: start;
-  width: min(1500px, 100%);
+  width: min(1680px, 100%);
   box-sizing: border-box;
-  margin: clamp(1.1rem, 3vw, 2.2rem) auto 0;
-  padding: clamp(2.2rem, 4vw, 3.1rem) clamp(1.6rem, 4vw, 3.4rem);
+  margin: clamp(.85rem, 2.4vw, 1.8rem) auto 0;
+  padding: clamp(1.8rem, 3vw, 2.6rem) clamp(1.4rem, 3.6vw, 3rem);
 }
 
 /* ===== React Bits styles ===== */
@@ -149,8 +149,8 @@
   flex-direction: column;
   gap: 1.2rem;
   position: sticky;
-  top: calc(var(--nav-h,72px) + 1.6rem);
-  max-height: calc(100vh - var(--nav-h,72px) - 2.4rem);
+  top: calc(var(--nav-h,72px) + clamp(1.2rem, 1.8vw, 2.2rem));
+  max-height: calc(100vh - var(--nav-h,72px) - clamp(1.6rem, 2.4vw, 2.8rem));
   overflow: auto;
   padding-right: .35rem;
 }
@@ -241,7 +241,7 @@
   border: 1px solid var(--card-border-pjdt);
   border-radius: calc(var(--radius-pjdt) + 2px);
   padding: 1rem 1.2rem;
-  margin-bottom: 1rem; margin-top: 2rem;
+  margin-bottom: 1rem; margin-top: 1.4rem;
   /* box-shadow: var(--shadow-sm-pjdt); */
 }
 .avatar{
@@ -269,7 +269,7 @@
   background: var(--background-project-content-pjdt);
   border: 1px solid var(--card-border-pjdt);
   border-radius: var(--radius-pjdt);
-  padding: clamp(1.8rem, 3.2vw, 2.3rem) clamp(1.4rem, 3vw, 2rem);
+  padding: clamp(1.5rem, 2.8vw, 2.1rem) clamp(1.2rem, 2.8vw, 1.9rem);
   min-width: 0;
   box-shadow: var(--shadow-md-pjdt);
   display: flex;
@@ -336,9 +336,9 @@
 /* ================= TOC ================= */
 .tocSidebar{
   position: sticky;
-  top: calc(var(--nav-h,72px) + 1.6rem);
+  top: calc(var(--nav-h,72px) + clamp(1.2rem, 1.8vw, 2.1rem));
   height: fit-content;
-  max-height: calc(100vh - var(--nav-h,72px) - 2.6rem);
+  max-height: calc(100vh - var(--nav-h,72px) - clamp(1.8rem, 2.6vw, 3rem));
   overflow: auto;
 
   padding: 14px;
