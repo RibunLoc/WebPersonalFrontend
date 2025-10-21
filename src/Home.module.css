@@ -5,11 +5,11 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
   align-items: center;
   gap: clamp(2.5rem, 6vw, 5rem);
-  width: min(1120px, calc(100% - clamp(2rem, 8vw, 5.5rem)));
-  max-width: 100vw;
+  width: min(1180px, 100%);
+  max-width: 100%;
   overflow-x: clip;
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 5rem) clamp(1.75rem, 6vw, 4.25rem) clamp(4rem, 10vw, 6rem);
+  padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 6vw, 4rem) clamp(4rem, 10vw, 6rem);
   border-radius: clamp(2.8rem, 6vw, 4.5rem);
   color: var(--hero-text);
   background: var(--hero-bg);

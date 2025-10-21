@@ -73,7 +73,7 @@
 }
 
 .app-main--plain {
-  padding-top: calc(var(--nav-h, 82px) + clamp(1.5rem, 5vw, 3rem));
+  padding-top: calc(var(--nav-h, 82px) + clamp(0.85rem, 3.5vw, 2rem));
   padding-bottom: clamp(3rem, 8vw, 4.5rem);
 }
 

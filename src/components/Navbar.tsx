@@ -196,13 +196,19 @@ export default function Navbar() {
 
       const isDesktop = window.innerWidth >= 960;
 
+      const markActive = () => {
+        setActiveHash((prev) => (prev === hash ? prev : hash));
+      };
+
       if (onHomePage && isDesktop) {
+        markActive();
         return;
       }
 
       e.preventDefault();
 
       const queueScroll = () => {
+        markActive();
         setPendingHref(hash);
         if (!isDesktop) {
           setMobileOpen(false);
