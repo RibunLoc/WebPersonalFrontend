@@ -1,4 +1,6 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback  } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
+import type React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
@@ -13,6 +15,9 @@ const NAV_LINKS = [
 ] as const;
 
 export default function Navbar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const onHomePage = location.pathname === "/";
   const prefersDark = useMemo(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
@@ -177,38 +182,84 @@ export default function Navbar() {
 
   // Add smooth scroll handler
   const handleLinkClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      // Chỉ custom trên mobile; desktop cho anchor hoạt động tự nhiên
-      if (window.innerWidth >= 960) return;
+    (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+      if (
+        e.defaultPrevented ||
+        e.button !== 0 ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey ||
+        e.altKey
+      ) {
+        return;
+      }
+
+      const isDesktop = window.innerWidth >= 960;
+
+      const markActive = () => {
+        setActiveHash((prev) => (prev === hash ? prev : hash));
+      };
+
+      if (onHomePage && isDesktop) {
+        markActive();
+        return;
+      }
 
       e.preventDefault();
-      setPendingHref(href);     // đánh dấu đích
-      setMobileOpen(false);     // đóng menu -> effect body unlock sẽ chạy
+
+      const queueScroll = () => {
+        markActive();
+        setPendingHref(hash);
+        if (!isDesktop) {
+          setMobileOpen(false);
+        }
+      };
+
+      if (!onHomePage) {
+        navigate({ pathname: "/", hash });
+        queueScroll();
+        return;
+      }
+
+      queueScroll();
     },
-    []
+    [navigate, onHomePage]
   );
 
   useEffect(() => {
-    if (pendingHref && !mobileOpen) {
+    if (!pendingHref || mobileOpen) return;
+
+    const scrollToPending = () => {
       const target = document.querySelector<HTMLElement>(pendingHref);
-      if (target) {
-        const navHeight = headerRef.current?.offsetHeight ?? 82;
-        const y =
-          target.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+      if (!target) return false;
 
-        // cập nhật hash cho lịch sử
-        window.history.pushState(null, "", pendingHref);
+      const navHeight = headerRef.current?.offsetHeight ?? 82;
+      const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 8;
 
-        // đợi 1–2 frame cho layout ổn định rồi cuộn
+      window.history.pushState(null, "", pendingHref);
+
+      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-          });
+          window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
         });
-      }
+      });
+
+      return true;
+    };
+
+    if (scrollToPending()) {
       setPendingHref(null);
+      return;
     }
-  }, [pendingHref, mobileOpen]);
+
+    const raf = requestAnimationFrame(() => {
+      if (scrollToPending()) {
+        setPendingHref(null);
+      }
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [pendingHref, mobileOpen, location.pathname]);
 
 
   useEffect(() => {
@@ -252,7 +303,12 @@ export default function Navbar() {
   return (
     <header ref={headerRef} className={styles.wrapper}>
       <div className={styles.inner}>
-        <a href="#home" className={styles.brand} aria-label="Về đầu trang">
+        <a
+          href={onHomePage ? "#home" : "/#home"}
+          className={styles.brand}
+          aria-label="Về đầu trang"
+          onClick={(e) => handleLinkClick(e, "#home")}
+        >
           <span className={styles.dot} aria-hidden="true" />
           <span className={styles.brandText}>Thanh Lộc</span>
         </a>
@@ -276,10 +332,11 @@ export default function Navbar() {
           <ul className={styles.linkList}>
             {NAV_LINKS.map(({ href, label }) => {
               const isActive = activeHash === href;
+              const targetHref = onHomePage ? href : `/${href}`;
               return (
                 <li key={href}>
                   <a
-                    href={href}
+                    href={targetHref}
                     className={`${styles.link} ${isActive ? styles.active : ""}`}
                     aria-current={isActive ? "page" : undefined}
                     onClick={(e) => handleLinkClick(e, href)}
@@ -300,7 +357,13 @@ export default function Navbar() {
             >
               {darkMode ? <MdOutlineLightMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
             </button>
-            <a href="#contact" className={styles.cta} onClick={(e) => handleLinkClick(e, '#contact')}>Kết nối ngay</a>
+            <a
+              href={onHomePage ? "#contact" : "/#contact"}
+              className={styles.cta}
+              onClick={(e) => handleLinkClick(e, "#contact")}
+            >
+              Kết nối ngay
+            </a>
           </div>
         </div>
 
@@ -318,10 +381,11 @@ export default function Navbar() {
           <ul className={styles.linkList}>
             {NAV_LINKS.map(({ href, label }, i) => {
               const isActive = activeHash === href;
+              const targetHref = onHomePage ? href : `/${href}`;
               return (
                 <li key={href} style={{ "--i": i } as React.CSSProperties}>
                   <a
-                    href={href}
+                    href={targetHref}
                     className={`${styles.link} ${isActive ? styles.active : ""}`}
                     aria-current={isActive ? "page" : undefined}
                     onClick={(e) => handleLinkClick(e, href)}
@@ -342,7 +406,13 @@ export default function Navbar() {
             >
               {darkMode ? <MdOutlineLightMode aria-hidden="true" /> : <MdOutlineDarkMode aria-hidden="true" />}
             </button>
-            <a href="#contact" className={styles.cta} onClick={(e) => handleLinkClick(e, '#contact')}>Kết nối ngay</a>
+            <a
+              href={onHomePage ? "#contact" : "/#contact"}
+              className={styles.cta}
+              onClick={(e) => handleLinkClick(e, "#contact")}
+            >
+              Kết nối ngay
+            </a>
           </div>
           <p className={styles.mobileNote}>Sẵn sàng trao đổi về dự án mới hoặc cơ hội cộng tác thú vị.</p>
         </div>

@@ -1,4 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+  type Ref,
+  type AnchorHTMLAttributes,
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+  type MutableRefObject,
+} from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -215,7 +226,7 @@ function RelatedProjects({
       <div className={styles.relatedTitle}>Bài liên quan</div>
       <div className={styles.relatedGrid}>
         {list.map((p) => (
-          <Link key={p.id} className={styles.relatedItem} to={`/project/${p.id}`}>
+          <Link key={p.id} className={styles.relatedItem} to={`/projects/${p.id}`}>
             {p.cover ? (
               <img src={p.cover} alt={p.title} />
             ) : (
@@ -240,7 +251,7 @@ const cx = (...cls: Array<string | undefined | false | null>) =>
 
 function RBCard({
   children, className, glass = false,
-}: React.PropsWithChildren<{ className?: string; glass?: boolean }>) {
+}: PropsWithChildren<{ className?: string; glass?: boolean }>) {
   return (
     <section
       className={cx(
@@ -254,7 +265,7 @@ function RBCard({
   );
 }
 
-function RBSectionTitle({ children }: React.PropsWithChildren) {
+function RBSectionTitle({ children }: PropsWithChildren) {
   return <div className={styles.rbSectionTitle}>{children}</div>;
 }
 
@@ -262,12 +273,12 @@ type BtnBase = {
   className?: string;
   size?: "sm" | "md";
   variant?: "primary" | "ghost" | "pill";
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 };
 
 function RBLinkButton({
   children, className, size="md", variant="ghost", icon, ...rest
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & BtnBase) {
+}: AnchorHTMLAttributes<HTMLAnchorElement> & BtnBase) {
   return (
     <a
       {...rest}
@@ -288,7 +299,7 @@ function RBLinkButton({
   );
 }
 
-function RBBadge({ children }: React.PropsWithChildren) {
+function RBBadge({ children }: PropsWithChildren) {
   return <span className={styles.rbBadge}>{children}</span>;
 }
 
@@ -417,9 +428,15 @@ export default function ProjectDataPage() {
 
   // nav height -> CSS var for sticky/offset
   useEffect(() => {
-    const header = document.querySelector("header") as HTMLElement | null;
-    const h = header?.offsetHeight ?? 72;
-    document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    const updateNavHeight = () => {
+      const header = document.querySelector("header") as HTMLElement | null;
+      const h = header?.offsetHeight ?? 72;
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+
+    updateNavHeight();
+    window.addEventListener("resize", updateNavHeight);
+    return () => window.removeEventListener("resize", updateNavHeight);
   }, []);
 
   const toc = useMemo(
@@ -446,7 +463,7 @@ export default function ProjectDataPage() {
       ) as HTMLElement | null;
       if (!content) return;
       const top = content.offsetTop;
-      const total = content.scrollHeight - window.innerHeight;
+      const total = Math.max(1, content.scrollHeight - window.innerHeight);
       const y = Math.max(0, window.scrollY - top);
       setProgress(Math.min(100, Math.max(0, (y / total) * 100)));
     };
@@ -457,6 +474,9 @@ export default function ProjectDataPage() {
 
   // scroll spy
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [tocOpen, setTocOpen] = useState(false);
+  const tocListDesktopRef = useRef<HTMLUListElement | null>(null);
+  const tocListDrawerRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
     const headings = Array.from(
       document.querySelectorAll(
@@ -484,8 +504,34 @@ export default function ProjectDataPage() {
     return () => window.removeEventListener("scroll", handler);
   }, [project?.detail]);
 
+  useEffect(() => {
+    if (!activeId) return;
+    const keepVisible = (ref: MutableRefObject<HTMLUListElement | null>) => {
+      const list = ref.current;
+      if (!list) return;
+      const item = list.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`);
+      if (!item) return;
+      const padding = 18;
+      const top = item.offsetTop;
+      const bottom = top + item.offsetHeight;
+      const viewTop = list.scrollTop;
+      const viewBottom = viewTop + list.clientHeight;
+      if (top < viewTop + 12) {
+        list.scrollTo({ top: Math.max(0, top - padding), behavior: "smooth" });
+      } else if (bottom > viewBottom - 12) {
+        list.scrollTo({
+          top: Math.max(0, bottom - list.clientHeight + padding),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    keepVisible(tocListDesktopRef);
+    if (tocOpen) keepVisible(tocListDrawerRef);
+  }, [activeId, tocOpen]);
+
   // smooth scroll with offset
-  const handleTocClick = (e: React.MouseEvent, id: string) => {
+  const handleTocClick = (e: ReactMouseEvent, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
     if (!el) return;
@@ -496,6 +542,7 @@ export default function ProjectDataPage() {
     const y = Math.max(0, el.getBoundingClientRect().top + window.scrollY - navH - 10);
     window.history.replaceState(null, "", `#${id}`);
     window.scrollTo({ top: y, behavior: "smooth" });
+    setTocOpen(false);
   };
 
   // show back-to-top
@@ -506,6 +553,24 @@ export default function ProjectDataPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!tocOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setTocOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [tocOpen]);
+
+  useEffect(() => {
+    if (!tocOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [tocOpen]);
 
   // share
   const share = async () => {
@@ -559,15 +624,59 @@ export default function ProjectDataPage() {
           <p>Không tìm thấy dự án.</p>
           <button
             className={styles.backBtn}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             type="button"
           >
-            Về danh sách
+            Về trang chủ
           </button>
         </div>
       </div>
     );
   }
+
+  const sideWidgets = (
+    <>
+      <LeftProfile author={project.author as any} />
+      <SideKeyLinks links={(project as any).links} />
+      <SideProjectInfo
+        reading={reading.minutes}
+        words={reading.words}
+        views={project?.views}
+        updatedAt={(project as any)?.updatedAt ?? project.date}
+        tags={project.tags || []}
+      />
+    </>
+  );
+
+  const TocList = ({
+    listRef,
+  }: {
+    listRef?: Ref<HTMLUListElement>;
+  }) => (
+    <ul ref={listRef} className={styles.tocList}>
+      {toc.map((item) => (
+        <li
+          key={item.id}
+          data-toc-id={item.id}
+          className={cx(
+            styles.tocItem,
+            item.level === 3 && styles.tocIndent2,
+            item.level === 4 && styles.tocIndent3,
+            activeId === item.id && styles.active
+          )}
+        >
+          <a
+            href={`#${item.id}`}
+            className={styles.tocLink}
+            title={item.text}
+            onClick={(e) => handleTocClick(e, item.id)}
+          >
+            {item.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
 
 
   return (
@@ -577,28 +686,18 @@ export default function ProjectDataPage() {
 
       <div className={styles.wrapper}>
         {/* left sidebar */}
-        <aside className={styles.leftSidebar}>
-          <LeftProfile author={project.author as any} />
-          <SideKeyLinks links={(project as any).links} />
-          <SideProjectInfo
-            reading={reading.minutes}
-            words={reading.words}
-            views={project?.views}
-            updatedAt={(project as any)?.updatedAt ?? project.date}
-            tags={project.tags || []}
-          />
-        </aside>
+        <aside className={styles.leftSidebar}>{sideWidgets}</aside>
 
         {/* Content */}
         <div className={styles.content}>
           {/* controls */}
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <div className={styles.toolbar}>
             <button
               className={styles.backBtn}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               type="button"
             >
-              Quay lại
+              Trang chủ
             </button>
             <button
               className={styles.printBtn}
@@ -616,6 +715,16 @@ export default function ProjectDataPage() {
             >
               Chia sẻ
             </button>
+            {!!toc.length && (
+              <button
+                className={styles.tocMobileToggle}
+                onClick={() => setTocOpen(true)}
+                type="button"
+                aria-expanded={tocOpen}
+              >
+                ☰ Mục lục
+              </button>
+            )}
           </div>
 
           {/* meta */}
@@ -652,6 +761,8 @@ export default function ProjectDataPage() {
             </div>
           </div>
 
+          <div className={styles.mobileSidebar}>{sideWidgets}</div>
+
           <h1 className={styles.detailTitle}>{project.title}</h1>
           <p className={styles.detailDescription}>{project.description}</p>
 
@@ -683,28 +794,7 @@ export default function ProjectDataPage() {
           <div className={styles.tocHeader}>
             <div className={styles.tocTitle}>MỤC LỤC</div>
           </div>
-          <ul className={styles.tocList}>
-            {toc.map((item) => (
-              <li
-                key={item.id}
-                className={[
-                  styles.tocItem,
-                  item.level === 3 ? styles.tocIndent2 : "",
-                  item.level === 4 ? styles.tocIndent3 : "",
-                  activeId === item.id ? styles.active : "",
-                ].join(" ")}
-              >
-                <a
-                  href={`#${item.id}`}
-                  className={styles.tocLink}
-                  title={item.text}
-                  onClick={(e) => handleTocClick(e, item.id)}
-                >
-                  {item.text}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <TocList listRef={tocListDesktopRef} />
         </aside>
       </div>
 
@@ -715,6 +805,30 @@ export default function ProjectDataPage() {
           title="Lên đầu trang"
         >
         </button>
+      )}
+
+      {tocOpen && toc.length > 0 && (
+        <>
+          <button
+            type="button"
+            className={styles.tocOverlay}
+            aria-label="Đóng mục lục"
+            onClick={() => setTocOpen(false)}
+          />
+          <aside className={styles.tocDrawer} role="dialog" aria-modal="true">
+            <div className={styles.tocDrawerHeader}>
+              <span>Mục lục</span>
+              <button
+                type="button"
+                className={styles.tocDrawerClose}
+                onClick={() => setTocOpen(false)}
+              >
+                Đóng
+              </button>
+            </div>
+            <TocList listRef={tocListDrawerRef} />
+          </aside>
+        </>
       )}
     </div>
   );
