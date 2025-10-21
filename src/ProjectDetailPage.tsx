@@ -428,9 +428,15 @@ export default function ProjectDataPage() {
 
   // nav height -> CSS var for sticky/offset
   useEffect(() => {
-    const header = document.querySelector("header") as HTMLElement | null;
-    const h = header?.offsetHeight ?? 72;
-    document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    const updateNavHeight = () => {
+      const header = document.querySelector("header") as HTMLElement | null;
+      const h = header?.offsetHeight ?? 72;
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+
+    updateNavHeight();
+    window.addEventListener("resize", updateNavHeight);
+    return () => window.removeEventListener("resize", updateNavHeight);
   }, []);
 
   const toc = useMemo(
