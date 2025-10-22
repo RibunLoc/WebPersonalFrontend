@@ -47,6 +47,137 @@
 
 .form textarea { min-height: 140px; resize: vertical; }
 
+.fileInputWrap {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fileLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.fileInput {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px dashed var(--card-border);
+  border-radius: 10px;
+  background: var(--field-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+.fileInput:hover {
+  border-color: var(--btn-bg2);
+}
+
+.fileInput:focus {
+  outline: none;
+  border-color: var(--btn-bg2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn-bg2) 35%, transparent);
+}
+
+.fileInput::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--btn-bg1), var(--btn-bg2));
+  color: var(--btn-ink);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+.fileInput::file-selector-button:hover {
+  opacity: .85;
+}
+
+.fileHint {
+  font-size: .85rem;
+  color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+}
+
+.fileError {
+  margin: 0;
+  text-align: left;
+  color: var(--error);
+  font-size: .9rem;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--field-bg);
+}
+
+.fileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.fileName {
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileMeta {
+  font-size: .85rem;
+  color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+}
+
+.removeBtn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--error) 14%, transparent);
+  color: var(--error);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.removeBtn:hover {
+  background: color-mix(in srgb, var(--error) 26%, transparent);
+  transform: scale(1.05);
+}
+
+.removeBtn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--error) 60%, transparent);
+  outline-offset: 2px;
+}
+
 .form input::placeholder,
 .form textarea::placeholder { color: color-mix(in srgb, var(--text-muted) 85%, transparent); }
 
@@ -149,6 +280,30 @@
   border-color: rgba(96, 165, 250, 0.35);
   color: var(--text-color);
   box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.08);
+}
+
+:global(.dark) .fileInput {
+  background: rgba(13, 20, 35, 0.85);
+  border-color: rgba(96, 165, 250, 0.35);
+  color: var(--text-color);
+}
+
+:global(.dark) .fileItem {
+  background: rgba(13, 20, 35, 0.85);
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+:global(.dark) .fileMeta {
+  color: color-mix(in srgb, #cbd5f5 65%, transparent);
+}
+
+:global(.dark) .removeBtn {
+  color: color-mix(in srgb, var(--error) 80%, white 20%);
+  background: color-mix(in srgb, var(--error) 18%, transparent);
+}
+
+:global(.dark) .removeBtn:hover {
+  background: color-mix(in srgb, var(--error) 28%, transparent);
 }
 
 :global(.dark) .form input:focus,

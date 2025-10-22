@@ -1,4 +1,5 @@
 import styles from "./AboutMe.module.css";
+import { resolveAssetUrl } from "./utils/assets";
 
 const highlights = [
   {
@@ -30,6 +31,7 @@ const capabilities = [
 ];
 
 export default function AboutMe() {
+  const portraitUrl = resolveAssetUrl("/avatar.jpg");
   return (
     <section className={styles.section} id="about">
       <div className={styles.container}>
@@ -46,7 +48,7 @@ export default function AboutMe() {
           <article className={styles.profileCard}>
             <div className={styles.portraitWrap}>
               <span className={styles.portraitGlow} aria-hidden="true" />
-              <img src="/avatar.jpg" alt="Chân dung Thanh Lộc" className={styles.portrait} />
+              <img src={portraitUrl} alt="Chân dung Thanh Lộc" className={styles.portrait} />
             </div>
             <dl className={styles.metaList}>
               <div>

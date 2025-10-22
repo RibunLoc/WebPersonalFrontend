@@ -24,6 +24,7 @@ import mermaid from "mermaid";
 
 import styles from "./ProjectDetailPage.module.css";
 import { projects } from "./data/projects";
+import { resolveAssetUrl } from "./utils/assets";
 
 // ===== Types =====
 type TOCItem = { level: number; text: string; id: string };
@@ -98,11 +99,12 @@ function Mermaid({ chart }: { chart: string }) {
 
 function MdImage(props: any) {
   const { src, alt } = props;
+  const resolvedSrc = resolveAssetUrl(src);
   return (
     <figure className={styles.mdFigure}>
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <Zoom>
-        <img src={src} alt={alt} loading="lazy" className={styles.mdImg} />
+        <img src={resolvedSrc} alt={alt} loading="lazy" className={styles.mdImg} />
       </Zoom>
       {alt && <figcaption className={styles.mdCap}>{alt}</figcaption>}
     </figure>
@@ -228,7 +230,7 @@ function RelatedProjects({
         {list.map((p) => (
           <Link key={p.id} className={styles.relatedItem} to={`/projects/${p.id}`}>
             {p.cover ? (
-              <img src={p.cover} alt={p.title} />
+              <img src={resolveAssetUrl(p.cover)} alt={p.title} />
             ) : (
               <div className={styles.noCover} />
             )}
@@ -424,6 +426,9 @@ export default function ProjectDataPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const project = projects.find((p) => p.id === id);
+  const authorAvatar = resolveAssetUrl(
+    project?.author?.avatar || "/default-avatar.png"
+  );
 
 
   // nav height -> CSS var for sticky/offset
@@ -730,7 +735,7 @@ export default function ProjectDataPage() {
           {/* meta */}
           <div className={styles.metaBox}>
             <img
-              src={project.author?.avatar || "/default-avatar.png"}
+              src={authorAvatar}
               alt={project.author?.name || "Tác giả ẩn danh"}
               className={styles.avatar}
             />
