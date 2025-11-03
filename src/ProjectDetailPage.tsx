@@ -416,9 +416,6 @@ function SideProjectInfo({
 }
 
 
-
-
-
 // ===== Main Page =====
 export default function ProjectDataPage() {
   const { id } = useParams<{ id: string }>();
@@ -509,6 +506,8 @@ export default function ProjectDataPage() {
     const keepVisible = (ref: MutableRefObject<HTMLUListElement | null>) => {
       const list = ref.current;
       if (!list) return;
+      if (list.scrollHeight <= list.clientHeight) return;
+
       const item = list.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`);
       if (!item) return;
       const padding = 18;

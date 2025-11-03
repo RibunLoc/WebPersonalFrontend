@@ -5,6 +5,7 @@
   background: var(--background-project-pjdt);
   color: var(--text-color-pjdt);
   padding-bottom: clamp(3.2rem, 5vw, 5rem);
+  overflow:visible;
 }
 
 .bgDots::before,
@@ -52,6 +53,7 @@
   box-sizing: border-box;
   margin: clamp(-1.2rem, -0.6rem + 0.6vw, .15rem) auto 0;
   padding: clamp(1.25rem, 2.4vw, 2.15rem) clamp(1.05rem, 2.8vw, 2.3rem);
+  overflow: visible;
 }
 
 /* ===== React Bits styles ===== */
@@ -153,6 +155,7 @@
   max-height: calc(100vh - var(--nav-h,72px) - clamp(1.1rem, 2vw, 2.4rem));
   overflow: auto;
   padding-right: .35rem;
+  align-self: start;
 }
 
 .leftSidebar::-webkit-scrollbar{ width: 6px; }
@@ -336,16 +339,15 @@
 /* ================= TOC ================= */
 
 .tocSidebar{
-  position: sticky;
-  top: calc(var(--nav-h,72px) + clamp(.05rem, .35vw, .6rem));
+  position: sticky !important;                              /* bám theo viewport */
+  top: calc(var(--nav-h,72px) + 12px);               /* né thanh nav */
+  align-self: start;                                  /* không bị kéo dãn */
   display: flex;
   flex-direction: column;
   gap: .35rem;
-  height: max-content;
-  max-height: calc(100vh - var(--nav-h,72px) - clamp(.65rem, 1.2vw, 1.9rem));
-  overflow: hidden;
+  max-height: none;                                   /* để TOC đi cùng trang */
+  overflow: visible;                                  /* không cuộn nội bộ */
   scrollbar-gutter: stable both-edges;
-
   padding: 14px;
   border-radius: var(--radius-pjdt);
   border: 1px solid var(--card-border-pjdt);
@@ -359,8 +361,8 @@
   padding: 0;
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
-  max-height: inherit;
+  max-height: none;
+  overflow: visible;                                  /* đi theo trang */
   scrollbar-width: thin;
   scrollbar-color: rgba(59,130,246,.28) transparent;
 }

@@ -52,7 +52,7 @@ export const projects: Project[] = [
     title: 'Xây dựng và triển khai ứng dụng web quản lý công việc dùng microservices và DevOps - Octaltask',
     author: {
       name: 'Hồ Thanh Lộc',
-      avatar: './Project/bg-Octaltask.png'
+      avatar: '/avatar.jpg'
     },
     date: 'Đã đăng vào th 8 27, 2025 16:37',
     views: 1,

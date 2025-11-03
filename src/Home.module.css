@@ -43,6 +43,7 @@
   filter: blur(0);
   opacity: 0.42;
   animation: heroFloat 16s ease-in-out infinite;
+  will-change: transform;
 }
 
 .blobOne {

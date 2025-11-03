@@ -5,7 +5,6 @@
     radial-gradient(circle at 82% 8%, rgba(91, 126, 209, 0.35), transparent 62%),
     linear-gradient(180deg, var(--bg-page) 0%, #eef3ff 35%, #f7f9fc 100%);
   color: var(--text-color);
-  overflow-x: hidden;
 }
 
 .app-shell--plain {
