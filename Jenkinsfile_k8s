@@ -85,7 +85,7 @@ spec:
                     /kaniko/executor \
                       --context=dir://$WORKSPACE \
                       --dockerfile=$WORKSPACE/Dockerfile \
-                      --destination=${params.urlDomainHarbor}/${params.nameProject}/${params.nameImageBuild}:latest \
+                      --destination=${params.nameImageBuild}:latest \
                       --cache=true \
                       --cache-repo=${params.urlDomainHarbor}/kaniko-cache
                   """
