@@ -78,23 +78,18 @@ spec:
                 checkout scm
             }
         }
-
-        stage('echo Params and environment Variables') {
+        stage('Build and Push Image') {
             steps {
-                sh """
-                    echo "Parameter nameImageBuild: ${params.nameImageBuild}"
-                    echo "Parameter urlDomainHarbor: ${params.urlDomainHarbor}"
-                    echo "Parameter nameProject: ${params.nameProject}"
-                    echo "Parameter Tag: ${params.Tag}"
-                    echo "Parameter VITE_API_BASE: ${params.VITE_API_BASE}"
-                    echo "Parameter VITE_TURNSTILE_SITEKEY: ${params.VITE_TURNSTILE_SITEKEY}"
-                    echo "Parameter SENTRY_DSN: ${params.SENTRY_DSN}"
-                    echo "Environment Variable GIT_REPO: ${env.GIT_REPO}"
-                    echo "Environment Variable GIT_BRANCH: ${env.GIT_BRANCH}"
-
-                    echo "Closing...."
-                    sleep 5
-                """
+                container('kaniko') {
+                  sh """
+                    /kaniko/executor \
+                      --context=dir://$WORKSPACE \
+                      --dockerfile=$WORKSPACE/Dockerfile \
+                      --destination=${params.urlDomainHarbor}/${params.nameProject}/${params.nameImageBuild}:latest \
+                      --cache=true \
+                      --cache-repo=${params.urlDomainHarbor}/kaniko-cache
+                  """
+                }
             }
         }
     }
