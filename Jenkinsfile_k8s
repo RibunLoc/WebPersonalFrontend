@@ -5,6 +5,8 @@ pipeline {
             yaml """
 apiVersion: v1
 kind: Pod
+metadata:
+  name: kaniko-pod
 spec:
     restartPolicy: Never
     volumes:
@@ -19,21 +21,30 @@ spec:
         image: node:20-bookworm
         command: ["cat"]
         tty: true
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "256m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+
       - name: kaniko
         image: grc.io/kaniko-project/executor:v1.23.2-debug
         command: ["/busybox/cat"]
         tty: true
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "256m"
+          limits:
+            memory: "1Gi
+            cpu: "500m"
         volumeMounts:
           - name: docker-config
             mountPath: /kaniko/.docker/
             readOnly: true
-      resources:
-        requests:
-          memory: "512Mi"
-          cpu: "256m"
-        limits:
-          memory: "1Gi
-          cpu: "500m"
+
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoreDuringExecution:
