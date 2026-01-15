@@ -30,7 +30,7 @@ spec:
             cpu: "500m"
 
       - name: kaniko
-        image: grc.io/kaniko-project/executor:v1.23.2-debug
+        image: gcr.io/kaniko-project/executor:v1.23.2-debug
         command: ["/busybox/cat"]
         tty: true
         resources:
