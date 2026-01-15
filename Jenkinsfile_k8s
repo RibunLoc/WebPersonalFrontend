@@ -25,10 +25,10 @@ spec:
         tty: true
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "256m"
+            memory: "128Mi"
+            cpu: "64m"
           limits:
-            memory: "1Gi"
+            memory: "256Mi"
             cpu: "500m"
 
       - name: kaniko
@@ -37,15 +37,17 @@ spec:
         tty: true
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "256m"
+            memory: "128Mi"
+            cpu: "64m"
           limits:
-            memory: "1Gi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "128m"
         volumeMounts:
           - name: docker-config
             mountPath: /kaniko/.docker/
             readOnly: true
+
+
 """
         }
     }
