@@ -1,0 +1,72 @@
+pipeline {
+    agent {
+        kubernetes {
+            defaultContainer 'node'
+            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+    restartPolicy: Never
+    volumes:
+      - name: docker-config
+        secret:
+          secretName: regcred
+          items:
+            - key: .dockerconfigjson
+              path: config.json
+    containers:
+      - name: node
+        image: node:20-bookworm
+        command: ["cat"]
+        tty: true
+      - name: kaniko
+        image: grc.io/kaniko-project/executor:v1.23.2-debug
+        command: ["/busybox/cat"]
+        tty: true
+        volumeMounts:
+          - name: docker-config
+            mountPath: /kaniko/.docker/
+            readOnly: true
+"""
+        }
+    }
+
+    parameters {
+        string(name: 'nameImageBuild', defaultValue: 'harbor.holoc.id.vn/personal_frontend/web_frontend', description: "Docker registry to push the image")
+        string(name: 'urlDomainHarbor', defaultValue: 'harbor.holoc.id.vn', description: "Domain of the Harbor registry")
+        string(name: 'nameProject', defaultValue: 'personal_frontend', description: 'The project name on Harbor regitry')
+        string(name: 'Tag', defaultValue: 'v1.2.0', description: 'Tag for the Docker image')
+        string(name: 'VITE_API_BASE', defaultValue: 'https://api.holoc.id.vn', description: 'Base URL for the API')
+        string(name: 'VITE_TURNSTILE_SITEKEY', defaultValue: '0x4AAAAAABsArAAHb5Qp1ZGS', description: 'Turnstile site key for the application')
+        string(name: 'SENTRY_DSN', defaultValue: '', description: 'Sentry DSN for error tracking')
+    }
+
+    environment {
+        GIT_REPO = ''
+        GIT_BRANCH = 'develop'
+    }
+    stages {
+        stage('Checkout Git Hub') {
+            checkout scm
+        }
+
+        stage('echo Params and environment Variables') {
+            steps {
+                sh """
+                    echo "Parameter nameImageBuild: ${params.nameImageBuild}"
+                    echo "Parameter urlDomainHarbor: ${params.urlDomainHarbor}"
+                    echo "Parameter nameProject: ${params.nameProject}"
+                    echo "Parameter Tag: ${params.Tag}"
+                    echo "Parameter VITE_API_BASE: ${params.VITE_API_BASE}"
+                    echo "Parameter VITE_TURNSTILE_SITEKEY: ${params.VITE_TURNSTILE_SITEKEY}"
+                    echo "Parameter SENTRY_DSN: ${params.SENTRY_DSN}"
+                    echo "Environment Variable GIT_REPO: ${env.GIT_REPO}"
+                    echo "Environment Variable GIT_BRANCH: ${env.GIT_BRANCH}"
+
+                    echo "Closing...."
+                    sleep 5
+                """
+            }
+        }
+    }
+}
