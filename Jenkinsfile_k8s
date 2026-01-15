@@ -53,7 +53,7 @@ spec:
                 - key: role
                   operator: In
                   values:
-                    - worker
+                    - master
 """
         }
     }
