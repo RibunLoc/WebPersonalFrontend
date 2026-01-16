@@ -46,8 +46,15 @@ spec:
           - name: docker-config
             mountPath: /kaniko/.docker/
             readOnly: true
-
-
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - worker
 """
         }
     }
