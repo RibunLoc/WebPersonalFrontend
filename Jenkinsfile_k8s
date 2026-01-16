@@ -8,9 +8,16 @@ kind: Pod
 metadata:
   name: kaniko-pod
 spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - worker
     restartPolicy: Never
-    nodeSelector:
-      kubernetes.io/hostname: rke2-server-01
     volumes:
       - name: docker-config
         secret:
@@ -46,15 +53,7 @@ spec:
           - name: docker-config
             mountPath: /kaniko/.docker/
             readOnly: true
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: role
-                  operator: In
-                  values:
-                    - worker
+
 """
         }
     }
