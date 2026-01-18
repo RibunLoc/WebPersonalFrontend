@@ -13,10 +13,10 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: role
+                - key: workload
                   operator: In
                   values:
-                    - worker
+                    - jenkins-agent
     restartPolicy: Never
     volumes:
       - name: docker-config
@@ -60,10 +60,10 @@ spec:
         tty: true
         resources:
           requests:
-            memory: "256Mi"
+            memory: "512Mi"
             cpu: "128m"
           limits:
-            memory: "512Mi"
+            memory: "2Gi"
             cpu: "500m"
 
 """
@@ -96,8 +96,9 @@ spec:
 	        stage('SonarQube Analysis') {
 	            environment{
 	              SCANNER_HOME = tool 'sonar-scanner-8'
+	              SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
 	            }
-            steps {
+	            steps {
                 container('sonar') {
                   withSonarQubeEnv('sonar-server') {
                     echo "Sonar Server Scanning..."
