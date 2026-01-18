@@ -2,6 +2,13 @@
   width: 100%;
   padding: clamp(4rem, 10vw, 6.5rem) 0;
   color: var(--text-color);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-page) 72%, #0f172a 18%),
+    color-mix(in srgb, var(--about-section-bg) 68%, #0b162a 22%)
+  );
+  border-radius: clamp(2.2rem, 6vw, 3.2rem);
+  overflow: hidden;
 }
 
 .container {
@@ -17,6 +24,11 @@
   gap: 1rem;
   text-align: left;
   max-width: 720px;
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--surface-1) 90%, var(--about-section-bg));
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: var(--shadow-sm);
 }
 
 .eyebrow {
@@ -47,11 +59,16 @@
   grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 2.5rem);
   align-items: stretch;
+  background: color-mix(in srgb, var(--surface-1) 90%, var(--about-section-bg));
+  border-radius: 26px;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  padding: clamp(1.25rem, 3vw, 1.9rem);
+  box-shadow: var(--shadow-sm);
 }
 
 .profileCard {
   position: relative;
-  border-radius: 28px;
+  border-radius: 32px;
   padding: clamp(1.5rem, 4vw, 2rem);
   background: var(--about-profile-bg);
   border: 1px solid var(--about-profile-border);
@@ -59,6 +76,7 @@
   display: grid;
   gap: clamp(1.5rem, 4vw, 2rem);
   align-content: start;
+  overflow: hidden;
 }
 
 .portraitWrap {
@@ -130,13 +148,14 @@
 .highlightCard {
   position: relative;
   padding: clamp(1.25rem, 4vw, 1.75rem);
-  border-radius: 22px;
+  border-radius: 26px;
   background: var(--about-highlight-bg);
   border: 1px solid var(--about-highlight-border);
   box-shadow: var(--about-highlight-shadow);
   display: grid;
   gap: 0.65rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
 }
 
 .highlightCard:hover {
@@ -158,11 +177,12 @@
 }
 
 .focusCard {
-  border-radius: 24px;
+  border-radius: 28px;
   padding: clamp(1.5rem, 4vw, 2rem);
   background: var(--about-focus-bg);
   border: 1px solid var(--about-focus-border);
   box-shadow: var(--about-focus-shadow);
+  overflow: hidden;
 }
 
 .focusCard h3 {
@@ -204,10 +224,11 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 5vw, 2.75rem);
   padding: clamp(1.75rem, 5vw, 2.5rem);
-  border-radius: 26px;
+  border-radius: 30px;
   background: var(--about-panel-bg);
   border: 1px solid var(--about-panel-border);
   box-shadow: var(--about-panel-shadow);
+  overflow: hidden;
 }
 
 .capabilityCopy h3 {
