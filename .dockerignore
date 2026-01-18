@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+npm-debug.log
+buildspec.yaml
+dist
+coverage
+.env
+*.log
+.github

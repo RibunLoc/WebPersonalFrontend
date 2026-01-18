@@ -78,19 +78,51 @@ spec:
                 checkout scm
             }
         }
-        stage('Build and Push Image') {
+        stage('SonarQube Analysis') {
+            environment{
+              SCANNER_HOME = tool 'sonar-scanner-8'
+            }
             steps {
-                container('kaniko') {
-                  sh """
-                    /kaniko/executor \
-                      --context=dir://$WORKSPACE \
-                      --dockerfile=$WORKSPACE/Dockerfile \
-                      --destination=${params.nameImageBuild}:latest \
-                      --cache=true \
-                      --cache-repo=${params.nameImageBuild}/kaniko-cache
-                  """
+                container('node') {
+	                  withSonarQubeEnv('sonar-server') {
+	                    echo "Sonar Server Scanning..."
+	                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                      withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
+                        sh '''
+                          $SCANNER_HOME/bin/sonar-scanner \
+                          -Dsonar.host.url=$SONAR_HOST_URL \
+                          -Dsonar.login=$SONAR_AUTH_TOKEN \
+                          -Dsonar.organization=thanhloc-org \
+                          -Dsonar.projectName=webpersonal-frontend \
+                          -Dsonar.projectKey=webpersonal-frontend \
+                          -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
+                          -Dsonar.sources=src \
+                          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
+                          -Dsonar.typescript.tsconfigPath=tsconfig.json
+                        '''
+                      }
+		                    }
+	                  }
+
+                  timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                  }
                 }
             }
         }
+        // stage('Build and Push Image') {
+        //     steps {
+        //         container('kaniko') {
+        //           sh """
+        //             /kaniko/executor \
+        //               --context=dir://$WORKSPACE \
+        //               --dockerfile=$WORKSPACE/Dockerfile \
+        //               --destination=${params.nameImageBuild}:latest \
+        //               --cache=true \
+        //               --cache-repo=${params.nameImageBuild}/kaniko-cache
+        //           """
+        //         }
+        //     }
+        // }
     }
 }
