@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Project.module.css";
+import { resolveAssetUrl } from "./utils/assets";
 
 interface Project {
   id: string;
@@ -81,7 +82,7 @@ export default function Project() {
             >
               {project.imageUrl && (
                 <div className={styles.media}>
-                  <img src={project.imageUrl} alt={project.title} loading="lazy" />
+                  <img src={resolveAssetUrl(project.imageUrl)} alt={project.title} loading="lazy" />
                   <div className={styles.mediaOverlay} />
                 </div>
               )}

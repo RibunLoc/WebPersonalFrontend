@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { FiCloud, FiTool, FiTrendingUp } from 'react-icons/fi';
 import styles from './Home.module.css';
 import useTypewriter from './hooks/useTypewriter';
+import { resolveAssetUrl } from './utils/assets';
 
 type Insight = {
   title: string;
@@ -35,9 +36,16 @@ export default function Home() {
     },
   ];
 
+  const overlayImage = resolveAssetUrl('/japan-background.jpg');
+  const avatarUrl = resolveAssetUrl('/avatar.jpg');
+  const resumeUrl = resolveAssetUrl('/HoThanhLocResume.pdf');
+  const overlayStyle: CSSProperties & { '--hero-overlay-image'?: string } = overlayImage
+    ? { '--hero-overlay-image': `url("${overlayImage}") no-repeat center center / cover` }
+    : {};
+
   return (
     <section className={styles.hero} id="home" aria-labelledby="hero-title">
-      <div className={styles.overlay} />
+      <div className={styles.overlay} style={overlayStyle} />
       <div className={styles.decor} aria-hidden="true">
         <span className={`${styles.blob} ${styles.blobOne}`} />
         <span className={`${styles.blob} ${styles.blobTwo}`} />
@@ -75,7 +83,7 @@ export default function Home() {
           </a>
 
           <a
-            href="/HoThanhLocResume.pdf"
+            href={resumeUrl}
             className={`${styles.btn} ${styles.btnGhost}`}
             target="_blank"
             rel="noreferrer noopener"
@@ -105,7 +113,7 @@ export default function Home() {
 
       <div className={styles.portrait}>
         <span className={styles.portraitGlow} aria-hidden="true" />
-        <img src="/avatar.jpg" alt="Avatar of Thanh Lộc" className={styles.avatar} />
+        <img src={avatarUrl} alt="Avatar of Thanh Lộc" className={styles.avatar} />
         <div className={styles.portraitCard}>
           <span className={styles.portraitTag}>DevOps explorer</span>
           <p className={styles.portraitNote}>Đang tìm kiếm cơ hội thực tập thú vị ✨</p>
