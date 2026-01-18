@@ -126,19 +126,19 @@ spec:
                 }
 	            }
 	        }
-	        // stage('Build and Push Image') {
-	        //     steps {
-	        //         container('kaniko') {
-	        //           sh """
-	        //             /kaniko/executor \
-	        //               --context=dir://$WORKSPACE \
-	        //               --dockerfile=$WORKSPACE/Dockerfile \
-	        //               --destination=${params.nameImageBuild}:latest \
-	        //               --cache=true \
-	        //               --cache-repo=${params.nameImageBuild}/kaniko-cache
-	        //           """
-	        //         }
-	        //     }
-	        // }
+	        stage('Build and Push Image') {
+	            steps {
+	                container('kaniko') {
+	                  sh """
+	                    /kaniko/executor \
+	                      --context=dir://$WORKSPACE \
+	                      --dockerfile=$WORKSPACE/Dockerfile \
+	                      --destination=${params.nameImageBuild}:latest \
+	                      --cache=true \
+	                      --cache-repo=${params.nameImageBuild}/kaniko-cache
+	                  """
+	                }
+	            }
+	        }
 	    }
 	}
