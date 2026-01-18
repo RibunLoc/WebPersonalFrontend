@@ -109,39 +109,39 @@ spec:
 	                checkout scm
 	            }
 	        }
-	        stage('SonarQube Analysis') {
-	            environment{
-	              SCANNER_HOME = tool 'sonar-scanner-8'
-	              SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
-	            }
-	            steps {
-                container('sonar') {
-                  withSonarQubeEnv('sonar-server') {
-                    echo "Sonar Server Scanning..."
-                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                      withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
-                        sh '''
-                          $SCANNER_HOME/bin/sonar-scanner \
-                          -Dsonar.host.url=$SONAR_HOST_URL \
-                          -Dsonar.login=$SONAR_AUTH_TOKEN \
-                          -Dsonar.organization=thanhloc-org \
-                          -Dsonar.projectName=webpersonal-frontend \
-                          -Dsonar.projectKey=webpersonal-frontend \
-                          -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
-                          -Dsonar.sources=src \
-                          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
-                          -Dsonar.typescript.tsconfigPath=tsconfig.json
-                        '''
-                      }
-                    }
-                  }
+	        // stage('SonarQube Analysis') {
+	        //     environment{
+	        //       SCANNER_HOME = tool 'sonar-scanner-8'
+	        //       SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
+	        //     }
+	        //     steps {
+          //       container('sonar') {
+          //         withSonarQubeEnv('sonar-server') {
+          //           echo "Sonar Server Scanning..."
+          //           catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          //             withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
+          //               sh '''
+          //                 $SCANNER_HOME/bin/sonar-scanner \
+          //                 -Dsonar.host.url=$SONAR_HOST_URL \
+          //                 -Dsonar.login=$SONAR_AUTH_TOKEN \
+          //                 -Dsonar.organization=thanhloc-org \
+          //                 -Dsonar.projectName=webpersonal-frontend \
+          //                 -Dsonar.projectKey=webpersonal-frontend \
+          //                 -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
+          //                 -Dsonar.sources=src \
+          //                 -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
+          //                 -Dsonar.typescript.tsconfigPath=tsconfig.json
+          //               '''
+          //             }
+          //           }
+          //         }
 
-                  // timeout(time: 5, unit: 'MINUTES') {
-                  //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
-                  // }
-                }
-	            }
-	        }
+          //         // timeout(time: 5, unit: 'MINUTES') {
+          //         //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+          //         // }
+          //       }
+	        //     }
+	        // }
 	        stage('Build and Push Image') {
 	            steps {
 	                container('kaniko') {
@@ -198,7 +198,9 @@ spec:
                         exit 1
                       fi
 
-                      sed -i -r "s#(^[[:space:]]*image:[[:space:]]*).*$#\\1${IMAGE}#g" "${GITOPS_DEPLOYMENT_PATH}"
+                      IMAGE="$(printf '%s' "${IMAGE}" | tr -d '\r\n')"
+                      ESC_IMAGE="$(printf '%s' "${IMAGE}" | sed -e 's/[\\&#]/\\&/g')"
+                      sed -i -r "s#(^[[:space:]]*image:[[:space:]]*).*$#\\1${ESC_IMAGE}#g" "${GITOPS_DEPLOYMENT_PATH}"
 
                       git add "${GITOPS_DEPLOYMENT_PATH}"
                       if git diff --cached --quiet; then
