@@ -54,6 +54,18 @@ spec:
             mountPath: /kaniko/.docker/
             readOnly: true
 
+      - name: sonar
+        image: eclipse-temurin:17-jre
+        command: ["cat"]
+        tty: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "128m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
 """
         }
     }
@@ -72,21 +84,24 @@ spec:
         GIT_REPO = ''
         GIT_BRANCH = 'develop'
     }
+
+
+
     stages {
-        stage('Checkout Git Hub') {
+	        stage('Checkout Git Hub') {
+	            steps {
+	                checkout scm
+	            }
+	        }
+	        stage('SonarQube Analysis') {
+	            environment{
+	              SCANNER_HOME = tool 'sonar-scanner-8'
+	            }
             steps {
-                checkout scm
-            }
-        }
-        stage('SonarQube Analysis') {
-            environment{
-              SCANNER_HOME = tool 'sonar-scanner-8'
-            }
-            steps {
-                container('node') {
-	                  withSonarQubeEnv('sonar-server') {
-	                    echo "Sonar Server Scanning..."
-	                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                container('sonar') {
+                  withSonarQubeEnv('sonar-server') {
+                    echo "Sonar Server Scanning..."
+                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                       withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
                         sh '''
                           $SCANNER_HOME/bin/sonar-scanner \
@@ -101,28 +116,28 @@ spec:
                           -Dsonar.typescript.tsconfigPath=tsconfig.json
                         '''
                       }
-		                    }
-	                  }
-
-                  timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                    }
                   }
+
+                  // timeout(time: 5, unit: 'MINUTES') {
+                  //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                  // }
                 }
-            }
-        }
-        // stage('Build and Push Image') {
-        //     steps {
-        //         container('kaniko') {
-        //           sh """
-        //             /kaniko/executor \
-        //               --context=dir://$WORKSPACE \
-        //               --dockerfile=$WORKSPACE/Dockerfile \
-        //               --destination=${params.nameImageBuild}:latest \
-        //               --cache=true \
-        //               --cache-repo=${params.nameImageBuild}/kaniko-cache
-        //           """
-        //         }
-        //     }
-        // }
-    }
-}
+	            }
+	        }
+	        // stage('Build and Push Image') {
+	        //     steps {
+	        //         container('kaniko') {
+	        //           sh """
+	        //             /kaniko/executor \
+	        //               --context=dir://$WORKSPACE \
+	        //               --dockerfile=$WORKSPACE/Dockerfile \
+	        //               --destination=${params.nameImageBuild}:latest \
+	        //               --cache=true \
+	        //               --cache-repo=${params.nameImageBuild}/kaniko-cache
+	        //           """
+	        //         }
+	        //     }
+	        // }
+	    }
+	}
