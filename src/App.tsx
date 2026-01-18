@@ -19,6 +19,11 @@ function AppFrame() {
       <div className="app-surface" aria-hidden="true">
         <div className="app-orb app-orb--one" />
         <div className="app-orb app-orb--two" />
+        <div className="app-orb app-orb--three" />
+        <div className="app-orb app-orb--four" />
+        <div className="app-orb app-orb--five" />
+        <div className="app-orb app-orb--six" />
+        <div className="app-orb app-orb--seven" />
         <div className="app-grid" />
       </div>
       <Navbar />

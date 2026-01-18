@@ -55,6 +55,56 @@
   animation-delay: -6s;
 }
 
+.app-orb--three {
+  top: 10%;
+  right: -16rem;
+  width: clamp(20rem, 36vw, 40rem);
+  height: clamp(20rem, 36vw, 40rem);
+  opacity: 0.5;
+  background: radial-gradient(circle at 30% 35%, rgba(124, 196, 255, 0.88), rgba(64, 120, 210, 0.32));
+  animation-delay: -2s;
+}
+
+.app-orb--four {
+  top: 40%;
+  left: -16rem;
+  width: clamp(22rem, 38vw, 42rem);
+  height: clamp(22rem, 38vw, 42rem);
+  opacity: 0.46;
+  background: radial-gradient(circle at 65% 40%, rgba(111, 216, 200, 0.85), rgba(38, 88, 140, 0.32));
+  animation-delay: -10s;
+}
+
+.app-orb--five {
+  bottom: 6%;
+  right: -14rem;
+  width: clamp(18rem, 30vw, 34rem);
+  height: clamp(18rem, 30vw, 34rem);
+  opacity: 0.42;
+  background: radial-gradient(circle at 50% 45%, rgba(165, 210, 255, 0.78), rgba(88, 132, 210, 0.28));
+  animation-delay: -14s;
+}
+
+.app-orb--six {
+  top: 62%;
+  left: -18rem;
+  width: clamp(16rem, 28vw, 32rem);
+  height: clamp(16rem, 28vw, 32rem);
+  opacity: 0.4;
+  background: radial-gradient(circle at 45% 40%, rgba(140, 214, 255, 0.7), rgba(58, 112, 196, 0.25));
+  animation-delay: -4s;
+}
+
+.app-orb--seven {
+  top: 28%;
+  right: -18rem;
+  width: clamp(14rem, 24vw, 28rem);
+  height: clamp(14rem, 24vw, 28rem);
+  opacity: 0.36;
+  background: radial-gradient(circle at 55% 45%, rgba(120, 230, 200, 0.7), rgba(32, 90, 140, 0.24));
+  animation-delay: -8s;
+}
+
 .app-grid {
   position: absolute;
   inset: -20%;
@@ -179,6 +229,31 @@
 
 :global(.dark) .app-orb--two {
   background: radial-gradient(circle at 70% 70%, rgba(37, 99, 235, 0.78), rgba(23, 37, 84, 0.32));
+}
+
+:global(.dark) .app-orb--three {
+  background: radial-gradient(circle at 35% 35%, rgba(59, 130, 246, 0.75), rgba(30, 64, 175, 0.3));
+  opacity: 0.46;
+}
+
+:global(.dark) .app-orb--four {
+  background: radial-gradient(circle at 60% 40%, rgba(45, 212, 191, 0.68), rgba(30, 58, 138, 0.28));
+  opacity: 0.42;
+}
+
+:global(.dark) .app-orb--five {
+  background: radial-gradient(circle at 50% 45%, rgba(96, 165, 250, 0.65), rgba(30, 58, 138, 0.26));
+  opacity: 0.38;
+}
+
+:global(.dark) .app-orb--six {
+  background: radial-gradient(circle at 45% 40%, rgba(59, 130, 246, 0.62), rgba(30, 64, 175, 0.26));
+  opacity: 0.36;
+}
+
+:global(.dark) .app-orb--seven {
+  background: radial-gradient(circle at 55% 45%, rgba(45, 212, 191, 0.6), rgba(30, 58, 138, 0.24));
+  opacity: 0.34;
 }
 
 :global(.dark) .app-grid {

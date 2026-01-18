@@ -1,5 +1,5 @@
 import styles from "./Contact.module.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Turnstile from "react-turnstile";
 import { RUNTIME } from "./config/runtime";
 
@@ -18,6 +18,17 @@ type Status = "idle" | "pending" | "success" | "error";
 export const sitekey : string = RUNTIME.TURNSTILE_SITEKEY || "1x00000000000000000000AA";
 const BASE = (RUNTIME.VITE_API_BASE || "").replace(/\/+$/, "");
 
+const MESSAGE_PRESETS = [
+  {
+    label: "Hợp tác dự án",
+    value: "Chào bạn, mình muốn trao đổi về một dự án mới. Bạn có thể tư vấn giúp mình được không?",
+  },
+  {
+    label: "Tư vấn DevOps",
+    value: "Mình cần tư vấn về CI/CD và hạ tầng cloud cho team. Bạn có thể chia sẻ hướng tiếp cận phù hợp không?",
+  },
+] as const;
+
 // Helper ghép URL an toàn (hỗ trợ base absolute hoặc relative như "/api")
 export const apiUrl = (path: string) => {
   const clean = path.replace(/^\/+/, "");
@@ -33,6 +44,17 @@ export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [token, setToken] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const messageRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const applyPreset = (text: string) => {
+    const el = messageRef.current;
+    if (!el) return;
+    const trimmed = el.value.trim();
+    el.value = trimmed ? `${el.value}\n\n${text}` : text;
+    el.focus();
+    const end = el.value.length;
+    el.setSelectionRange(end, end);
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -103,14 +125,31 @@ export default function Contact() {
           minLength={2}
           maxLength={80}
         />
-        <input name="email" type="email" placeholder="Email" required />
+        <input name="email" type="email" placeholder="Email để mình liên hệ" required />
         <textarea
           name="message"
           placeholder="Nội dung liên hệ"
           required
           minLength={10}
           maxLength={2000}
+          ref={messageRef}
         />
+
+        <div className={styles.quickFill} aria-label="Điền nhanh nội dung">
+          <p className={styles.quickLabel}>Gợi ý nội dung</p>
+          <div className={styles.quickRow}>
+            {MESSAGE_PRESETS.map((preset) => (
+              <button
+                key={preset.label}
+                type="button"
+                className={styles.quickBtn}
+                onClick={() => applyPreset(preset.value)}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <Turnstile
           sitekey={sitekey}
