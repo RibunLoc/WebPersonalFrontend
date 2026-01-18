@@ -66,6 +66,18 @@ spec:
             memory: "2Gi"
             cpu: "500m"
 
+      - name: gitops
+        image: alpine/git:2.47.2
+        command: ["cat"]
+        tty: true
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+
 """
         }
     }
@@ -78,6 +90,12 @@ spec:
         string(name: 'VITE_API_BASE', defaultValue: 'https://api.holoc.id.vn', description: 'Base URL for the API')
         string(name: 'VITE_TURNSTILE_SITEKEY', defaultValue: '0x4AAAAAABsArAAHb5Qp1ZGS', description: 'Turnstile site key for the application')
         string(name: 'SENTRY_DSN', defaultValue: '', description: 'Sentry DSN for error tracking')
+
+        booleanParam(name: 'UPDATE_GITOPS', defaultValue: true, description: 'Commit/push image tag to GitOps repo for ArgoCD to sync')
+        string(name: 'GITOPS_REPO_URL', defaultValue: 'https://github.com/RibunLoc/Kubernetes-Platform.git', description: 'GitOps repo URL (HTTPS)')
+        string(name: 'GITOPS_BRANCH', defaultValue: 'main', description: 'GitOps branch to update')
+        string(name: 'GITOPS_DEPLOYMENT_PATH', defaultValue: 'apps/team-frontend/personal/deployment.yaml', description: 'Path to deployment manifest in GitOps repo')
+        string(name: 'GITOPS_TOKEN_CRED_ID', defaultValue: 'github-token', description: 'Jenkins credentialsId (Secret Text) for GitOps repo push')
     }
 
     environment {
@@ -85,47 +103,45 @@ spec:
         GIT_BRANCH = 'develop'
     }
 
-
-
     stages {
 	        stage('Checkout Git Hub') {
 	            steps {
 	                checkout scm
 	            }
 	        }
-	        // stage('SonarQube Analysis') {
-	        //     environment{
-	        //       SCANNER_HOME = tool 'sonar-scanner-8'
-	        //       SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
-	        //     }
-	        //     steps {
-          //       container('sonar') {
-          //         withSonarQubeEnv('sonar-server') {
-          //           echo "Sonar Server Scanning..."
-          //           catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-          //             withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
-          //               sh '''
-          //                 $SCANNER_HOME/bin/sonar-scanner \
-          //                 -Dsonar.host.url=$SONAR_HOST_URL \
-          //                 -Dsonar.login=$SONAR_AUTH_TOKEN \
-          //                 -Dsonar.organization=thanhloc-org \
-          //                 -Dsonar.projectName=webpersonal-frontend \
-          //                 -Dsonar.projectKey=webpersonal-frontend \
-          //                 -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
-          //                 -Dsonar.sources=src \
-          //                 -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
-          //                 -Dsonar.typescript.tsconfigPath=tsconfig.json
-          //               '''
-          //             }
-          //           }
-          //         }
+	        stage('SonarQube Analysis') {
+	            environment{
+	              SCANNER_HOME = tool 'sonar-scanner-8'
+	              SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
+	            }
+	            steps {
+                container('sonar') {
+                  withSonarQubeEnv('sonar-server') {
+                    echo "Sonar Server Scanning..."
+                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                      withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
+                        sh '''
+                          $SCANNER_HOME/bin/sonar-scanner \
+                          -Dsonar.host.url=$SONAR_HOST_URL \
+                          -Dsonar.login=$SONAR_AUTH_TOKEN \
+                          -Dsonar.organization=thanhloc-org \
+                          -Dsonar.projectName=webpersonal-frontend \
+                          -Dsonar.projectKey=webpersonal-frontend \
+                          -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
+                          -Dsonar.sources=src \
+                          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
+                          -Dsonar.typescript.tsconfigPath=tsconfig.json
+                        '''
+                      }
+                    }
+                  }
 
-          //         // timeout(time: 5, unit: 'MINUTES') {
-          //         //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
-          //         // }
-          //       }
-	        //     }
-	        // }
+                  // timeout(time: 5, unit: 'MINUTES') {
+                  //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                  // }
+                }
+	            }
+	        }
 	        stage('Build and Push Image') {
 	            steps {
 	                container('kaniko') {
@@ -133,6 +149,7 @@ spec:
 	                    /kaniko/executor \
 	                      --context=dir://$WORKSPACE \
 	                      --dockerfile=$WORKSPACE/Dockerfile \
+	                      --destination=${params.nameImageBuild}:${params.Tag} \
 	                      --destination=${params.nameImageBuild}:latest \
 	                      --cache=true \
 	                      --cache-repo=${params.nameImageBuild}/kaniko-cache
@@ -140,5 +157,64 @@ spec:
 	                }
 	            }
 	        }
+
+          stage('Update GitOps (ArgoCD)') {
+            when {
+              expression { return params.UPDATE_GITOPS }
+            }
+            steps {
+              container('gitops') {
+                withCredentials([string(credentialsId: params.GITOPS_TOKEN_CRED_ID, variable: 'GITOPS_TOKEN')]) {
+                  withEnv([
+                    "IMAGE=${params.nameImageBuild}:${params.Tag}",
+                    "GITOPS_REPO_URL=${params.GITOPS_REPO_URL}",
+                    "GITOPS_BRANCH=${params.GITOPS_BRANCH}",
+                    "GITOPS_DEPLOYMENT_PATH=${params.GITOPS_DEPLOYMENT_PATH}"
+                  ]) {
+                    sh '''
+                      set -eu
+
+                      if [ -z "${GITOPS_TOKEN:-}" ]; then
+                        echo "Missing GITOPS_TOKEN (credentialsId: ${GITOPS_TOKEN_CRED_ID})"
+                        exit 1
+                      fi
+
+                      case "${GITOPS_REPO_URL}" in
+                        https://*) ;;
+                        *)
+                          echo "GITOPS_REPO_URL must be HTTPS (e.g. https://github.com/<org>/<repo>.git)"
+                          exit 1
+                          ;;
+                      esac
+
+                      rm -rf gitops-repo
+                      AUTH_URL="$(echo "${GITOPS_REPO_URL}" | sed "s#^https://#https://${GITOPS_TOKEN}@#")"
+                      git clone --depth 1 --branch "${GITOPS_BRANCH}" "${AUTH_URL}" gitops-repo
+
+                      cd gitops-repo
+
+                      if [ ! -f "${GITOPS_DEPLOYMENT_PATH}" ]; then
+                        echo "Missing file in GitOps repo: ${GITOPS_DEPLOYMENT_PATH}"
+                        exit 1
+                      fi
+
+                      sed -i -r "s#(^[[:space:]]*image:[[:space:]]*).*$#\\1${IMAGE}#g" "${GITOPS_DEPLOYMENT_PATH}"
+
+                      git add "${GITOPS_DEPLOYMENT_PATH}"
+                      if git diff --cached --quiet; then
+                        echo "GitOps already up-to-date: ${IMAGE}"
+                        exit 0
+                      fi
+
+                      git config user.email "jenkins-bot@locho"
+                      git config user.name "jenkins-bot"
+                      git commit -m "deploy(webpersonal-frontend): ${IMAGE}"
+                      git push origin "HEAD:${GITOPS_BRANCH}"
+                    '''
+                  }
+                }
+              }
+            }
+          }
 	    }
 	}
