@@ -47,8 +47,8 @@ spec:
             memory: "256Mi"
             cpu: "128m"
           limits:
-            memory: "2Gi"
-            cpu: "1"
+            memory: "4Gi"
+            cpu: "1.3"
         volumeMounts:
           - name: docker-config
             mountPath: /kaniko/.docker/
@@ -93,39 +93,39 @@ spec:
 	                checkout scm
 	            }
 	        }
-	        stage('SonarQube Analysis') {
-	            environment{
-	              SCANNER_HOME = tool 'sonar-scanner-8'
-	              SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
-	            }
-	            steps {
-                container('sonar') {
-                  withSonarQubeEnv('sonar-server') {
-                    echo "Sonar Server Scanning..."
-                    catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                      withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
-                        sh '''
-                          $SCANNER_HOME/bin/sonar-scanner \
-                          -Dsonar.host.url=$SONAR_HOST_URL \
-                          -Dsonar.login=$SONAR_AUTH_TOKEN \
-                          -Dsonar.organization=thanhloc-org \
-                          -Dsonar.projectName=webpersonal-frontend \
-                          -Dsonar.projectKey=webpersonal-frontend \
-                          -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
-                          -Dsonar.sources=src \
-                          -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
-                          -Dsonar.typescript.tsconfigPath=tsconfig.json
-                        '''
-                      }
-                    }
-                  }
+	        // stage('SonarQube Analysis') {
+	        //     environment{
+	        //       SCANNER_HOME = tool 'sonar-scanner-8'
+	        //       SONAR_SCANNER_OPTS = '-Xms256m -Xmx1536m'
+	        //     }
+	        //     steps {
+          //       container('sonar') {
+          //         withSonarQubeEnv('sonar-server') {
+          //           echo "Sonar Server Scanning..."
+          //           catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          //             withEnv(["SONAR_PROJECT_VERSION=${params.Tag}"]) {
+          //               sh '''
+          //                 $SCANNER_HOME/bin/sonar-scanner \
+          //                 -Dsonar.host.url=$SONAR_HOST_URL \
+          //                 -Dsonar.login=$SONAR_AUTH_TOKEN \
+          //                 -Dsonar.organization=thanhloc-org \
+          //                 -Dsonar.projectName=webpersonal-frontend \
+          //                 -Dsonar.projectKey=webpersonal-frontend \
+          //                 -Dsonar.projectVersion=$SONAR_PROJECT_VERSION \
+          //                 -Dsonar.sources=src \
+          //                 -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**" \
+          //                 -Dsonar.typescript.tsconfigPath=tsconfig.json
+          //               '''
+          //             }
+          //           }
+          //         }
 
-                  // timeout(time: 5, unit: 'MINUTES') {
-                  //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
-                  // }
-                }
-	            }
-	        }
+          //         // timeout(time: 5, unit: 'MINUTES') {
+          //         //   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+          //         // }
+          //       }
+	        //     }
+	        // }
 	        stage('Build and Push Image') {
 	            steps {
 	                container('kaniko') {
